@@ -1,0 +1,27 @@
+{
+	"name": "Break Alert",
+	"version":"1.0",
+	"description": "Alert window popup when the preset time to break comes",
+	"permissions":["alarms"],
+	"icons":{ "128": "tree128.png",
+		"48": "tree48.png",
+		"32": "tree32.png",
+		"16": "tree16.png"	
+	},
+	"browser_action":{
+		"default_popup": "popup.html",
+		"default_icon":{
+		"128": "tree128.png",
+		"48": "tree48.png",
+		"32": "tree32.png",
+		"16": "tree16.png"
+		}
+	},
+	"background":{
+		"scripts":["eventPage.js"],
+		"persistent": false
+	},
+
+	"manifest_version": 2
+}
+  
