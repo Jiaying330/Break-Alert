@@ -1,24 +1,117 @@
- <!DOCTYPE html>
-  <html>
-    <head>
-    	<title>Break Time</title>
-      <style>
-        div {
-        	background-color: lightblue;
-        	text-align:center;
-        }
-      </style>
-    </head>
-    <body>
-    	<div>
-    		<form>
-    			Take a break every:<br>
-    			<input type="number" id="minute" name="minute">
-    			minutes<br>
-    			<button id="set">Set</button>
-    			<button id="clear">Clear</button>
-    		</form>
-    	</div>
-      <script src="popup.js"></script>
-    </body>
-  </html>
+  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    [data-tab-content]{
+      display: none;
+    }
+    .active[data-tab-content]{
+      display: block;
+    }
+    .ceWindow {
+      height: 580px;
+      width: 701px;
+      display: flex;
+    }
+    .left{
+      width: 400px;
+      height: 580px;
+      padding: 0;
+      margin: 0;
+    }
+    .right{
+      width: 300px;
+      height: 580px;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+    }
+    .middle{
+      width: 1px;
+      height: 580px;
+      background: #bbbbbb;
+      padding: 0;
+      margin: 0;
+    }
+    .solid{
+      border-top: 1px solid #bbbbbb;
+      width: 300px,;
+      margin: 10px 0px 10px 0px;
+      padding: 0px;
+    }
+    .myButton{
+      margin-top: 20px;
+    }
+    .buttonRow{
+      display: flex;
+      padding: 0;
+      justify-content: space-around;
+    }
+    .glyphicon{
+      font-size: 22px;
+    }
+    .sidebar{
+      overflow: auto;
+      max-height: 580px;
+      width: 400px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class = "ceWindow">
+    <!-- Left Side of Extension -->
+    <div class = "left">
+      <div class = "sidebar">
+        <h4>Tab Shortcuts</h4>
+        <div id = "allTabs">
+        </div>
+      </div>
+    </div>
+    <div class = "middle"></div>
+    <!-- Right Side of Extension -->
+    <div class = "right">
+      <div class = "myButton">
+        <img src = "tree.png" height="150"/>
+      </div>
+      <div>Break Alert</div>
+      <hr class = "solid"/>
+      <div class = "buttonRow">
+        <i class = "glyphicon glyphicon-calendar" data-tab-target = "#schedule"></i>
+        <i class = "glyphicon glyphicon-list-alt" data-tab-target = "#todo"></i>
+        <i class = "glyphicon glyphicon-time" data-tab-target = "#alarm"></i>
+        <i class = "glyphicon glyphicon-lock" data-tab-target = "#lock"></i>
+        <i class = "glyphicon glyphicon-cog" data-tab-target = "#settings"></i>
+      </div>
+      <hr class = "solid"/>
+      <div class = "tab-content">
+        <!-- Schedule Tab Code -->
+        <div id = "schedule" data-tab-content class="active">
+          <h3>Schedule</h3>
+        </div>
+        <!-- Todo List Tab Code -->
+        <div id = "todo" data-tab-content>
+          <h3>Todo</h3>
+        </div>
+        <!-- Alarm Tab Code -->
+        <div id = "alarm" data-tab-content>
+          <h3>Alarm</h3>
+        </div>
+        <!-- Blocked Site Tab Code -->
+        <div id = "lock" data-tab-content>
+          <h3>Lock</h3>
+        </div>
+        <!-- Settings Tab Code -->
+        <div id = "settings" data-tab-content>
+          <h3>Settings</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src = "popup.js" charset="utf-8"></script>
+</body>
+</html>
