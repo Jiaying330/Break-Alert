@@ -46,10 +46,14 @@ function createTab(name){
  * Ran on start of chrome launch
  * Fills out left side content
  */
-chrome.storage.sync.get(['myTabs'], function(items){
-  console.log(items.myTabs);
-  var myArray = JSON.parse(JSON.stringify(items.myTabs)); // important
-  myArray.map((item) => {
-    myList.append(createTab(item.name));
-  });  
+ chrome.storage.sync.get(['myTabs'], function(items){
+  if(typeof items.myTabs === 'undefined'){
+
+  } else {
+    console.log(items.myTabs);
+    var myArray = JSON.parse(JSON.stringify(items.myTabs)); // important
+    myArray.map((item) => {
+      myList.append(createTab(item.name));
+    });  
+  }
 })
