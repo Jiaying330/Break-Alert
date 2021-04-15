@@ -1,24 +1,41 @@
- <!DOCTYPE html>
-  <html>
-    <head>
-    	<title>Break Time</title>
-      <style>
-        div {
-        	background-color: lightblue;
-        	text-align:center;
-        }
-      </style>
-    </head>
-    <body>
-    	<div>
-    		<form>
-    			Take a break every:<br>
-    			<input type="number" id="minute" name="minute">
-    			minutes<br>
-    			<button id="set">Set</button>
-    			<button id="clear">Clear</button>
-    		</form>
-    	</div>
-      <script src="popup.js"></script>
-    </body>
-  </html>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Break Time</title>
+</head>
+
+<body>
+    <!--Make div style modular-->
+    <div style="background-color:lightblue; text-align:center">
+        <form>
+            Take a break every:<br>
+            <input type="number" id="minute" name="minute"> minutes
+            <br>
+            <button id="set">Set</button>
+            <button id="clear">Clear</button>
+        </form>
+    </div>
+
+    <!--Add a new field for multi-tab feature-->
+    <br><br>
+    <fieldset>
+        <legend style="text-align:center">
+            Multi-tabs
+        </legend>
+
+        <form>
+            <button id="openLink">Open Link(s)</button><br><br>
+            Link 1: <input type="text" id="in1"><br><br>
+            Link 2: <input type="text" id="in2"><br><br>
+            Link 3: <input type="text" id="in3"><br><br>
+            Link 4: <input type="text" id="in4"><br><br>
+            Link 5: <input type="text" id="in5"><br><br>
+        </form>
+    </fieldset>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>

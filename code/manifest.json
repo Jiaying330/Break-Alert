@@ -2,7 +2,10 @@
 	"name": "Break Alert",
 	"version":"1.0",
 	"description": "Alert window popup when the preset time to break comes",
-	"permissions":["alarms"],
+	"permissions":[
+		"alarms",
+		"tabs"
+	],
 	"icons":{ "128": "tree128.png",
 		"48": "tree48.png",
 		"32": "tree32.png",

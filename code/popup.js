@@ -1,8 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var buttonS = document.getElementById("set");
-  var buttonC = document.getElementById("clear");
-  buttonS.addEventListener("click", clickS);
-  buttonC.addEventListener("click", clickC); 
+	var buttonS = document.getElementById("set");
+	var buttonC = document.getElementById("clear");
+  	buttonS.addEventListener("click", clickS);
+  	buttonC.addEventListener("click", clickC); 
+
+	// implement multi-tab feature
+  	var buttonOL = document.getElementById("openLink")
+  	buttonOL.addEventListener("click", clickOL);
 });
 
 function clickS(e) {
@@ -12,8 +16,22 @@ function clickS(e) {
 	}
 	window.close();
 }
-function clickC(e){
+function clickC(e) {
 	chrome.alarms.clear("breakAlarm");
 	window.close();
 }
 
+// implement multi-tab feature (fixed size inputs)
+function clickOL(e) {
+	console.log()
+    	let links = [];
+    	for (var i = 1; i <= 5; i++) {
+    		links.push(document.getElementById("in" + i.toString()).value);
+    	}
+
+    	for (var i = 0; i < links.length; i++) {
+		if (links[i]) {
+			chrome.tabs.create({"url": links[i]});
+		}
+	}
+}
