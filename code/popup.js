@@ -127,7 +127,8 @@ function newTask() {
  * Listener for add button for todo list
  */
 document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById("addTaskListener").addEventListener("addBtn", newTask);
+	console.log("button pressed!");
+  document.getElementById("addTaskListener").addEventListener("click", newTask);
 });
 
 
