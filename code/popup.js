@@ -140,31 +140,64 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function () {
   var buttonSet = document.getElementById("set");
   var buttonClear = document.getElementById("clear");
+  var buttonEdit = document.getElementById("edit");
   buttonSet.addEventListener("click", clickSet);
   buttonClear.addEventListener("click", clickClear); 
+  buttonEdit.addEventListener("click", clickEdit);
 
   var buttonSetDatetime = document.getElementById("setDatetime");
   var buttonClearDatetime = document.getElementById("clearDatetime");
+  var buttonEditDatetime = document.getElementById("editDatetime");
   buttonSetDatetime.addEventListener("click", clickSetDatetime);
   buttonClearDatetime.addEventListener("click", clickClearDatetime);
+  buttonEditDatetime.addEventListener("click", clickEditDatetime);
 });
 
-// set a loop alarm
+/* 
+	input: event
+	function: set a loop alarm and store in local storage
+*/
 function clickSet(e) {
 	var minutes = parseInt(document.getElementById("minute").value);
-	if(typeof minutes !=="undefined"){
-		chrome.alarms.create("breakAlarm",{
+	var text = document.getElementById("loopAlarm").value;
+	if(typeof minutes !=="undefined" && text != ""){
+		chrome.alarms.create(text,{
 			delayInMinutes : minutes, 
 			periodInMinutes : minutes
 		});
+		var alarms = getAlarms();
+		alarms.push({'text': text, 'time': minutes});
+		localStorage.setItem('alarms', JSON.stringify(alarms));
 	}
-	window.close();
+	else {
+		alert("invalid input");
+		return;
+	}
 }
 
-//delete a loop alarm
+/* 
+	input: event
+	function: delete a loop alarm and store in local storage
+*/
 function clickClear(e){
-	chrome.alarms.clear("breakAlarm");
-	window.close();
+	var text = document.getElementById("loopAlarm").value;
+	chrome.alarms.clear(text);
+	removeAlarm(text);
+}
+
+/* 
+	input: event
+	function: edit a loop alarm and store in local storage
+*/
+function clickEdit(e){
+	var text = document.getElementById("loopAlarm").value;
+	var minutes = parseInt(document.getElementById("minute").value);
+	chrome.alarms.get(text, function(alarm) {
+		var minutes = parseInt(document.getElementById("minute").value);
+		alarm.delayInMinutes = minutes;
+		alarm.periodInMinutes = minutes;
+	});
+	editAlarm(text, minutes);
 }
 
 /* 
@@ -175,8 +208,8 @@ function clickSetDatetime(e) {
 	var date = document.getElementById("datetime").value;
 	var now = new Date();
 	var timeDifference = (new Date(date)).getTime() - now.getTime();
-	if(date != "" && timeDifference >= 0) {
-		var text = document.getElementById("reminder").value;
+	var text = document.getElementById("reminder").value;
+	if(date != "" && timeDifference >= 0 && text != "") {
 		chrome.alarms.create(text, {
 			when: Number(now) + timeDifference
 		});
@@ -185,6 +218,10 @@ function clickSetDatetime(e) {
 		alarms.push({'text': text, 'time': date});
 		localStorage.setItem('alarms', JSON.stringify(alarms));
 	}
+	else {
+		alert("invalid input");
+		return;
+	}
 }
 
 /* 
@@ -192,7 +229,26 @@ function clickSetDatetime(e) {
 	function: remove an alarm with specific date/time from local storage
 */
 function clickClearDatetime(e) {
+	console.log("button pressed!");
+	var text = document.getElementById("reminder").value;
+	chrome.alarms.clear(text);
+	removeAlarm(text);
+}
 
+/* 
+	input: event
+	function: edit an alarm with specific date/time from local storage
+*/
+function clickEditDatetime(e) {
+	var text = document.getElementById("loopAlarm").value;
+	var date = document.getElementById("datetime").value;
+	chrome.alarms.get(text, function(alarm){
+		var date = document.getElementById("datetime").value;
+		var now = new Date();
+		var timeDifference = (new Date(date)).getTime() - now.getTime();
+		alarm.when = Number(now) + timeDifference;
+	});
+	editAlarm(text, date);
 }
 
 /* 
@@ -210,38 +266,29 @@ function getAlarms() {
 }
 
 /* 
-	input: key
+	input: text(name) of the alarm
 	function: remove an alarm with the key from the local storage 
 */
-function removeAlarm(key) {
+function removeAlarm(text) {
 	var alarms = getAlarms();
-	alarms.splice(key, 1);
+	for(var key in alarms) {
+		if(text.localeCompare(alarms[key].text) == 0) {
+			console.log(key);
+			console.log(alarms[key].text);
+			removeAlarm(key);
+			alarms.splice(key, 1);
+		}
+	}
 	localStorage.setItem('alarms', JSON.stringify(alarms));
 }
 
-// function listAllAlarms() {
-// 	var content = '<div class="border-div"></div>';
-// 	var alarms = getAlarms();
-// 	if(alarms.length == 0) {
-// 		content += 'No alarms set';
-// 	}
-// 	for(var key in alarms) {
-// 		var date = new Date(alarms[key].time);
-// 		content +='<div class="border-div"><div class="clearfix task"><span class="dark left">'+alarms[key].text+'</span><span class="right crimson removeReminder" data-key="'+key+'"><i class="fa fa-times-circle-o"></i></span><span class="right">'+formatAMPM(date)+'</span></div></div>';
-// 	}
-// }
-
-// function formatAMPM(date) {
-// 	"use strict";
-// 	var hours = date.getHours();
-// 	var minutes = date.getMinutes();
-// 	var ampm = hours >= 12 ? 'pm' : 'am';
-// 	hours = hours % 12;
-// 	hours = hours ? hours : 12; // the hour '0' should be '12'
-// 	minutes = minutes < 10 ? '0'+minutes : minutes;
-// 	var strTime = hours + ':' + minutes + ' ' + ampm;
-	
-// 	strTime = (date.getMonth()+1)+'/'+date.getDate()+' '+strTime;
-// 	return strTime;
-// }
-
+/* 
+	input: text(name) of the alarm, time value of the alarm
+	function: edit an alarm with the name text
+*/
+function editAlarm(text, time) {
+	removeAlarm(text);
+	var alarms = getAlarms();
+	alarms.push({'text': text, 'time': time});
+		localStorage.setItem('alarms', JSON.stringify(alarms));
+}

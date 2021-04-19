@@ -171,21 +171,22 @@
         <div id = "alarm" data-tab-content>
           <h3>Alarm</h3>
           <form>
-            Take a break every:<br>
-            <input type="number" id="minute" name="minute">
+            <input type="text" id="loopAlarm" placeholder="remind me to" value=""><br>
+            every:<br>
+            <input type="number" id="minute" placeholder="30" name="minute">
             minutes<br>
             <button id="set">Set</button>
-            <button id="clear">Clear</button>
+            <button id="clear">Delete</button>
+            <button id="edit">Edit</button><br>
           </form>
   
           <form>
-            inpute specific datetime for alarm/reminder:<br>
-            Remind me about 
-            <input type="text" id="reminder" value=""><br>
+            <input type="text" id="reminder" placeholder="remind me to" value=""><br>
             When<br>
-            <input type="datetime-local" id="datetime">
+            <input type="datetime-local" id="datetime"><br>
             <button id="setDatetime">Set</button>
-            <button id="clearDatetime">Clear</button><br>
+            <button id="clearDatetime">Delete</button>
+            <button id="editDatetime">Edit</button><br>
           <!-- Reminders:<br>
           <label type="text" id="remindHistory"></label> -->
           
