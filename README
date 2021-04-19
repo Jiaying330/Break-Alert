@@ -1,0 +1,5 @@
+loop alert creat/edit/delete
+reminder with specific date/time create/edit/delete
+stores everything(alarm name, time) into local storage
+
+This branch was created based on the eric branch. 
