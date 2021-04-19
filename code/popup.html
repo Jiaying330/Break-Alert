@@ -119,6 +119,10 @@
       padding: 6px;
       font-size: 14px;
     }
+    .taskList {
+      max-height: 235px;
+      overflow: auto;
+    }
 
   </style>
 </head>
@@ -160,12 +164,14 @@
             <input type="text" id="input" placeholder="Add task to list...">
             <button id="addTaskListener">Add</button>
           </div>
-          <!-- todoList is where the tasks will appear, default tasks below are optional -->
-          <ul id="todoList">
-            <!-- <li>Make todo list</li>
-            <li>Work on extension</li>
-            <li>Meet with TA</li> -->
-          </ul>
+          <div class = "taskList">
+            <!-- todoList is where the tasks will appear, default tasks below are optional -->
+            <ul id="todoList">
+              <!-- <li>Make todo list</li>
+              <li>Work on extension</li>
+              <li>Meet with TA</li> -->
+            </ul>
+          </div>
         </div>
         <!-- Alarm Tab Code -->
         <div id = "alarm" data-tab-content>
