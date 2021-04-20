@@ -68,7 +68,7 @@
     /* style todo list elements */
     ul li {
       cursor: pointer;
-      position:relative;
+      position: relative;
       padding: 8px 4px 8px 36px;
       background: rgba(238, 238, 238, 0.911);
       font-size: 14px;
@@ -158,6 +158,14 @@
     .multiTabButton:hover {
       background-color: #bbb;
     }
+    .clock_ui{
+      display: flex;
+      font-size: 30px;
+      width: 200px;
+      justify-content: space-around;
+      margin: 0 auto;
+    }
+    
   </style>
 
 </head>
@@ -193,7 +201,7 @@
       <hr class = "solid"/>
       <div class = "tab-content">
         <!-- Schedule Tab Code -->
-        <div id = "schedule" data-tab-content class="active">
+        <div id = "schedule" data-tab-content>
           <h3>Schedule</h3>
         </div>
         <!-- Todo List Tab Code -->
@@ -213,28 +221,41 @@
           </ul>
         </div>
         <!-- Alarm Tab Code -->
-        <div id = "alarm" data-tab-content>
-          <h3>Alarm</h3>
-          <form>
-            Take a break every:<br>
-            <input type="number" id="minute" name="minute">
-            minutes<br>
-            <button id="set">Set</button>
-            <button id="clear">Clear</button>
-          </form>
-  
-          <form>
-            inpute specific datetime for alarm/reminder:<br>
-            Remind me about 
-            <input type="text" id="reminder" value=""><br>
-            When<br>
-            <input type="datetime-local" id="datetime">
-            <button id="setDatetime">Set</button>
-            <button id="clearDatetime">Clear</button><br>
-          <!-- Reminders:<br>
-          <label type="text" id="remindHistory"></label> -->
-          
-          </form>
+        <div id = "alarm" data-tab-content class="active">
+          <h3>Set up an Alarm</h3>
+          <div class= "clock_ui">
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "hour2_up"></i></div>
+              <div id = "hour2">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "hour2_down"></i></div>
+            </div>
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "hour1_up"></i></div>
+              <div id = "hour1">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "hour1_down"></i></div>
+            </div>
+            <div style = "margin: auto 0;">:</div>
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "min2_up"></i></div>
+              <div id = "min2">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "min2_down"></i></div>
+            </div>
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "min1_up"></i></div>
+              <div id = "min1">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "min1_down"></i></div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-around; width: 240px; margin-left: 30px;">
+            <div>Hours</div>
+            <div>Mins</div>
+          </div>
+          <div class="form-group" style="width: 200px; margin: 20px auto;">
+            <input type="text" class="form-control" id="loopAlarm" placeholder="Remind me to...">
+          </div>
+          <button id="set">Set</button>
+          <button id="clear">Delete</button>
+          <button id="edit">Edit</button><br>
         </div>
         <!-- Blocked Site Tab Code -->
         <div id = "lock" data-tab-content>
@@ -248,5 +269,9 @@
     </div>
   </div>
   <script src = "popup.js" charset="utf-8"></script>
+  <script src = "multitab.js" charset="utf-8"></script>
+  <script src = "alarm.js" charset="utf-8"></script>
+  <script src = "todo.js" charset="utf-8"></script>
+  <!-- <script src = "schedule.js" charset="utf-8"></script> -->
 </body>
 </html>
