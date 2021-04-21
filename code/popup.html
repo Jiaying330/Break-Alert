@@ -67,9 +67,8 @@
     }
     /* style todo list elements */
     ul li {
-      list-style-type: none;
       cursor: pointer;
-      position:relative;
+      position: relative;
       padding: 8px 4px 8px 36px;
       background: rgba(238, 238, 238, 0.911);
       font-size: 14px;
@@ -102,25 +101,73 @@
       position: absolute;
       right: 0;
       top: 0;
-      bottom: 0;
-      padding: 10px 14px 10px 14px;
+      padding: 23px 16px 12px 16px;
     }
     .close:hover {
       background-color: #f44336;
       color: white;
     }
+    style todo list header
+    .todoHeader {
+      padding: 30px 40px;
+      text-align: center;
+    }
+    .todoHeader::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
     /* input box for adding item to todo list */
     input {
       margin: 0 2px 8px 0;
-      border-style: solid;
-      border-width: 1px;
-      border-radius: 2px;
+      /* border: none; */
+      /* border-radius: 0; */
       width: 75%;
       padding: 6px;
+      /* float: left; */
       font-size: 14px;
     }
+    .addBtn{
+      padding: 10px;
+      width: 25%;
+      background: #d9d9d9;
+      color: #555;
+      /* float: left; */
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
+      border-radius: 0;
+    }
 
+    .addBtn:hover {
+      background-color: #bbb;
+    }
+    #todoList{
+      list-style-type: none;
+    }
+    #allTabs{
+      min-height: 490px;
+      max-height: 490px;
+      overflow: auto;
+    }
+    .multiTabButton{
+      cursor: pointer;
+      height: 30px;
+    }
+    .multiTabButton:hover {
+      background-color: #bbb;
+    }
+    .clock_ui{
+      display: flex;
+      font-size: 27px;
+      width: 200px;
+      justify-content: space-around;
+      margin: 0 auto;
+    }
+    
   </style>
+
 </head>
 <body>
   <div class = "ceWindow">
@@ -129,6 +176,10 @@
       <div class = "sidebar">
         <h4>Tab Shortcuts</h4>
         <div id = "allTabs">
+        </div>
+        <div>
+          <input type="text" id = "newMTabName">
+          <button id="addTabButton">Add</button>
         </div>
       </div>
     </div>
@@ -150,7 +201,7 @@
       <hr class = "solid"/>
       <div class = "tab-content">
         <!-- Schedule Tab Code -->
-        <div id = "schedule" data-tab-content class="active">
+        <div id = "schedule" data-tab-content>
           <h3>Schedule</h3>
         </div>
         <!-- Todo List Tab Code -->
@@ -158,39 +209,59 @@
           <div id = "todoHeader" class="header">
             <h3>Todo</h3>
             <input type="text" id="input" placeholder="Add task to list...">
-            <button id="addTaskListener">Add</button>
+            <div id="addBtn">
+              <button id="addTaskListener">Add</button>
+              <span onclick="newTask()" class="addBtn">Add</span>
+            </div>
           </div>
-          <!-- todoList is where the tasks will appear, default tasks below are optional -->
           <ul id="todoList">
-            <!-- <li>Make todo list</li>
+            <li>Make todo list</li>
             <li>Work on extension</li>
-            <li>Meet with TA</li> -->
+            <li>Meet with TA</li>
           </ul>
         </div>
         <!-- Alarm Tab Code -->
-        <div id = "alarm" data-tab-content>
-          <h3>Alarm</h3>
+        <div id = "alarm" data-tab-content class="active">
+          <h4>Set up an Alarm</h4>
+          <div class= "clock_ui">
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "hour2_up"></i></div>
+              <div id = "hour2">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "hour2_down"></i></div>
+            </div>
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "hour1_up"></i></div>
+              <div id = "hour1">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "hour1_down"></i></div>
+            </div>
+            <div style = "margin: auto 0;">:</div>
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "min2_up"></i></div>
+              <div id = "min2">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "min2_down"></i></div>
+            </div>
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "min1_up"></i></div>
+              <div id = "min1">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "min1_down"></i></div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-around; width: 240px; margin-left: 30px;">
+            <div>Hours</div>
+            <div>Mins</div>
+          </div>
           <form>
-            <input type="text" id="loopAlarm" placeholder="remind me to" value=""><br>
-            every:<br>
-            <input type="number" id="minute" placeholder="30" name="minute">
-            minutes<br>
-            <button id="set">Set</button>
-            <button id="clear">Delete</button>
-            <button id="edit">Edit</button><br>
+            <div class="form-group" style="width: 200px; margin: 20px auto;">
+              <input type="text" class="form-control" id="loopAlarm" placeholder="Remind me to...">
+            </div>
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="loopCheck" style="margin: 0; width: 30px;">
+              <label class="form-check-label" for="loopCheck">Repeating alarm?</label>
+            </div>
           </form>
-  
-          <form>
-            <input type="text" id="reminder" placeholder="remind me to" value=""><br>
-            When<br>
-            <input type="datetime-local" id="datetime"><br>
-            <button id="setDatetime">Set</button>
-            <button id="clearDatetime">Delete</button>
-            <button id="editDatetime">Edit</button><br>
-          <!-- Reminders:<br>
-          <label type="text" id="remindHistory"></label> -->
-          
-          </form>
+          <button id="set">Set</button>
+          <button id="clear">Delete</button>
+          <button id="edit">Edit</button><br>
         </div>
         <!-- Blocked Site Tab Code -->
         <div id = "lock" data-tab-content>
@@ -204,5 +275,9 @@
     </div>
   </div>
   <script src = "popup.js" charset="utf-8"></script>
+  <script src = "multitab.js" charset="utf-8"></script>
+  <script src = "alarm.js" charset="utf-8"></script>
+  <script src = "todo.js" charset="utf-8"></script>
+  <!-- <script src = "schedule.js" charset="utf-8"></script> -->
 </body>
 </html>

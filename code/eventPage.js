@@ -1,4 +1,5 @@
 chrome.alarms.onAlarm.addListener(function(alarm){
+// <<<<<<< HEAD
 	var alarms = getAlarms();
 	var content;
 	for(var key in alarms) {
@@ -13,6 +14,23 @@ chrome.alarms.onAlarm.addListener(function(alarm){
 	}
 	alert(content);
 	
+// =======
+// 	if(alarm.name === 'breakAlarm') {
+// 		alert("Time to take a break!");
+// 	}
+// 	else {
+// 		var alarms = getAlarms();
+// 		var content;
+// 		for(var key in alarms) {
+// 			var date = new Date(alarms[key].time);
+// 			if(alarm.name === alarms[key].text) {
+// 				content = alarms[key].text;
+// 				removeAlarm(key);
+// 			}
+// 		}
+// 		alert(content);
+// 	}
+// >>>>>>> eric2
 });
 
 /* 
