@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Break Time</title>
+    <script>
+        // link counter (global)
+        var count = 0;
+        
+        // add a new link to the page
+        function addLink() {
+            var tbl = document.getElementById("tbl");
+            var newLink = tbl.insertRow(tbl.rows.length);
+            newLink.id = "newLink" + count;
+            
+            var cell = newLink.insertCell(-1);
+            cell.innerHTML = 'Link' + count + ':<input type="text">';
+            cell = newLink.insertCell(-1);
+            
+            var delLink = document.createElement("input");
+            delLink.type = "button";
+            delLink.className = "button";
+            delLink.id = "delLink" + count;
+            delLink.value = "Delete";
+            delLink.onclick = new Function("delLink(this)");
+            cell.appendChild(delLink);
+            
+            count++;
+        }
+        
+        // delete an exist link on the page
+        function delLink(obj) {
+            var r = obj.parentNode.parentNode;
+            r.parentNode.removeChild(r);
+            
+            count--;
+        }
+    </script>
+</head>
+
+<body>
+    <!--Make div style modular-->
+    <div style="background-color:lightblue; text-align:center">
+        <form>
+            Take a break every:<br>
+            <input type="number" id="minute" name="minute"> minutes
+            <br>
+            <button id="set">Set</button>
+            <button id="clear">Clear</button>
+        </form>
+    </div>
+
+    <!--Add a new div for multi-tab feature-->
+    <br><br>
+    <fieldset>
+        <legend style="text-align:center">
+            Multi-tabs
+        </legend>
+
+        <form>
+            <button id="openLink">Open Link(s)</button>
+            <input type="button" class="button" value="Add Link" onclick="addLink()">
+            <table id="tbl"></table>
+        </form>
+    </fieldset>
+
+    <script src="scripts/popup.js"></script>
+    <script src="scripts/multi-tab.js"></script>
+</body>
+
+</html>
