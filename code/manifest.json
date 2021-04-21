@@ -20,7 +20,8 @@
     "default_popup": "popup.html"
   },
   "background": {
-    "scripts": ["eventPage.js"],
+    "scripts": ["eventPage.js",
+                "todolist.js"],
     "persistent": false
   },
   "permissions": ["tabs", "storage", "alarms"]
