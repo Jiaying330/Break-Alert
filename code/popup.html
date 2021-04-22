@@ -203,6 +203,13 @@
         <!-- Schedule Tab Code -->
         <div id = "schedule" data-tab-content>
           <h3>Schedule</h3>
+          <input type="text" id="event" placeholder="add event">
+          <input type="datetime-local" id="eventDate"><br>
+          <button id="addEvent">Add</button>
+          <button id="editEvent">Edit</button>
+          <button id="deleteEvent">Delete</button>
+          <div id = "allEvents">
+          </div>
         </div>
         <!-- Todo List Tab Code -->
         <div id = "todo" data-tab-content>
@@ -211,7 +218,7 @@
             <input type="text" id="input" placeholder="Add task to list...">
             <div id="addBtn">
               <button id="addTaskListener">Add</button>
-              <span onclick="newTask()" class="addBtn">Add</span>
+              <!-- <span onclick="newTask()" class="addBtn">Add</span> -->
             </div>
           </div>
           <ul id="todoList">
@@ -278,6 +285,7 @@
   <script src = "multitab.js" charset="utf-8"></script>
   <script src = "alarm.js" charset="utf-8"></script>
   <script src = "todo.js" charset="utf-8"></script>
+  <script src = "schedule.js" charset="utf-8"></script>
   <!-- <script src = "schedule.js" charset="utf-8"></script> -->
 </body>
 </html>
