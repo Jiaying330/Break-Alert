@@ -35,6 +35,7 @@ function clickSet(e) {
     hour1 = 0;
     min2 = 0;
     min1 = 0;
+		setTimeUI();
     document.getElementById("loopAlarm").value = "";
     document.getElementById("loopCheck").checked = false;
 	}
