@@ -1,24 +1,283 @@
- <!DOCTYPE html>
-  <html>
-    <head>
-    	<title>Break Time</title>
-      <style>
-        div {
-        	background-color: lightblue;
-        	text-align:center;
-        }
-      </style>
-    </head>
-    <body>
-    	<div>
-    		<form>
-    			Take a break every:<br>
-    			<input type="number" id="minute" name="minute">
-    			minutes<br>
-    			<button id="set">Set</button>
-    			<button id="clear">Clear</button>
-    		</form>
-    	</div>
-      <script src="popup.js"></script>
-    </body>
-  </html>
+  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    [data-tab-content]{
+      display: none;
+    }
+    .active[data-tab-content]{
+      display: block;
+    }
+    .ceWindow {
+      height: 580px;
+      width: 701px;
+      display: flex;
+    }
+    .left{
+      width: 400px;
+      height: 580px;
+      padding: 0;
+      margin: 0;
+    }
+    .right{
+      width: 300px;
+      height: 580px;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+    }
+    .middle{
+      width: 1px;
+      height: 580px;
+      background: #bbbbbb;
+      padding: 0;
+      margin: 0;
+    }
+    .solid{
+      border-top: 1px solid #bbbbbb;
+      width: 300px,;
+      margin: 10px 0px 10px 0px;
+      padding: 0px;
+    }
+    .myButton{
+      margin-top: 20px;
+    }
+    .buttonRow{
+      display: flex;
+      padding: 0;
+      justify-content: space-around;
+    }
+    .glyphicon{
+      font-size: 22px;
+    }
+    .sidebar{
+      overflow: auto;
+      max-height: 580px;
+      width: 400px;
+      text-align: center;
+    }
+    /* style todo list */
+    ul {  
+      margin: 0;
+      padding: 0;
+    }
+    /* style todo list elements */
+    ul li {
+      cursor: pointer;
+      position: relative;
+      padding: 8px 4px 8px 36px;
+      background: rgba(238, 238, 238, 0.911);
+      font-size: 14px;
+      transition: 0.2s;
+    }
+    ul li:hover {
+      background: rgba(221, 221, 221, 0.816)
+    }
+    /* for marking completed tasks */
+    ul li.checked {
+      background: #888;
+      color: #fff;
+      text-decoration: line-through;
+    }
+    /* add a check mark for completed tasks */
+    ul li.checked::before {
+      content: '';
+      position: absolute;
+      border-color: #fff;
+      border-style: solid;
+      border-width: 0 2px 2px 0;
+      top: 10px;
+      left: 16px;
+      transform: rotate(45deg);
+      height:15px;
+      width: 7px;
+    }
+    /* X button to remove a list item */
+    .close {
+      position: absolute;
+      right: 0;
+      top: 0;
+      padding: 23px 16px 12px 16px;
+    }
+    .close:hover {
+      background-color: #f44336;
+      color: white;
+    }
+    style todo list header
+    .todoHeader {
+      padding: 30px 40px;
+      text-align: center;
+    }
+    .todoHeader::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    /* input box for adding item to todo list */
+    input {
+      margin: 0 2px 8px 0;
+      /* border: none; */
+      /* border-radius: 0; */
+      width: 75%;
+      padding: 6px;
+      /* float: left; */
+      font-size: 14px;
+    }
+    .addBtn{
+      padding: 10px;
+      width: 25%;
+      background: #d9d9d9;
+      color: #555;
+      /* float: left; */
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
+      border-radius: 0;
+    }
+
+    .addBtn:hover {
+      background-color: #bbb;
+    }
+    #todoList{
+      list-style-type: none;
+    }
+    #allTabs{
+      min-height: 490px;
+      max-height: 490px;
+      overflow: auto;
+    }
+    .multiTabButton{
+      cursor: pointer;
+      height: 30px;
+    }
+    .multiTabButton:hover {
+      background-color: #bbb;
+    }
+    .clock_ui{
+      display: flex;
+      font-size: 27px;
+      width: 200px;
+      justify-content: space-around;
+      margin: 0 auto;
+    }
+    
+  </style>
+
+</head>
+<body>
+  <div class = "ceWindow">
+    <!-- Left Side of Extension -->
+    <div class = "left">
+      <div class = "sidebar">
+        <h4>Tab Shortcuts</h4>
+        <div id = "allTabs">
+        </div>
+        <div>
+          <input type="text" id = "newMTabName">
+          <button id="addTabButton">Add</button>
+        </div>
+      </div>
+    </div>
+    <div class = "middle"></div>
+    <!-- Right Side of Extension -->
+    <div class = "right">
+      <div class = "myButton">
+        <img src = "tree.png" height="150"/>
+      </div>
+      <div>Break Alert</div>
+      <hr class = "solid"/>
+      <div class = "buttonRow">
+        <i class = "glyphicon glyphicon-calendar" style="cursor:pointer;" data-tab-target = "#schedule"> </i>
+        <i class = "glyphicon glyphicon-list-alt" style="cursor:pointer;" data-tab-target = "#todo"></i>
+        <i class = "glyphicon glyphicon-time" style="cursor:pointer;" data-tab-target = "#alarm"></i>
+        <i class = "glyphicon glyphicon-lock" style="cursor:pointer;" data-tab-target = "#lock"></i>
+        <i class = "glyphicon glyphicon-cog" style="cursor:pointer;" data-tab-target = "#settings"></i>
+      </div>
+      <hr class = "solid"/>
+      <div class = "tab-content">
+        <!-- Schedule Tab Code -->
+        <div id = "schedule" data-tab-content>
+          <h3>Schedule</h3>
+        </div>
+        <!-- Todo List Tab Code -->
+        <div id = "todo" data-tab-content>
+          <div id = "todoHeader" class="header">
+            <h3>Todo</h3>
+            <input type="text" id="input" placeholder="Add task to list...">
+            <div id="addBtn">
+              <button id="addTaskListener">Add</button>
+              <span onclick="newTask()" class="addBtn">Add</span>
+            </div>
+          </div>
+          <ul id="todoList">
+            <li>Make todo list</li>
+            <li>Work on extension</li>
+            <li>Meet with TA</li>
+          </ul>
+        </div>
+        <!-- Alarm Tab Code -->
+        <div id = "alarm" data-tab-content class="active">
+          <h4>Set up an Alarm</h4>
+          <div class= "clock_ui">
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "hour2_up"></i></div>
+              <div id = "hour2">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "hour2_down"></i></div>
+            </div>
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "hour1_up"></i></div>
+              <div id = "hour1">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "hour1_down"></i></div>
+            </div>
+            <div style = "margin: auto 0;">:</div>
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "min2_up"></i></div>
+              <div id = "min2">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "min2_down"></i></div>
+            </div>
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "min1_up"></i></div>
+              <div id = "min1">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "min1_down"></i></div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-around; width: 240px; margin-left: 30px;">
+            <div>Hours</div>
+            <div>Mins</div>
+          </div>
+          <form>
+            <div class="form-group" style="width: 200px; margin: 20px auto;">
+              <input type="text" class="form-control" id="loopAlarm" placeholder="Remind me to...">
+            </div>
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="loopCheck" style="margin: 0; width: 30px;">
+              <label class="form-check-label" for="loopCheck">Repeating alarm?</label>
+            </div>
+          </form>
+          <button id="set">Set</button>
+          <button id="clear">Delete</button>
+          <button id="edit">Edit</button><br>
+        </div>
+        <!-- Blocked Site Tab Code -->
+        <div id = "lock" data-tab-content>
+          <h3>Lock</h3>
+        </div>
+        <!-- Settings Tab Code -->
+        <div id = "settings" data-tab-content>
+          <h3>Settings</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src = "popup.js" charset="utf-8"></script>
+  <script src = "multitab.js" charset="utf-8"></script>
+  <script src = "alarm.js" charset="utf-8"></script>
+  <script src = "todo.js" charset="utf-8"></script>
+  <!-- <script src = "schedule.js" charset="utf-8"></script> -->
+</body>
+</html>

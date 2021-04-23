@@ -1,19 +1,16 @@
-document.addEventListener('DOMContentLoaded', function () {
-  var buttonS = document.getElementById("set");
-  var buttonC = document.getElementById("clear");
-  buttonS.addEventListener("click", clickS);
-  buttonC.addEventListener("click", clickC); 
-});
-
-function clickS(e) {
-	var minutes = parseInt(document.getElementById("minute").value);
-	if(typeof minutes !=="undefined"){
-	chrome.alarms.create("breakAlarm",{delayInMinutes : minutes, periodInMinutes : minutes});
-	}
-	window.close();
-}
-function clickC(e){
-	chrome.alarms.clear("breakAlarm");
-	window.close();
-}
-
+/**
+ * Tab controller
+ * Removes active class from all other tabs on click
+ * Add active class to clicked icon
+ */
+ const tabs = document.querySelectorAll('[data-tab-target]');
+ const tabContents = document.querySelectorAll('[data-tab-content');
+ tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = document.querySelector(tab.dataset.tabTarget);
+    tabContents.forEach(tabContents => {
+      tabContents.classList.remove('active');
+    })
+    target.classList.add('active');
+  })
+})
