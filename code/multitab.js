@@ -1,9 +1,9 @@
-
-// chrome.storage.sync.set({"myTabs": []}, function(){
-//   console.log('Value set to ');
-// });
-
-/* Fill out the tab list on start up */
+/**
+ * Runs when extension opens
+ * Garbage collection on removed multitabs/urls
+ * Creates the multitab buttons
+ * Sets Chrome storage "myTabs" to [] if undefined
+ */
 var test = [];
 chrome.storage.sync.get(["myTabs"], function(result) {
 	if(result.myTabs == undefined){
@@ -40,7 +40,14 @@ chrome.storage.sync.get(["myTabs"], function(result) {
 	}
 });
 
-/* Add a new multitab button listener */
+ /**
+  * 
+  * @param {String} name 
+  * @param {Array} urls 
+  * @param {Number} pos 
+  * @returns A singular tab
+  * 
+  */
 document.addEventListener('DOMContentLoaded', function () {
 	var buttonTabAdder = document.getElementById("addTabButton");
 	buttonTabAdder.addEventListener("click", addNewMultitab);
@@ -111,6 +118,15 @@ function createTab(name, urls, pos){
 	return myTab;
 }
 
+ /**
+  * 
+  * @param {Number} pos 
+  * @param {Object} myTab 
+  * @returns InputField to add new URLs to multitab
+  * 
+  * Input Field with Add Button 
+  * 
+  */
 function inputRow(pos, myTab){
 	var inputRow = document.createElement("div");
 	inputRow.className = "inputRow";
@@ -139,6 +155,16 @@ function inputRow(pos, myTab){
 	return inputRow;
 }
 
+ /**
+  * 
+  * @param {String} url 
+  * @param {number} pos 
+  * @param {number} linkNum 
+  * @returns URL display under the multitab button
+  * 
+  * Currently just black unclickable/editable text with a remove button
+  * 
+  */
 function urlListItem(url, pos, linkNum){
 	var listItem = document.createElement("div");
 	// listItem.innerHTML = url;
