@@ -8,9 +8,6 @@ var myTodoList = document.getElementById("todoList");
   */
   chrome.storage.sync.get({tasks: []}, function(result) {
     var taskArr = result.tasks;
-    
-    // taskArr.push("yeet"); // push a task to arr and add it to chrome storage
-    // chrome.storage.sync.set({"tasks": taskArr});
 
     console.log('Tasks currently is ' + taskArr);
 
@@ -29,16 +26,17 @@ var myTodoList = document.getElementById("todoList");
       span.appendChild(txt);
       singleTask.appendChild(span);
 
+      chrome.storage.sync.get({tasks: []}, function(result) {
       var close = document.getElementsByClassName("close");
-      for (var j = 0; j < close.length; j++){
-        close[j].onclick = function() {    
-          // delete the element from the ul list
-          var div = this.parentElement;
-          div.style.display = "none";
+        for (var j = 0; j < close.length; j++){
+          close[j].onclick = function() {    
+            // delete the element from the ul list
+            var div = this.parentElement;
+            div.style.display = "none";
 
-          var taskArr;
-          var delIndex;
-          chrome.storage.sync.get({tasks: []}, function(result) {
+            var taskArr;
+            var delIndex;
+            
             taskArr = result.tasks;
             // get index of the element to delete
             for (delIndex = 0; delIndex < taskArr.length && taskArr[delIndex] !== this.title; delIndex++){}
@@ -49,10 +47,10 @@ var myTodoList = document.getElementById("todoList");
             chrome.storage.sync.set({"tasks": taskArr}, function(){
               console.log("after deleting: " + taskArr);
             });
-          });
-
-        } // end close
-      } // end for
+            
+          } // end close
+        } // end for
+      });
     }  // end for
   });  // end get
 
@@ -63,15 +61,16 @@ var myTodoList = document.getElementById("todoList");
   * Click on X (close) button to remove a list item
   */
   var close = document.getElementsByClassName("close");
-  for (var j = 0; j < close.length; j++){
-    close[j].onclick = function() {    
-      // delete the element from the ul list
-      var div = this.parentElement;
-      div.style.display = "none";
+  chrome.storage.sync.get({tasks: []}, function(result) {
+    for (var j = 0; j < close.length; j++){
+      close[j].onclick = function() {    
+        // delete the element from the ul list
+        var div = this.parentElement;
+        div.style.display = "none";
 
-      var taskArr;
-      var delIndex;
-      chrome.storage.sync.get({tasks: []}, function(result) {
+        var taskArr;
+        var delIndex;
+        
         taskArr = result.tasks;
         // get index of the element to delete
         for (delIndex = 0; delIndex < taskArr.length && taskArr[delIndex] !== this.title; delIndex++){}
@@ -82,10 +81,10 @@ var myTodoList = document.getElementById("todoList");
         chrome.storage.sync.set({"tasks": taskArr}, function(){
           console.log("after deleting: " + taskArr);
         });
-      });
-
-    } // end close
-  } // end for
+    
+      } // end close
+    } // end for
+  });
   
   /**
    * Add a check when clicking on a list item
@@ -134,15 +133,16 @@ var myTodoList = document.getElementById("todoList");
     li.appendChild(span);
   
     var close = document.getElementsByClassName("close");
-    for (var j = 0; j < close.length; j++){
-      close[j].onclick = function() {    
-        // delete the element from the ul list
-        var div = this.parentElement;
-        div.style.display = "none";
+    chrome.storage.sync.get({tasks: []}, function(result) {
+      for (var j = 0; j < close.length; j++){
+        close[j].onclick = function() {    
+          // delete the element from the ul list
+          var div = this.parentElement;
+          div.style.display = "none";
 
-        var taskArr;
-        var delIndex;
-        chrome.storage.sync.get({tasks: []}, function(result) {
+          var taskArr;
+          var delIndex;
+          
           taskArr = result.tasks;
           // get index of the element to delete
           for (delIndex = 0; delIndex < taskArr.length && taskArr[delIndex] !== this.title; delIndex++){}
@@ -153,10 +153,10 @@ var myTodoList = document.getElementById("todoList");
           chrome.storage.sync.set({"tasks": taskArr}, function(){
             console.log("after deleting: " + taskArr);
           });
-        });
-
-      } // end close
-    } // end for
+      
+        } // end close
+      } // end for
+    });
   }
   
   /**
