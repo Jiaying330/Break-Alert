@@ -165,6 +165,13 @@
       justify-content: space-around;
       margin: 0 auto;
     }
+    /* li.page-item {
+      cursor: pointer;
+      text-align: center;
+    }   
+    #task-repeat-week li.page-item {
+      width: 3.5rem;
+    } */ 
     
   </style>
 
@@ -205,12 +212,29 @@
           <h3>Schedule</h3>
           <input type="text" id="event" placeholder="add event">
           <input type="datetime-local" id="eventDate"><br>
+          <button id="repeatEvent">Repeat</button>
+          <div class="form-group row" id="task-repeat-week">every</label>
+            <div class="col-sm-10">
+              <ul class="pagination mb-0">
+                <li class="page-item"><span style="display:inline;" class="page-link" data-value="0" data-i18n="week_0">Mon</span></li>
+                <li class="page-item"><span style="display:inline;" class="page-link" data-value="1" data-i18n="week_1">Tue</span></li>
+                <li class="page-item"><span style="display:inline;" class="page-link" data-value="2" data-i18n="week_2">Wed</span></li>
+                <li class="page-item"><span style="display:inline;" class="page-link" data-value="3" data-i18n="week_3">Thu</span></li>
+                <li class="page-item"><span style="display:inline;" class="page-link" data-value="4" data-i18n="week_4">Fri</span></li>
+                <li class="page-item"><span style="display:inline;" class="page-link" data-value="5" data-i18n="week_5">Sat</span></li>
+                <li class="page-item"><span style="display:inline;" class="page-link" data-value="6" data-i18n="week_6">Sun</span></li>
+              </ul>
+              <div class="invalid-feedback" data-i18n="invalid_days"></div>
+            </div>
+          </div>
           <button id="addEvent">Add</button>
-          <button id="editEvent">Edit</button>
-          <button id="deleteEvent">Delete</button>
-          <div id = "allEvents">
+          <button id="editEvent">Edit</button> 
+          <!-- <button id="deleteEvent">Delete</button> --> 
+          <div class="events">
+              <ul id = "eventList">
           </div>
         </div>
+      </div>
         <!-- Todo List Tab Code -->
         <div id = "todo" data-tab-content>
           <div id = "todoHeader" class="header">

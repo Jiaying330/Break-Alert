@@ -1,53 +1,70 @@
-document.addEventListener('DOMContentLoaded', function () {
-  var buttonAddEvent = document.getElementById("addEvent");
-  var buttonEditEvent = document.getElementById("editEvent");
-  var buttonDeleteEvent = document.getElementById("deleteEvent");
-  buttonAddEvent.addEventListener("click", clickAddEvent);
-  buttonEditEvent.addEventListener("click", clickEditEvent);
-  buttonDeleteEvent.addEventListener("click", clickDeleteEvent);
-});
-
-/* Fill out the schedule on start up */
-var test = [];
-chrome.storage.sync.get(["myTabs"], function(result) {
-	if(result.myTabs == undefined){
-		chrome.storage.sync.set({"myTabs": []});
+var eList = document.getElementById("eventList");
+//load stored events from chrome storage
+/* Fill out the events on start up */
+// const eList = document.getElementById("eventList");
+chrome.storage.local.get(["events"], function(result) {
+	if(result.events == undefined){
+		console.log("here");
+		chrome.storage.local.set({"events": []});
 	} else {
-		let resultList = result.myTabs;
+		var resultList = result.events;
+		var copyResultList = [];
 		for(var i = 0; i < resultList.length; i++){
-			myList.appendChild(
-				createTab(
-					JSON.parse(resultList[i]).name,
-					JSON.parse(resultList[i]).urls
-				)
-			);
+			console.log(i);
+			var reader = JSON.parse(resultList[i]);
+			copyResultList.push(JSON.stringify({
+				text: reader.text,
+				time: reader.time,
+			}));
 		}
-	}
-});
+		
+		chrome.storage.local.set({"events": copyResultList}, function() {
+			console.log('Value set to ' + copyResultList);
+		});
 
-/* Show all events */
-const eventList = document.getElementById("allEvents");
-function createEvent(name, time) {
-	var myEvent = document.createElement("div");
-	myEvent.innerHTML = name;
-	
-}
-chrome.storage.sync.get(["events"], function(result) {
-	if(result.events == undefined) {
-		chrome.storage.sync.set({"events": []});
-	} else {
-		let resultList = result.events;
+		resultList = copyResultList;
 		for(var i = 0; i < resultList.length; i++) {
-			eventList.appendChild(
-				createTab(
+			eList.appendChild(
+				createEvent(
 					JSON.parse(resultList[i]).text,
 					JSON.parse(resultList[i]).time
 				)
 			);
-		}
+		}	
+		
 	}
 });
 
+function createEvent(text, date) {
+		var li = document.createElement("li");
+		var t = document.createTextNode(text);
+		var d = document.createTextNode(date);
+		li.appendChild(t);
+		li.appendChild(d);
+		li.id = text;
+		var buttonD = document.createElement("button");
+		buttonD.innerHTML = "Delete";
+		buttonD.className = "deleteEvent";
+		li.appendChild(buttonD);
+		// document.getElementById("eventList").appendChild(li);
+		buttonD.addEventListener('click', function(){
+			removeEvent(text);
+			var div = this.parentElement;
+			div.style.display = "none";
+		});
+	return li;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  var buttonAddEvent = document.getElementById("addEvent");
+  var buttonEditEvent = document.getElementById("editEvent");
+//   var buttonDeleteEvent = document.getElementById("deleteEvent");
+  var buttonRepeatEvent = document.getElementById("repeatEvent");
+  buttonAddEvent.addEventListener("click", clickAddEvent);
+  buttonEditEvent.addEventListener("click", clickEditEvent);
+  buttonRepeatEvent.addEventListener("click", clickRepeatEvent);
+//   buttonDeleteEvent.addEventListener("click", clickDeleteEvent);
+});
 
 
 /* 
@@ -60,9 +77,26 @@ function clickAddEvent(e) {
 	var timeDifference = (new Date(date)).getTime - now.getTime();
 	var text = document.getElementById("event").value;
 	if(date != "" && text != "") {
-		var events = getEvents();
-		events.push({'text': text, 'time': date});
-		localStorage.setItem('events', JSON.stringify(events));
+		// store new event to storage
+		addEvents(text, date);
+		
+		// display new event
+		var li = document.createElement("li");
+		var t = document.createTextNode(text);
+		var d = document.createTextNode(date);
+		li.appendChild(t);
+		li.appendChild(d);
+		li.id = text;
+		var buttonD = document.createElement("button");
+		buttonD.innerHTML = "Delete";
+		buttonD.className = "deleteEvent";
+		li.appendChild(buttonD);
+		document.getElementById("eventList").appendChild(li);
+		buttonD.addEventListener('click', function(){
+			removeEvent(text);
+			var div = this.parentElement;
+			div.style.display = "none";
+		});
 	}
 	else {
 		alert("invalid input");
@@ -81,6 +115,12 @@ function clickEditEvent(e) {
 	var text = document.getElementById("event").value;
 	if(date != "" && text != "") {
 		editEvent(text, date);
+		var li = document.getElementById(text);
+		li.textContent = text + date;
+		var buttonD = document.createElement("button");
+		buttonD.innerHTML = "Delete";
+		buttonD.className = "deleteEvent";
+		li.appendChild(buttonD);
 	}
 	else {
 		alert("invalid input");
@@ -88,33 +128,25 @@ function clickEditEvent(e) {
 	}
 }
 
-/* 
-	input: event
-	function: delete an event with specific date/time from local storage
-*/
-function clickDeleteEvent(e){ 
-	var text = document.getElementById("event").value;
-	if(text != "") {
-		removeEvent(text);
-	}
-	else {
-		alert("invalid input");
-		return;
-	}
+function clickRepeatEvent(e) {
+
 }
 
 /* 
 	output: returns a list of events stored in local storage
 	functon: gets a list of events stored in local storage
 */
-function getEvents() {
-	var events = localStorage.getItem('events');
-	if(!events) {
-		events = [];
-	} else {
-		events = JSON.parse(events);
-	}
-	return events;
+function addEvents(text, date, i) {
+	chrome.storage.local.get({events: []}, function(result) {
+		var list = result.events;
+		list.push(JSON.stringify({
+			text: text,
+			time: date
+		}));
+		chrome.storage.local.set({"events": list}, function() {
+			console.log('value set to ' + list);
+		});
+	});
 }
 
 /* 
@@ -122,15 +154,24 @@ function getEvents() {
 	function: remove an event with the key from the local storage 
 */
 function removeEvent(text) {
-	var events = getEvents();
-	for(var key in events) {
-		if(text.localeCompare(events[key].text) == 0) {
-			console.log(key);
-			console.log(events[key].text);
-			events.splice(key, 1);
+	console.log(text);
+	var list;
+	var i;
+	chrome.storage.local.get({events: []}, function(result) {
+		list = result.events;
+		for(var key in list) {
+			console.log(key + ": " + list[key]);
+			var n = list[key].search("\"" + text +"\"");
+			if(n !== -1) {
+				console.log(n);
+				list.splice(key, 1);
+				break;
+			}
 		}
-	}
-	localStorage.setItem('events', JSON.stringify(events));
+		chrome.storage.local.set({"events": list}, function() {
+			console.log("after deleting: " + list);
+		})
+	});
 }
 
 /* 
@@ -139,7 +180,5 @@ function removeEvent(text) {
 */
 function editEvent(text, time) {
 	removeEvent(text);
-	var events = getEvents();
-	events.push({'text': text, 'time': time});
-		localStorage.setItem('events', JSON.stringify(events));
+	addEvents(text, time);
 }
