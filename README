@@ -2,7 +2,7 @@ Trevor:
   Source for creating todo list https://www.w3schools.com/howto/howto_js_todolist.asp.
 
   Branch contains:
-    Todo List (not yet implemented with local storage; tasks are reset when extension is reopened and when a new alarm is set)
+    Todo List (fully implemented with chrome.storage)
     Basic overall UI created by Eric
     Jiaying's Files implemented in Alarm section
 
