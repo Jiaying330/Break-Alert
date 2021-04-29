@@ -20,8 +20,7 @@
     "default_popup": "popup.html"
   },
   "background": {
-    "scripts": ["eventPage.js",
-                "todo.js"],
+    "scripts": ["eventPage.js", "background.js","todo.js"],
     "persistent": false
   },
   "permissions": ["tabs", "storage", "alarms"]
