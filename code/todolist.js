@@ -4,34 +4,36 @@ var myTodoList = document.getElementById("todoList");
   // chrome.storage.sync.clear();
 
 /**
-  * Click on X (close) button to remove a list item
+  * Add handlers for each tasks' X button.
+  * Click on X (close) button to remove a list item.
+  * This function should 
   */
- function deleteTask() {
+ function addCloseHandlers() {
   var close = document.getElementsByClassName("close");
 
-  chrome.storage.sync.get({tasks: []}, function(result) {
-    var taskArr = result.tasks;
+  for (var j = 0; j < close.length; j++){  // add handler for when X is clicked for an li
+    close[j].onclick = function() {    
+      // delete the element from the ul list
+      var taskName = this.title;
+      this.parentElement.parentElement.removeChild(this.parentElement);
 
-    for (var j = 0; j < close.length; j++){
-      close[j].onclick = function() {    
-        // delete the element from the ul list
-        var div = this.parentElement;
-        div.style.display = "none";
-
-        // get index of the element to delete
+      chrome.storage.sync.get({tasks: []}, function(result) {
+        var taskArr = result.tasks;
+        
+        // get index of the task to delete
         var delIndex;
-        for (delIndex = 0; delIndex < taskArr.length && taskArr[delIndex] !== this.title; delIndex++){}
-        console.log(delIndex);
+        for (delIndex = 0; delIndex < taskArr.length && taskArr[delIndex] !== taskName; delIndex++){}
         
         // delete the element from Chrome storage
         taskArr.splice(delIndex, 1); // remove 1 element at index "pos" (ie. at delIndex)
         chrome.storage.sync.set({"tasks": taskArr}, function(){
-          console.log("after deleting: " + taskArr);
-        });
-    
-      } // end close
-    } // end for
-  });
+          // console.log("after deleting: " + taskArr);
+        });  // end set
+      });  // end get
+
+    } // end close
+  } // end for
+  
 }
 
  /**
@@ -41,12 +43,11 @@ var myTodoList = document.getElementById("todoList");
   chrome.storage.sync.get({tasks: []}, function(result) {
     var taskArr = result.tasks;
 
-    console.log('Tasks currently are ' + taskArr);
+    // console.log('Tasks currently are ' + taskArr);
 
     for (var i = 0; i < taskArr.length; i++){  // loop through tasks and add to list
       var singleTask = document.createElement("li");
       if (singleTask){
-        console.log(i + " is " + taskArr[i]);
         singleTask.append(document.createTextNode(taskArr[i]));
       }
       if (myTodoList)
@@ -58,13 +59,13 @@ var myTodoList = document.getElementById("todoList");
       span.title = taskArr[i];
       span.appendChild(txt);
       singleTask.appendChild(span);
-
-      deleteTask();
     }  // end for
+
+    // call helper function containing a loop that adds handler to all X buttons
+    addCloseHandlers(); 
   });  // end get
 
 
-  deleteTask(); // call helper function containing a loop that deletes clicked tasks
   
   
   /**
@@ -100,7 +101,7 @@ var myTodoList = document.getElementById("todoList");
         taskArr.push(inputValue); // push a task to arr and add it to chrome storage
         chrome.storage.sync.set({"tasks": taskArr});
     
-        console.log('Tasks currently is now ' + taskArr);
+        // console.log('Tasks currently is/are now ' + taskArr);
       });
 
     }
@@ -113,7 +114,8 @@ var myTodoList = document.getElementById("todoList");
     span.appendChild(txt);
     li.appendChild(span);
   
-    deleteTask();  // call helper function containing a loop that deletes clicked tasks
+    // call helper function containing a loop that adds handler to all X buttons
+    addCloseHandlers();
   }
   
   /**
