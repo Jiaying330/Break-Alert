@@ -212,21 +212,21 @@
           <h3>Schedule</h3>
           <input type="text" id="event" placeholder="add event">
           <input type="datetime-local" id="eventDate"><br>
-          <button id="repeatEvent">Repeat</button>
-          <div class="form-group row" id="task-repeat-week">every</label>
-            <div class="col-sm-10">
-              <ul class="pagination mb-0">
-                <li class="page-item"><span style="display:inline;" class="page-link" data-value="0" data-i18n="week_0">Mon</span></li>
-                <li class="page-item"><span style="display:inline;" class="page-link" data-value="1" data-i18n="week_1">Tue</span></li>
-                <li class="page-item"><span style="display:inline;" class="page-link" data-value="2" data-i18n="week_2">Wed</span></li>
-                <li class="page-item"><span style="display:inline;" class="page-link" data-value="3" data-i18n="week_3">Thu</span></li>
-                <li class="page-item"><span style="display:inline;" class="page-link" data-value="4" data-i18n="week_4">Fri</span></li>
-                <li class="page-item"><span style="display:inline;" class="page-link" data-value="5" data-i18n="week_5">Sat</span></li>
-                <li class="page-item"><span style="display:inline;" class="page-link" data-value="6" data-i18n="week_6">Sun</span></li>
-              </ul>
-              <div class="invalid-feedback" data-i18n="invalid_days"></div>
-            </div>
+          <!-- <button id="repeatEvent">Repeat</button> -->
+          Repeat Every:
+          <div id="repeat">
+            <label for="Mon"><input id="Mon" value="0" type="checkbox">Mon</label>
+            <label for="Tue"><input id="Tue" value="1" type="checkbox">Tue</label>
+            <label for="Wed"><input id="Wed" value="2" type="checkbox">Wed</label>
+            <label for="Thu"><input id="Thu" value="3" type="checkbox">Thu</label>
+            <label for="Fri"><input id="Fri" value="4" type="checkbox">Fri</label>
+            <label for="Sat"><input id="Sat" value="5" type="checkbox">Sat</label>
+            <label for="Sun"><input id="Sun" value="6" type="checkbox">Sun</label>
+            <!-- <button id="affirm">Affirm</button> -->
           </div>
+          Remind Me When
+          <input type="time" id="remindTime"><br>
+          <!-- </div>  -->
           <button id="addEvent">Add</button>
           <button id="editEvent">Edit</button> 
           <!-- <button id="deleteEvent">Delete</button> --> 
