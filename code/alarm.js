@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
 /* 
 	input: event
 	function: set a loop alarm and store in local storage
+	test
 */
 function clickSet(e) {
 	var minutes = hour2 * 600 + hour1 * 60 + min2 * 10 + min1;
