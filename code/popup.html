@@ -67,8 +67,9 @@
     }
     /* style todo list elements */
     ul li {
+      list-style-type: none;
       cursor: pointer;
-      position: relative;
+      position:relative;
       padding: 8px 4px 8px 36px;
       background: rgba(238, 238, 238, 0.911);
       font-size: 14px;
@@ -101,47 +102,26 @@
       position: absolute;
       right: 0;
       top: 0;
-      padding: 23px 16px 12px 16px;
+      bottom: 0;
+      padding: 10px 14px 10px 14px;
     }
     .close:hover {
       background-color: #f44336;
       color: white;
     }
-    style todo list header
-    .todoHeader {
-      padding: 30px 40px;
-      text-align: center;
-    }
-    .todoHeader::after {
-      content: "";
-      display: table;
-      clear: both;
-    }
     /* input box for adding item to todo list */
     input {
       margin: 0 2px 8px 0;
-      /* border: none; */
-      /* border-radius: 0; */
+      border-style: solid;
+      border-width: 1px;
+      border-radius: 2px;
       width: 75%;
       padding: 6px;
-      /* float: left; */
       font-size: 14px;
     }
-    .addBtn{
-      padding: 10px;
-      width: 25%;
-      background: #d9d9d9;
-      color: #555;
-      /* float: left; */
-      text-align: center;
-      font-size: 14px;
-      cursor: pointer;
-      transition: 0.3s;
-      border-radius: 0;
-    }
-
-    .addBtn:hover {
-      background-color: #bbb;
+    .taskList {
+      max-height: 235px;
+      overflow: auto;
     }
     #todoList{
       list-style-type: none;
@@ -151,19 +131,41 @@
       max-height: 490px;
       overflow: auto;
     }
-    .multiTabButton{
-      cursor: pointer;
-      height: 30px;
-    }
-    .multiTabButton:hover {
-      background-color: #bbb;
-    }
     .clock_ui{
       display: flex;
       font-size: 27px;
       width: 200px;
       justify-content: space-around;
       margin: 0 auto;
+    }
+    .entireTab{
+      width: 400px;
+      min-height: 35px;
+    }
+    .tabRow{
+      min-height: 35px;
+      display: flex;
+      width: 400px;
+    }
+    .tabRow:hover{
+      background: rgb(136, 136, 136);
+    }
+    .dropdown{
+      width: 35px;
+      height: 35px;
+      padding-top: 9px;
+      font-size: 10px;
+    }
+    .tabName{
+      width: 345px;
+      height: 35px;
+      text-align: start;
+      padding-left: 10px;
+      padding-top: 6px;
+    }
+    .deleteButton{
+      font-size: 10px;
+      cursor: pointer;
     }
   </style>
 
@@ -230,16 +232,16 @@
           <div id = "todoHeader" class="header">
             <h3>Todo</h3>
             <input type="text" id="input" placeholder="Add task to list...">
-            <div id="addBtn">
-              <button id="addTaskListener">Add</button>
-              <!-- <span onclick="newTask()" class="addBtn">Add</span> -->
-            </div>
+            <button id="addTaskListener">Add</button>
           </div>
-          <ul id="todoList">
-            <li>Make todo list</li>
-            <li>Work on extension</li>
-            <li>Meet with TA</li>
-          </ul>
+          <div class = "taskList">
+            <!-- todoList is where the tasks will appear, default tasks below are optional -->
+            <ul id="todoList">
+              <!-- <li>Make todo list</li>
+              <li>Work on extension</li>
+              <li>Meet with TA</li> -->
+            </ul>
+          </div>
         </div>
         <!-- Alarm Tab Code -->
         <div id = "alarm" data-tab-content class="active">
@@ -286,7 +288,13 @@
         </div>
         <!-- Blocked Site Tab Code -->
         <div id = "lock" data-tab-content>
-          <h3>Lock</h3>
+          <h4>Website Blocker</h4>
+          <textarea id="textarea" rows="10" cols="30" spellcheck="false"></textarea><br>
+          <button id="save">Save</button><br><br>
+          <div style="display: flex; justify-content: space-around; width: 70px; margin-left: 120px;">
+            <input id="blockedcheckbox" type="checkbox">
+            <label for="blockedcheckbox">Enable</label>
+          </div>
         </div>
         <!-- Settings Tab Code -->
         <div id = "settings" data-tab-content>
@@ -300,6 +308,7 @@
   <script src = "alarm.js" charset="utf-8"></script>
   <script src = "todo.js" charset="utf-8"></script>
   <script src = "schedule.js" charset="utf-8"></script>
+  <script src = "blockpage.js"></script>
   <!-- <script src = "schedule.js" charset="utf-8"></script> -->
 </body>
 </html>
