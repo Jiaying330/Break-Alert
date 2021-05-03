@@ -1,0 +1,10 @@
+Loop alert creat/edit/delete
+Reminder with specific date/time create/edit/delete
+Stores everything(alarm name, time) into local storage
+
+To delete, input the name of the alarm(what you originally put in
+the "remind me to" bar) and click "delete." 
+To edit, input the name of the alarm(what you originally put in
+the "remind me to" bar), and input the new time and click "edit." 
+
+This branch was created based on the eric branch. 
