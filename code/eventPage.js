@@ -1,19 +1,36 @@
 chrome.alarms.onAlarm.addListener(function(alarm){
-	if(alarm.name === 'breakAlarm') {
-		alert("Time to take a break!");
-	}
-	else {
-		var alarms = getAlarms();
-		var content;
-		for(var key in alarms) {
-			var date = new Date(alarms[key].time);
-			if(alarm.name === alarms[key].text) {
-				content = alarms[key].text;
+// <<<<<<< HEAD
+	var alarms = getAlarms();
+	var content;
+	for(var key in alarms) {
+		if(alarm.name.localeCompare(alarms[key].text) == 0) {
+			content = alarms[key].text;
+
+			//if not a loop alarm, delete right away from the local storage
+			if(typeof alarm.when != "undefined"){ 
 				removeAlarm(key);
 			}
 		}
-		alert(content);
 	}
+	alert(content);
+	
+// =======
+// 	if(alarm.name === 'breakAlarm') {
+// 		alert("Time to take a break!");
+// 	}
+// 	else {
+// 		var alarms = getAlarms();
+// 		var content;
+// 		for(var key in alarms) {
+// 			var date = new Date(alarms[key].time);
+// 			if(alarm.name === alarms[key].text) {
+// 				content = alarms[key].text;
+// 				removeAlarm(key);
+// 			}
+// 		}
+// 		alert(content);
+// 	}
+// >>>>>>> eric2
 });
 
 /* 

@@ -218,7 +218,7 @@ function removeAlarm(text) {
 		if(text.localeCompare(alarms[key].text) == 0) {
 			console.log(key);
 			console.log(alarms[key].text);
-			removeAlarm(key);
+			// removeAlarm(key);
 			alarms.splice(key, 1);
 		}
 	}

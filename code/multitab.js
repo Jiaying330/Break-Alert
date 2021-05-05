@@ -1,11 +1,9 @@
-/* eslint-disable no-undef */
+
 /**
  * Runs when extension opens
  * Garbage collection on removed multitabs/urls
  * Creates the multitab buttons
  * Sets Chrome storage "myTabs" to [] if undefined
- * 
- */
 chrome.storage.sync.get(["myTabs"], function(result) {
 	if(result.myTabs == undefined){
 		chrome.storage.sync.set({"myTabs": []});
@@ -97,7 +95,6 @@ function createTab(name, urls, pos){
 					});
 					myTab.style = "display:none;"
 								console.log(myTabsList);
-
 					chrome.storage.sync.set({"myTabs": myTabsList}, function(){
 						console.log('Value set to ' + myTabsList);
 					});

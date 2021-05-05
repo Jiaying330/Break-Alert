@@ -158,6 +158,7 @@
     }
     .tabName{
       width: 385px;
+
       height: 35px;
       text-align: start;
       padding-left: 10px;
@@ -207,7 +208,29 @@
         <!-- Schedule Tab Code -->
         <div id = "schedule" data-tab-content>
           <h3>Schedule</h3>
+          <input type="text" id="event" placeholder="add event">
+          <input type="datetime-local" id="eventDate"><br>
+          Repeat Every:
+          <div id="repeat">
+            <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
+            <label for="Tue"><input id="Tue" value="2" type="checkbox">Tue</label>
+            <label for="Wed"><input id="Wed" value="3" type="checkbox">Wed</label>
+            <label for="Thu"><input id="Thu" value="4" type="checkbox">Thu</label>
+            <label for="Fri"><input id="Fri" value="5" type="checkbox">Fri</label>
+            <label for="Sat"><input id="Sat" value="6" type="checkbox">Sat</label>
+            <label for="Sun"><input id="Sun" value="0" type="checkbox">Sun</label>
+          </div>
+          Remind Me When
+          <input type="time" id="remindTime"><br>
+          <!-- </div>  -->
+          <button id="addEvent">Add</button>
+          <button id="editEvent">Edit</button> 
+          <!-- <button id="deleteEvent">Delete</button> --> 
+          <div class="events">
+              <ul id = "eventList">
+          </div>
         </div>
+      </div>
         <!-- Todo List Tab Code -->
         <div id = "todo" data-tab-content>
           <div id = "todoHeader" class="header">
@@ -288,6 +311,7 @@
   <script src = "multitab.js" charset="utf-8"></script>
   <script src = "alarm.js" charset="utf-8"></script>
   <script src = "todo.js" charset="utf-8"></script>
+  <script src = "schedule.js" charset="utf-8"></script>
   <script src = "blockpage.js"></script>
   <!-- <script src = "schedule.js" charset="utf-8"></script> -->
 </body>
