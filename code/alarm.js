@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
 /* 
 	input: event
 	function: set a loop alarm and store in local storage
-	test
 */
 function clickSet(e) {
 	var minutes = hour2 * 600 + hour1 * 60 + min2 * 10 + min1;
@@ -36,6 +35,7 @@ function clickSet(e) {
     hour1 = 0;
     min2 = 0;
     min1 = 0;
+		setTimeUI();
     document.getElementById("loopAlarm").value = "";
     document.getElementById("loopCheck").checked = false;
 	}
