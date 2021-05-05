@@ -1,53 +1,51 @@
+
 /**
  * Runs when extension opens
  * Garbage collection on removed multitabs/urls
  * Creates the multitab buttons
  * Sets Chrome storage "myTabs" to [] if undefined
- */
-var test = [];
 chrome.storage.sync.get(["myTabs"], function(result) {
 	if(result.myTabs == undefined){
 		chrome.storage.sync.set({"myTabs": []});
 	} else {
-    var tabList = result.myTabs;
-    var tabCopyList = [];
-    for(var i = 0; i < tabList.length; i++){
-      var reader = JSON.parse(tabList[i]);
-      if(reader.name !== ""){
-        var urlList = (reader.urls).filter(j => j !== "");
-        console.log(urlList);
-        tabCopyList.push(JSON.stringify({
-          name: reader.name, 
-          urls: urlList
-        }));
-      }
-    }
-    console.log(tabCopyList);
-    chrome.storage.sync.set({"myTabs": tabCopyList}, function(){
-      console.log('Value set to ' + tabCopyList);
-    });
-
+		var tabList = result.myTabs;
+		var tabCopyList = [];
+		for(var i = 0; i < tabList.length; i++){
+			var reader = JSON.parse(tabList[i]);
+			if(reader.name !== ""){
+				var urlList = (reader.urls).filter(j => j !== "");
+				console.log(urlList);
+				tabCopyList.push(JSON.stringify({
+				name: reader.name, 
+				urls: urlList
+				}));
+			}
+		}
+		console.log(tabCopyList);
+		chrome.storage.sync.set({"myTabs": tabCopyList}, function(){
+			console.log('Value set to ' + tabCopyList);	
+		});
 		let resultList = tabCopyList;
-		for(var i = 0; i < resultList.length; i++){
+		for(var iter = 0; iter < resultList.length; iter++){
 			myList.appendChild(
 				createTab(
-					JSON.parse(resultList[i]).name,
-					JSON.parse(resultList[i]).urls,
-					i
+					JSON.parse(resultList[iter]).name,
+					JSON.parse(resultList[iter]).urls,
+					iter
 				)
 			);
 		}
 	}
 });
 
- /**
-  * 
-  * @param {String} name 
-  * @param {Array} urls 
-  * @param {Number} pos 
-  * @returns A singular tab
-  * 
-  */
+/**
+ * 
+ * @param {String} name 
+ * @param {Array} urls 
+ * @param {Number} pos 
+ * @returns A singular tab
+ * 
+ */
 document.addEventListener('DOMContentLoaded', function () {
 	var buttonTabAdder = document.getElementById("addTabButton");
 	buttonTabAdder.addEventListener("click", addNewMultitab);
@@ -68,9 +66,9 @@ function createTab(name, urls, pos){
 			var targetTab = JSON.parse(tabList[pos]);
 			var urlList = (targetTab.urls);
 			for(var i = 0; i < urlList.length; i++){
-        if (urlList[i] !== ""){
-				  chrome.tabs.create({"url": urlList[i]});
-        }
+				if (urlList[i] !== ""){
+						chrome.tabs.create({"url": urlList[i]});
+				}
 			}
 		})
 	};
@@ -84,23 +82,22 @@ function createTab(name, urls, pos){
 				dropdown.className = "dropdown glyphicon glyphicon-triangle-top";
 				console.log(urlList);
 				for(var i = 0; i < urlList.length; i++){
-				  myTab.appendChild(urlListItem(urlList[i], pos, i));
+					myTab.appendChild(urlListItem(urlList[i], pos, i));
 				}
 				myTab.appendChild(inputRow(pos, myTab));
 				var deleteButton = document.createElement("div");
 				deleteButton.innerHTML = "Delete";
-        deleteButton.style = "cursor: pointer;"; 
+				deleteButton.style = "cursor: pointer; color: red;"; 
 				deleteButton.onclick = function () {
-          myTabsList[pos] = JSON.stringify({
-            name : '',
-            urls : [] 
-          });
-          myTab.style = "display:none;"
-					console.log(myTabsList);
-
-          chrome.storage.sync.set({"myTabs": myTabsList}, function(){
-            console.log('Value set to ' + myTabsList);
-          });
+					myTabsList[pos] = JSON.stringify({
+						name : '',
+						urls : [] 
+					});
+					myTab.style = "display:none;"
+								console.log(myTabsList);
+					chrome.storage.sync.set({"myTabs": myTabsList}, function(){
+						console.log('Value set to ' + myTabsList);
+					});
 				}
 				myTab.appendChild(deleteButton);
 				
@@ -118,15 +115,15 @@ function createTab(name, urls, pos){
 	return myTab;
 }
 
- /**
-  * 
-  * @param {Number} pos 
-  * @param {Object} myTab 
-  * @returns InputField to add new URLs to multitab
-  * 
-  * Input Field with Add Button 
-  * 
-  */
+/**
+ * 
+ * @param {Number} pos 
+ * @param {Object} myTab 
+ * @returns InputField to add new URLs to multitab
+ * 
+ * Input Field with Add Button 
+ * 
+ */
 function inputRow(pos, myTab){
 	var inputRow = document.createElement("div");
 	inputRow.className = "inputRow";
@@ -135,7 +132,7 @@ function inputRow(pos, myTab){
 	btn.innerHTML = "Add";
 	btn.onclick = function () {
 		var text = document.getElementById("input"+pos).value;
-		// myTab.appendChild(urlListItem(text));
+		document.getElementById("input"+pos).value = "";
 		myTab.insertBefore(urlListItem(text, pos, myTab.childElementCount - 3), myTab.children[myTab.childElementCount - 2]);
 		chrome.storage.sync.get(["myTabs"], function(result) {
 			var tabList = result.myTabs;
@@ -155,36 +152,40 @@ function inputRow(pos, myTab){
 	return inputRow;
 }
 
- /**
-  * 
-  * @param {String} url 
-  * @param {number} pos 
-  * @param {number} linkNum 
-  * @returns URL display under the multitab button
-  * 
-  * Currently just black unclickable/editable text with a remove button
-  * 
-  */
+/**
+ * 
+ * @param {String} url 
+ * @param {number} pos 
+ * @param {number} linkNum 
+ * @returns URL display under the multitab button
+ * 
+ * Currently just black unclickable/editable text with a remove button
+ * 
+ */
 function urlListItem(url, pos, linkNum){
 	var listItem = document.createElement("div");
 	// listItem.innerHTML = url;
 	listItem.className = "listItemRow";
-	listItem.style = "display:flex;";
-  if(url === ""){
-    listItem.style = "display:flex; display:none;"
-  }
-	listItem.innerHTML = url;
+	listItem.style = "display:flex; padding-left: 35px; height: 26px;";
+	if(url === ""){
+		listItem.style = "display:flex; display:none;"
+	}
+	var listItemInner = document.createElement("div");
+	listItemInner.style = "min-width: 260px; max-width: 260px; text-overflow: ellipsis; overflow: hidden;white-space: nowrap;";
+	listItemInner.innerHTML = url;
+
+	listItem.appendChild(listItemInner);
 	var deleteButton = document.createElement("i");
 	deleteButton.className = "deleteButton glyphicon glyphicon-remove";
 	listItem.appendChild(deleteButton);
 	deleteButton.onclick = function(){
 		chrome.storage.sync.get(["myTabs"], function(result) {
 			var tabList = result.myTabs;
-      var targetTab = (JSON.parse(tabList[pos]));
-      var urlList = targetTab.urls;
-      urlList.splice(linkNum, 1, "");
-      console.log(linkNum);
-      listItem.style = "display:flex; display:none;"
+			var targetTab = (JSON.parse(tabList[pos]));
+			var urlList = targetTab.urls;
+			urlList.splice(linkNum, 1, "");
+			console.log(linkNum);
+			listItem.style = "display:flex; display:none;";
 			tabList[pos] = (JSON.stringify({
 				name: targetTab.name, 
 				urls: urlList
@@ -192,8 +193,7 @@ function urlListItem(url, pos, linkNum){
 			chrome.storage.sync.set({"myTabs": tabList}, function(){
 				console.log('Value set to ' + tabList);
 			});
-      
-    })
+		})
 	};
 	return listItem;
 }
@@ -206,20 +206,12 @@ function insertTabBar(pos){
 	return input;
 }
 
-
-{/* <i class = "glyphicon glyphicon-calendar" style="cursor:pointer;" data-tab-target = "#schedule"> </i> */}
-
-
-// chrome.storage.sync.get(['myTabs'], function(result) {
-//   console.log('Value currently is ' + result.key);
-// });
-
 /**
- * called on event
- * Creates new multi tab div to list
- * stores into local storage for future use
- */
-function addNewMultitab(e) {
+* called on event
+* Creates new multi tab div to list
+* stores into local storage for future use
+*/
+function addNewMultitab() {
 	let str = document.getElementById("newMTabName").value;
 	if(str != ""){
 		chrome.storage.sync.get(["myTabs"], function(result) {
@@ -227,7 +219,7 @@ function addNewMultitab(e) {
 			var tabList = result.myTabs;
 			tabList.push(JSON.stringify({
 				name: str, 
-				urls: ["https://www.google.com", "https://www.youtube.com", "https://www.yahoo.com"]
+				urls: []
 			}));
 			chrome.storage.sync.set({"myTabs": tabList}, function(){
 				console.log('Value set to ' + tabList);
@@ -235,7 +227,7 @@ function addNewMultitab(e) {
 			myList.appendChild(
 				createTab(
 					str, 
-					["https://www.google.com", "https://www.youtube.com", "https://www.yahoo.com"],
+					[],
 					tabList.length - 1
 				)
 			);
