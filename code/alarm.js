@@ -16,33 +16,34 @@ function clickSet(e) {
   console.log(minutes);
 	var text = document.getElementById("loopAlarm").value;
   console.log(text);
-  var repeatCheck = document.getElementById("loopCheck").checked;
+    var repeatCheck = document.getElementById("loopCheck").checked;
   console.log(repeatCheck);
 	if(minutes !== 0 && text != ""){
-    if(repeatCheck){
-      console.log("REPEAT");
-      chrome.alarms.create(text,{
-        delayInMinutes : minutes, 
-        periodInMinutes : minutes
-      });
-      var alarms = getAlarms();
-      alarms.push({'text': text, 'time': minutes});
-      localStorage.setItem('alarms', JSON.stringify(alarms));
-    }else{
-      chrome.alarms.create(text,{delayInMinutes : minutes});
-    }
-    hour2 = 0;
-    hour1 = 0;
-    min2 = 0;
-    min1 = 0;
+    	if(repeatCheck){
+      		console.log("REPEAT");
+      		chrome.alarms.create(text,{
+        		delayInMinutes : minutes, 
+        		periodInMinutes : minutes
+      	});
+    //   var alarms = getAlarms();
+    //   alarms.push({'text': text, 'time': minutes});
+    //   localStorage.setItem('alarms', JSON.stringify(alarms));
+    	} else {
+      		chrome.alarms.create(text,{delayInMinutes : minutes});
+    	}
+		addAlarms(text, minutes);
+    	hour2 = 0;
+    	hour1 = 0;
+    	min2 = 0;
+    	min1 = 0;
 		setTimeUI();
-    document.getElementById("loopAlarm").value = "";
-    document.getElementById("loopCheck").checked = false;
+    	document.getElementById("loopAlarm").value = "";
+    	document.getElementById("loopCheck").checked = false;
 	}
 }
 /* 
 	input: event
-	function: delete a loop alarm and store in local storage
+	function: delete a loop alarm and update in local storage
 */
 function clickClear(e){
 	var text = document.getElementById("loopAlarm").value;
@@ -56,15 +57,25 @@ function clickClear(e){
 */
 function clickEdit(e){
 	var text = document.getElementById("loopAlarm").value;
-	var minutes = parseInt(document.getElementById("minute").value);
+	var minutes = hour2 * 600 + hour1 * 60 + min2 * 10 + min1;
+	// var minutes = parseInt(document.getElementById("minute").value);
 	chrome.alarms.get(text, function(alarm) {
-		var minutes = parseInt(document.getElementById("minute").value);
+		// var minutes = parseInt(document.getElementById("minute").value);
 		alarm.delayInMinutes = minutes;
 		alarm.periodInMinutes = minutes;
 	});
 	editAlarm(text, minutes);
 }
 
+function addAlarms(text, time) {
+	chrome.storage.local.get({alarms: []}, function(result) {
+		var list = result.alarms;
+		list.push(JSON.stringify({'text': text, 'time': time}));
+		chrome.storage.local.set({"alarms": list}, function() {
+			console.log('value set to ' + list);
+		});
+	});
+}
 /* 
 	output: returns a list of alarms stored in local storage
 	functon: gets a list of alarms stored in local storage
@@ -213,16 +224,30 @@ function getAlarms() {
 	function: remove an alarm with the key from the local storage 
 */
 function removeAlarm(text) {
-	var alarms = getAlarms();
-	for(var key in alarms) {
-		if(text.localeCompare(alarms[key].text) == 0) {
-			console.log(key);
-			console.log(alarms[key].text);
-			// removeAlarm(key);
-			alarms.splice(key, 1);
+	var list;
+	chrome.storage.local.get({alarms: []}, function(result) {
+		list = result.alarms;
+		for(var key in list) {
+			var json = JSON.parse(list[key]);
+			if(json.text.localeCompare(text) == 0) {
+				list.splice(key, 1);
+				break;
+			}
 		}
-	}
-	localStorage.setItem('alarms', JSON.stringify(alarms));
+		chrome.storage.local.set({"alarms": list}, function() {
+			console.log("after deleting: " + list);
+		});
+	});
+	// var alarms = getAlarms();
+	// for(var key in alarms) {
+	// 	if(text.localeCompare(alarms[key].text) == 0) {
+	// 		console.log(key);
+	// 		console.log(alarms[key].text);
+	// 		// removeAlarm(key);
+	// 		alarms.splice(key, 1);
+	// 	}
+	// }
+	// localStorage.setItem('alarms', JSON.stringify(alarms));
 }
 
 /* 
@@ -230,10 +255,25 @@ function removeAlarm(text) {
 	function: edit an alarm with the name text
 */
 function editAlarm(text, time) {
-	removeAlarm(text);
-	var alarms = getAlarms();
-	alarms.push({'text': text, 'time': time});
-		localStorage.setItem('alarms', JSON.stringify(alarms));
+	var list;
+	chrome.storage.local.get({alarms: []}, function(result) {
+		list = result.alarms;
+		for(var key in list) {
+			var json = JSON.parse(list[key]);
+			if(json.text.localeCompare(text) == 0) {
+				list.splice(key, 1);
+				break;
+			}
+		}
+		list.push(JSON.stringify({'text': text, 'time': time}));
+		chrome.storage.local.set({"alarms": list}, function() {
+			console.log("after editing: " + list);
+		});
+	});
+	// removeAlarm(text);
+	// var alarms = getAlarms();
+	// alarms.push({'text': text, 'time': time});
+	// 	localStorage.setItem('alarms', JSON.stringify(alarms));
 }
 
 
