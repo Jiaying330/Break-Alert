@@ -38,21 +38,35 @@ chrome.alarms.onAlarm.addListener(function(alarm){
 	functon: gets a list of alarms stored in local storage
 */
 function getAlarms() {
-	var alarms = localStorage.getItem('alarms');
-	if(!alarms) {
-		alarms = [];
+	var list;
+	chrome.storage.local.get({alarms: []}, function(result) {
+		list = result.alarms;
+	});
+	if(!list) {
+		list = [];
 	} else {
-		alarms = JSON.parse(alarms);
+		list = JSON.parse(list);
 	}
-	return alarms;
+	return list;
 }
 
 /* 
 	input: key
 	function: remove an alarm with the key from the local storage 
 */
-function removeAlarm(key) {
-	var alarms = getAlarms();
-	alarms.splice(key, 1);
-	localStorage.setItem('alarms', JSON.stringify(alarms));
+function removeAlarm(text) {
+	var list;
+	chrome.storage.local.get({alarms: []}, function(result) {
+		list = result.alarms;
+		for(var key in list) {
+			var json = JSON.parse(list[key]);
+			if(json.text.localeCompare(text) == 0) {
+				list.splice(key, 1);
+				break;
+			}
+		}
+		chrome.storage.local.set({"alarms": list}, function() {
+			console.log("after deleting: " + list);
+		});
+	});
 }
