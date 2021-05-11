@@ -16,33 +16,36 @@ class eventOb {
 }
 
 var eList = document.getElementById("eventList");
+if (eList != null){
+	//load stored events from chrome storage
+	chrome.storage.local.get(["events"], function(result) {
+		if(result.events == undefined){
+			chrome.storage.local.set({"events": []});
+		} else {
+			var resultList = result.events;
+			var copyResultList = [];
+			for(var i = 0; i < resultList.length; i++){
+				var reader = JSON.parse(resultList[i]);
+				copyResultList.push(JSON.stringify(reader));
+			}
+			
+			chrome.storage.local.set({"events": copyResultList}, function() {
+				console.log('Value initiate to: ' + copyResultList);
+			});
 
-//load stored events from chrome storage
-chrome.storage.local.get(["events"], function(result) {
-	if(result.events == undefined){
-		chrome.storage.local.set({"events": []});
-	} else {
-		var resultList = result.events;
-		var copyResultList = [];
-		for(var i = 0; i < resultList.length; i++){
-			var reader = JSON.parse(resultList[i]);
-			copyResultList.push(JSON.stringify(reader));
+			resultList = copyResultList;
+			for(var i = 0; i < resultList.length; i++) {
+				eList.appendChild(
+					createEvent(
+						JSON.parse(resultList[i])
+					)
+				);
+			}		
 		}
-		
-		chrome.storage.local.set({"events": copyResultList}, function() {
-			console.log('Value initiate to: ' + copyResultList);
-		});
+	});
+}
 
-		resultList = copyResultList;
-		for(var i = 0; i < resultList.length; i++) {
-			eList.appendChild(
-				createEvent(
-					JSON.parse(resultList[i])
-				)
-			);
-		}		
-	}
-});
+	
 
 /* 
 	input: event object
@@ -69,8 +72,12 @@ function createEvent(eventO) {
 document.addEventListener('DOMContentLoaded', function () {
   var buttonAddEvent = document.getElementById("addEvent");
   var buttonEditEvent = document.getElementById("editEvent");
-  buttonAddEvent.addEventListener("click", clickAddEvent);
-  buttonEditEvent.addEventListener("click", clickEditEvent);
+	if (buttonAddEvent != null){
+  	buttonAddEvent.addEventListener("click", clickAddEvent);
+	}
+  if (buttonEditEvent != null){
+		buttonEditEvent.addEventListener("click", clickEditEvent);
+	}
 });
 
 
