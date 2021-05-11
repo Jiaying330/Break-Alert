@@ -6,6 +6,17 @@
   <meta charset="UTF-8">
   <title>Document</title>
   <style>
+    .darkMode{
+      filter: invert(1) hue-rotate(180deg);
+      /* background-color: rgb(34, 34, 34);
+      color: rgb(218, 218, 218); */
+    }
+    .invert {
+      filter: invert(1) hue-rotate(180deg);
+    }
+    /* #chromeExtension{
+      background-color: rgb(34, 34, 34);
+    } */
     [data-tab-content]{
       display: none;
     }
@@ -18,12 +29,14 @@
       display: flex;
     }
     .left{
+      background-color: rgb(255, 255, 255);
       width: 400px;
       height: 580px;
       padding: 0;
       margin: 0;
     }
     .right{
+      background-color: rgb(255, 255, 255);
       width: 300px;
       height: 580px;
       text-align: center;
@@ -174,7 +187,7 @@
   </style>
 
 </head>
-<body>
+<body id = "chromeExtension"> 
   <div class = "ceWindow">
     <!-- Left Side of Extension -->
     <div class = "left">
@@ -192,7 +205,7 @@
     <!-- Right Side of Extension -->
     <div class = "right">
       <div class = "myButton">
-        <img src = "tree.png" height="150"/>
+        <img src = "tree.png" class = "inverted" height="150"/>
       </div>
       <div>Break Alert</div>
       <hr class = "solid"/>
@@ -302,17 +315,31 @@
         </div>
         <!-- Settings Tab Code -->
         <div id = "settings" data-tab-content>
-          <h3>Settings</h3>
+          <h4>Settings</h4>
+          <div>
+            <div id = "openVisualSettings">Visual</div>
+            <div><a href = "https://www.google.com" target="_blank">Website</a></div>
+            <div><a href = "https://chrome.google.com/webstore/detail/break-alert/bilocpkncpeojgehfelfaecabikkdolb/reviews" target="_blank">Rate Break Alert</a></div>
+            <div id = "resetMultiTabData">Reset Multi-tab Data</div>
+          </div>
+        </div>
+        <div id = "visualSettings" data-tab-content>
+          <h4>Visual Settings</h4>
+          <div>
+            <div id = "toggleLightMode">Light Mode</div>
+            <div id = "toggleDarkMode">Dark Mode</div>
+            <div id = "toggleWarmMode">Warm Mode</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <script src = "settings.js" charset="utf-8"></script>
   <script src = "popup.js" charset="utf-8"></script>
   <script src = "multitab.js" charset="utf-8"></script>
   <script src = "alarm.js" charset="utf-8"></script>
   <script src = "todo.js" charset="utf-8"></script>
   <script src = "schedule.js" charset="utf-8"></script>
   <script src = "blockpage.js"></script>
-  <!-- <script src = "schedule.js" charset="utf-8"></script> -->
 </body>
 </html>

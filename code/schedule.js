@@ -5,6 +5,7 @@ class eventOb {
 		date: date of the event
 		repeat: which days do the user want to repeat the event
 		alarm: does the user want to set an alarm
+		alarmName: an array of alarm names
 	*/
 	constructor(text, time, repeat, alarm) {
 		this.text = text;
@@ -124,7 +125,7 @@ function createAlarm(newEvent) {
 	eDate.setHours(hours[0]);
 	eDate.setMinutes(hours[1]);
 	console.log("eDate after: " + eDate);
-
+ 
 	if(newEvent.repeat.length < 1) { // no repeating
 		var timeDifference = (eDate).getTime() - now.getTime()
 		chrome.alarms.create(newEvent.text, {
@@ -155,7 +156,6 @@ function createAlarm(newEvent) {
 		chrome.alarms.get(newEvent.text + i, function(alarm) {
 			console.log("alarm created: " + alarm.name);
 		})
-		
 	}
 }
 
@@ -163,7 +163,7 @@ function createAlarm(newEvent) {
 	input: event object
 	function: remove alarms for the event 
 */
-function removeAlarm(eventO) {
+function removeAlarms(eventO) {
 	console.log("eventO.text = " + eventO.text);
 	if(eventO.repeat.length < 1) {
 		chrome.alarms.clear(eventO.text);
@@ -196,7 +196,7 @@ function clickEditEvent(e) {
 			}
 		}
 		var remind = document.getElementById("remindTime").value;
-		var newEvent = new eventOb(text, date, repeat, remind);
+		var newEvent = new eventOb(text, date, repeat, remind, "event");
 		editEvent(newEvent);
 		
 		var li = document.getElementById(text);
@@ -255,7 +255,7 @@ function removeEvent(eventO) {
 			console.log("after deleting: " + list);
 		})
 	});
-	removeAlarm(eventO);
+	removeAlarms(eventO);
 }
 
 /* 
@@ -272,7 +272,7 @@ function editEvent(eEvent) {
 			var json = JSON.parse(list[key]);
 			if(json.text.localeCompare(eEvent.text) == 0){
 				list.splice(key, 1);
-				removeAlarm(eEvent);
+				removeAlarms(eEvent);
 				break;
 			}
 		}
