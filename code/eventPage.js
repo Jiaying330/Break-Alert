@@ -12,32 +12,29 @@
 //
 
 chrome.alarms.onAlarm.addListener(function(alarm){
-// <<<<<<< HEAD
-	var alarms = getAlarms();
-	var content;
-	for(var key in alarms) {
-		if(alarm.name.localeCompare(alarms[key].text) == 0) {
-			content = alarms[key].text;
-
-			
-			//if not a loop alarm, delete right away from the local storage
-			if(typeof alarm.when != "undefined"){ 
-				removeAlarm(key);
+	var content
+	// alarms are named differently from events, so we need to extract the first part of the alarm
+	// name in order to get the corresponding event name
+	var splitAlarmName = (alarm.name).split("__");
+	var name = splitAlarmName[0];
+	content = name;
+	chrome.storage.local.get({alarms: []}, function(result) {
+		var alarmList = result.alarms;
+		var alarmIndex;
+		for (alarmIndex = 0; (alarmIndex < alarmList.length && (JSON.parse(alarmList[alarmIndex]).text != name)); alarmIndex++){}
+		if(alarmIndex < alarmList.length) {
+			if(typeof alarm.when != "undefined") {
+				alarmList.splice(alarmIndex, 1);
+				chrome.storage.local.set({"alarms": alarmList}, function() {
+				})
 			}
-			
 		}
-	}
-	alert(content);
+		
+	});
 
 	// get events array from Chrome Storage and extract the tabs from event
 	chrome.storage.local.get({events: []}, function(result) {
 		var eventsList = result.events;
-
-		// alarms are named differently from events, so we need to extract the first part of the alarm
-		// name in order to get the corresponding event name
-		var splitAlarmName = (alarm.name).split("__");
-		var name = splitAlarmName[0];
-
 		var alarmIndex = 0;  // var to get index of the event in eventsList
 		// loop through eventsList to find the corresponding index for the alarm
 		for (; (alarmIndex < eventsList.length) && (JSON.parse(eventsList[alarmIndex]).text != name); alarmIndex++);
@@ -50,61 +47,5 @@ chrome.alarms.onAlarm.addListener(function(alarm){
 			chrome.tabs.create({"url": tabs[i]});
 		}
 	});
-
-	
-// =======
-// 	if(alarm.name === 'breakAlarm') {
-// 		alert("Time to take a break!");
-// 	}
-// 	else {
-// 		var alarms = getAlarms();
-// 		var content;
-// 		for(var key in alarms) {
-// 			var date = new Date(alarms[key].time);
-// 			if(alarm.name === alarms[key].text) {
-// 				content = alarms[key].text;
-// 				removeAlarm(key);
-// 			}
-// 		}
-// 		alert(content);
-// 	}
-// >>>>>>> eric2
+	alert(content);
 });
-
-/* 
-	output: returns a list of alarms stored in local storage
-	functon: gets a list of alarms stored in local storage
-*/
-function getAlarms() {
-	var list;
-	chrome.storage.local.get({alarms: []}, function(result) {
-		list = result.alarms;
-	});
-	if(!list) {
-		list = [];
-	} else {
-		list = JSON.parse(list);
-	}
-	return list;
-}
-
-/* 
-	input: key
-	function: remove an alarm with the key from the local storage 
-*/
-function removeAlarm(text) {
-	var list;
-	chrome.storage.local.get({alarms: []}, function(result) {
-		list = result.alarms;
-		for(var key in list) {
-			var json = JSON.parse(list[key]);
-			if(json.text.localeCompare(text) == 0) {
-				list.splice(key, 1);
-				break;
-			}
-		}
-		chrome.storage.local.set({"alarms": list}, function() {
-			console.log("after deleting: " + list);
-		});
-	});
-}

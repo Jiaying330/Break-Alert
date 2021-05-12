@@ -68,7 +68,7 @@ function createEvent(eventO) {
 	li.appendChild(buttonD);
 	buttonD.addEventListener('click', function(){
 		removeEvent(eventO);
-		var div = this.parentElement;
+		var div = this.parentElement.parentElement;
 		div.style.display = "none";
 	});
 	
@@ -305,7 +305,7 @@ function clickEditEvent(e) {
 		
 	}
 	else {
-		alert("invalid input");
+		alert("please fill out event name and date");
 		return;
 	}
 }
