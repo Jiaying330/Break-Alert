@@ -32,7 +32,7 @@ chrome.alarms.onAlarm.addListener(function(alarm){
 	// get events array from Chrome Storage and extract the tabs from event
 	chrome.storage.local.get(["events"], function(result) {
 		var eventsList = result.events;
-		var alarmIndex = 0
+		var alarmIndex = 0;
 		
 		// loop through eventsList to find the corresponding index for the alarm
 		for (; (alarmIndex < eventsList.length) && (JSON.parse(eventsList[alarmIndex]).text != alarm.name); alarmIndex++);
