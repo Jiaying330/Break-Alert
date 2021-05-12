@@ -48,13 +48,6 @@ if (eList != null){
 }
 
 
-		resultList = copyResultList;
-		for(var i = 0; i < resultList.length; i++) {
-			eList.appendChild(createEvent(JSON.parse(resultList[i])));
-		}		
-	}
-});
-
 /* 
 	input: event object
 	function: create li element to display event
@@ -225,11 +218,11 @@ function createAlarm(eventObject) {
 			console.log("eDates[i] = " + eDates[i]);
 			var timeDifference = eDates[i].getTime() - now.getTime();
 			console.log("timeDifference = " + timeDifference);
-			chrome.alarms.create(eventObject.text + i, {
+			chrome.alarms.create(eventObject.text + "__" + i, {
 				when: Number(now) + timeDifference
 			});
 			console.log("when = " + Number(now) + timeDifference);
-			console.log("alarm created" + eventObject.text + i);
+			console.log("alarm created" + eventObject.text + "__" + i);
 		}
 		return;
 	}
@@ -249,11 +242,11 @@ function createAlarm(eventObject) {
 			}
 			var timeDifference = (d.getTime() - now.getTime())/1000;
 			timeDifference /= 60;
-			chrome.alarms.create(eventObject.text + i + j, {
+			chrome.alarms.create(eventObject.text + "__" + i + j, {
 				delayInMinutes: Math.abs(Math.round(timeDifference)),
 				periodInMinutes: 10080 
 			});
-			chrome.alarms.get(eventObject.text + i + j, function(alarm) {
+			chrome.alarms.get(eventObject.text + "__" + i + j, function(alarm) {
 				console.log("alarm created: " + alarm.name);
 			});
 		}	
@@ -268,15 +261,15 @@ function removeAlarms(eventObject) {
 	console.log("eventObject.text = " + eventObject.text);
 	if(eventObject.repeat.length < 1) {
 		for(var i = 0; i < eventObject.remind.length; i++) {
-			chrome.alarms.clear(eventObject.text + i);
+			chrome.alarms.clear(eventObject.text + "__" + i);
 			console.log("removed alarm: " + eventObject.text);
 		}
 		return;
 	}
 	for(var i = 0; i < eventObject.repeat.length; i++) {
 		for(var j = 0; j < eventObject.remind.length; j++) {
-			chrome.alarms.clear(eventObject.text + i + j);
-			console.log("removed alarm: " + eventObject.text + i + j);
+			chrome.alarms.clear(eventObject.text + "__" + i + j);
+			console.log("removed alarm: " + eventObject.text + "__" + i + j);
 		}
 	}
 }
