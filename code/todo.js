@@ -71,7 +71,7 @@ var myTodoList = document.getElementById("todoList");
   /**
    * Add a check when clicking on a list item
    */
-  var list = document.querySelector('ul');
+  var list = document.querySelector('#todoList');
   if (list) {
     list.addEventListener('click', function(ev) {
       if (ev.target.tagName === 'LI'){

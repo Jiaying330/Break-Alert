@@ -5,33 +5,48 @@ class eventOb {
 		date: date of the event
 		repeat: which days do the user want to repeat the event(an array of weekday)
 		remind: does the user want to set an alarm(an array of time input)
+		tabs: what tabs does the user want to open for the event onAlarm
 	*/
-	constructor(text, time, repeat, remind) {
+	constructor(text, time, repeat, remind, tabs) {
 		this.text = text;
 		this.time = time;
 		this.repeat = repeat;
 		this.remind = remind;
+    this.tabs = tabs;
 		// this.subEvents = subEvents;
 	}
 }
 
 var eList = document.getElementById("eventList");
+if (eList != null){
+	//load stored events from chrome storage
+	chrome.storage.local.get(["events"], function(result) {
+		if(result.events == undefined){
+			chrome.storage.local.set({"events": []});
+		} else {
+			var resultList = result.events;
+			var copyResultList = [];
+			for(var i = 0; i < resultList.length; i++){
+				var reader = JSON.parse(resultList[i]);
+				copyResultList.push(JSON.stringify(reader));
+			}
+			
+			chrome.storage.local.set({"events": copyResultList}, function() {
+				console.log('Value initiate to: ' + copyResultList);
+			});
 
-//load stored events from chrome storage
-chrome.storage.local.get(["events"], function(result) {
-	if(result.events == undefined){
-		chrome.storage.local.set({"events": []});
-	} else {
-		var resultList = result.events;
-		var copyResultList = [];
-		for(var i = 0; i < resultList.length; i++){
-			var reader = JSON.parse(resultList[i]);
-			copyResultList.push(JSON.stringify(reader));
+			resultList = copyResultList;
+			for(var i = 0; i < resultList.length; i++) {
+				eList.appendChild(
+					createEvent(
+						JSON.parse(resultList[i])
+					)
+				);
+			}		
 		}
-		
-		chrome.storage.local.set({"events": copyResultList}, function() {
-			console.log('Value initiate to: ' + copyResultList);
-		});
+	});
+}
+
 
 		resultList = copyResultList;
 		for(var i = 0; i < resultList.length; i++) {
@@ -101,9 +116,18 @@ function dropItem(type, info) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById("addReminder").addEventListener("click", clickAddReminder);
-  document.getElementById("addEvent").addEventListener("click", clickAddEvent);
-  document.getElementById("editEvent").addEventListener("click", clickEditEvent);
+  var buttonAddReminder = document.getElementById("addReminder");
+  var buttonAddEvent = document.getElementById("addEvent");
+  var buttonEditEvent = document.getElementById("editEvent");
+  if (buttonAddReminder != null){
+    buttonAddReminder.addEventListener("click", clickAddReminder);
+  }
+	if (buttonAddEvent != null){
+  	buttonAddEvent.addEventListener("click", clickAddEvent);
+	}
+  if (buttonEditEvent != null){
+		buttonEditEvent.addEventListener("click", clickEditEvent);
+	}
 });
 
 /* 
@@ -124,6 +148,13 @@ function clickAddEvent(e) {
 	var date = document.getElementById("eventDate").value;
 	var now = new Date();
 	var text = document.getElementById("event").value;
+
+	// get tabs from the tab textfield and save it into an array to be pushed to storage
+	const textarea = document.getElementById("tabsToOpen");
+	var tabs = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
+	console.log("tabs for event are " + tabs);
+
+
 	if(date != "" && text != "") {
 		//extract input
 		var checkBox = document.getElementById("repeat");
@@ -132,7 +163,7 @@ function clickAddEvent(e) {
 		var timeInput = document.getElementById("reminder");
 		var tmps = timeInput.getElementsByTagName("INPUT");
 		var reminders = extractInput(tmps);
-		var newEvent = new eventOb(text, date, repeat, reminders);
+		var newEvent = new eventOb(text, date, repeat, reminders, tabs);
 
 		// store new event to storage
 		addEvents(newEvent);
