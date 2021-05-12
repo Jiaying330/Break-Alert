@@ -29,12 +29,23 @@ chrome.alarms.onAlarm.addListener(function(alarm){
 	}
 	alert(content);
 
-	var tabs = ["https://www.yahoo.com", "https://www.google.com"];
+	// get events array from Chrome Storage and extract the tabs from event
+	chrome.storage.local.get(["events"], function(result) {
+		var eventsList = result.events;
+		var alarmIndex = 0
+		
+		// loop through eventsList to find the corresponding index for the alarm
+		for (; (alarmIndex < eventsList.length) && (JSON.parse(eventsList[alarmIndex]).text != alarm.name); alarmIndex++);
 
-	// loop through the event's tabs list and open those tabs
-	for (var i = 0; i < tabs.length; i++){
-		chrome.tabs.create({"url": tabs[i]});
-	}
+		// parse through the corresponding event in eventsList and extract its tabs array
+		var tabs = JSON.parse(eventsList[alarmIndex]).tabs;
+
+		// loop through the event's tabs list and open those tabs
+		for (var i = 0; i < tabs.length; i++){
+			chrome.tabs.create({"url": tabs[i]});
+		}
+	});
+
 	
 // =======
 // 	if(alarm.name === 'breakAlarm') {
