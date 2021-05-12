@@ -235,12 +235,13 @@
             <label for="Sat"><input id="Sat" value="6" type="checkbox">Sat</label>
             <label for="Sun"><input id="Sun" value="0" type="checkbox">Sun</label>
           </div>
-          Remind Me When
-          <input type="time" id="remindTime"><br>
-          <!-- </div>  -->
-          <button id="addEvent">Add</button>
+          Remind Me When</br>
+          <div id="reminder">
+            <input type="time" style="width:60%;" id="remindTime">
+            <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i></br>
+          </div> 
+          <button id="addEvent">Create</button>
           <button id="editEvent">Edit</button> 
-          <!-- <button id="deleteEvent">Delete</button> --> 
           <div class="events">
               <ul id = "eventList">
           </div>
