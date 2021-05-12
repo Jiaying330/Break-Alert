@@ -4,14 +4,16 @@ class eventOb {
 		text: name of the event
 		date: date of the event
 		repeat: which days do the user want to repeat the event
+		tabs: what tabs does the user want to open for the event onAlarm
 		alarm: does the user want to set an alarm
 		alarmName: an array of alarm names
 	*/
-	constructor(text, time, repeat, alarm) {
+	constructor(text, time, repeat, alarm, tabs) {
 		this.text = text;
 		this.time = time;
 		this.repeat = repeat;
 		this.alarm = alarm;
+		this.tabs = tabs;
 	}
 }
 
@@ -90,6 +92,13 @@ function clickAddEvent(e) {
 	var now = new Date();
 	var timeDifference = (new Date(date)).getTime - now.getTime();
 	var text = document.getElementById("event").value;
+
+	// get tabs from the tab textfield and save it into an array to be pushed to storage
+	const textarea = document.getElementById("tabsToOpen");
+	var tabs = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
+	console.log("tabs for event are " + tabs);
+
+
 	if(date != "" && text != "") {
 		//extract input
 		var checkBox = document.getElementById("repeat");
@@ -101,7 +110,7 @@ function clickAddEvent(e) {
 			}
 		}
 		var remind = document.getElementById("remindTime").value;
-		var newEvent = new eventOb(text, date, repeat, remind);
+		var newEvent = new eventOb(text, date, repeat, remind, tabs);
 
 		// store new event to storage
 		addEvents(newEvent);

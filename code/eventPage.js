@@ -18,6 +18,8 @@ chrome.alarms.onAlarm.addListener(function(alarm){
 	for(var key in alarms) {
 		if(alarm.name.localeCompare(alarms[key].text) == 0) {
 			content = alarms[key].text;
+
+			
 			//if not a loop alarm, delete right away from the local storage
 			if(typeof alarm.when != "undefined"){ 
 				removeAlarm(key);
