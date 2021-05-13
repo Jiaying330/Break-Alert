@@ -81,6 +81,7 @@ function createEvent(eventO) {
 			myEvent.appendChild(dropItem("time", eventO.time));
 			myEvent.appendChild(dropItem("repeat", eventO.repeat));
 			myEvent.appendChild(dropItem("reminder", eventO.remind));
+			myEvent.appendChild(dropItem("tabs", eventO.tabs));
 
 			// for(var i = 0; i < subEventList.length; i++) {
 			// 	myEvent.appendChild(subEventListItem(subEventList[i]));
@@ -292,7 +293,12 @@ function clickEditEvent(e) {
 		var timeInput = document.getElementById("reminder");
 		var tmps = timeInput.getElementsByTagName("INPUT");
 		var reminders = extractInput(tmps);
-		var newEvent = new eventOb(text, date, repeat, reminders);
+
+		// extract input for tabs to open
+		const textarea = document.getElementById("tabsToOpen");
+		var tabs = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
+
+		var newEvent = new eventOb(text, date, repeat, reminders, tabs);
 		editEvent(newEvent);
 
 		for(var i = 0; i < eList.childNodes.length; i++) {

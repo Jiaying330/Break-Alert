@@ -12,7 +12,7 @@
 //
 
 chrome.alarms.onAlarm.addListener(function(alarm){
-	var content
+	var content;
 	// alarms are named differently from events, so we need to extract the first part of the alarm
 	// name in order to get the corresponding event name
 	var splitAlarmName = (alarm.name).split("__");
@@ -43,8 +43,10 @@ chrome.alarms.onAlarm.addListener(function(alarm){
 		var tabs = JSON.parse(eventsList[alarmIndex]).tabs;
 
 		// loop through the event's tabs list and open those tabs
-		for (var i = 0; i < tabs.length; i++){
-			chrome.tabs.create({"url": tabs[i]});
+		if (tabs != null){
+			for (var i = 0; i < tabs.length; i++){
+				chrome.tabs.create({"url": tabs[i]});
+			}
 		}
 	});
 	alert(content);
