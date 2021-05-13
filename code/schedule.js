@@ -12,8 +12,7 @@ class eventOb {
 		this.time = time;
 		this.repeat = repeat;
 		this.remind = remind;
-    this.tabs = tabs;
-		// this.subEvents = subEvents;
+    	this.tabs = tabs;
 	}
 }
 
@@ -52,12 +51,11 @@ if (eList != null){
 	input: event object
 	function: create li element to display event
 */
-function createEvent(eventO) {
+function createEvent(eventObject) {
 	var myEvent = document.createElement("div");
 	myEvent.className = "entireEvent";
-	var text = eventO.text;
+	var text = eventObject.text;
 	myEvent.id = text;
-	var date = eventO.time;
 	var li = document.createElement("li");
 	li.textContent = text;
 	li.id = text;
@@ -67,7 +65,7 @@ function createEvent(eventO) {
 	buttonD.className = "deleteEvent";
 	li.appendChild(buttonD);
 	buttonD.addEventListener('click', function(){
-		removeEvent(eventO);
+		removeEvent(eventObject);
 		var div = this.parentElement.parentElement;
 		div.style.display = "none";
 	});
@@ -76,16 +74,12 @@ function createEvent(eventO) {
 	dropdown.className = "dropdown glyphicon glyphicon-triangle-bottom";
 	dropdown.onclick = function() {
 		if(dropdown.className === "dropdown glyphicon glyphicon-triangle-bottom") {
-			var subEventList = eventO.subEvents;
 			dropdown.className = "dropdown glyphicon glyphicon-triangle-top";
-			myEvent.appendChild(dropItem("time", eventO.time));
-			myEvent.appendChild(dropItem("repeat", eventO.repeat));
-			myEvent.appendChild(dropItem("reminder", eventO.remind));
-			myEvent.appendChild(dropItem("tabs", eventO.tabs));
-
-			// for(var i = 0; i < subEventList.length; i++) {
-			// 	myEvent.appendChild(subEventListItem(subEventList[i]));
-			// }
+			// fill in dropdown
+			myEvent.appendChild(dropItem("time", eventObject.time));
+			myEvent.appendChild(dropItem("repeat", eventObject.repeat));
+			myEvent.appendChild(dropItem("reminder", eventObject.remind));
+			myEvent.appendChild(dropItem("tabs", eventObject.tabs));
 		} else {
 			dropdown.className = "dropdown glyphicon glyphicon-triangle-bottom";
 			while(myEvent.childElementCount != 1) {
@@ -95,9 +89,51 @@ function createEvent(eventO) {
 	};
 	li.appendChild(dropdown);
 	myEvent.appendChild(li);
+	myEvent.addEventListener("click", function(){
+		clickEvent(eventObject);
+	});
 	return myEvent;
 }
 
+/*
+	input: event object
+	function: fill in the input area with informations stored in the event object
+*/
+function clickEvent(eventObject) {
+	var eventName = document.getElementById("event");
+	eventName.value = eventObject.text;
+	var eventDate = document.getElementById("eventDate");
+	eventDate.value = eventObject.time;
+	var eventTabs = document.getElementById("tabsToOpen");
+	eventTabs.value = eventObject.tabs;
+	var checkBox = document.getElementById("repeat");
+	var chks = checkBox.getElementsByTagName("INPUT");
+	for (var repeatIndex = 0; repeatIndex < eventObject.repeat.length; repeatIndex++) {
+		if (eventObject.repeat[repeatIndex] == 0) {
+			chks[6].checked = true;
+		}
+		else {
+			chks[eventObject.repeat[repeatIndex] - 1].checked = true;
+		}
+	}
+	var reminders = document.getElementById("reminder");
+	var rmds = reminders.getElementsByTagName("INPUT");
+	for (var remindIndex = 0; remindIndex < eventObject.remind.length; remindIndex++) {
+		if (remindIndex < rmds.length) {
+			rmds[remindIndex].value = eventObject.remind[remindIndex];
+		} else {
+			var reminderInput = document.createElement("input");
+			reminderInput.setAttribute('type', 'time');
+			reminderInput.style = "width:60%";
+			document.getElementById("reminder").appendChild(reminderInput);
+			reminderInput.value = eventObject.remind[remindIndex];
+		}
+	}
+}
+/* 
+	input: type of drop item, information to show
+	function: create div element to display event informations in dropdown
+*/
 function dropItem(type, info) {
 	var listItem = document.createElement("div");
 	listItem.style = "display:block;";
@@ -140,7 +176,6 @@ function clickAddReminder(e) {
 */
 function clickAddEvent(e) {
 	var date = document.getElementById("eventDate").value;
-	var now = new Date();
 	var text = document.getElementById("event").value;
 
 	// get tabs from the tab textfield and save it into an array to be pushed to storage
@@ -168,7 +203,7 @@ function clickAddEvent(e) {
 		}
 	}
 	else {
-		alert("invalid input");
+		alert("please fill out event name and date");
 		return;
 	}
 }
