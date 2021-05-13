@@ -146,8 +146,6 @@ function clickAddEvent(e) {
 	// get tabs from the tab textfield and save it into an array to be pushed to storage
 	const textarea = document.getElementById("tabsToOpen");
 	var tabs = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
-	console.log("tabs for event are " + tabs);
-
 
 	if(date != "" && text != "") {
 		//extract input
