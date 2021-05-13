@@ -44,9 +44,52 @@ chrome.alarms.onAlarm.addListener(function(alarm){
 
 		// loop through the event's tabs list and open those tabs
 		if (tabs != null){
-			for (var i = 0; i < tabs.length; i++){
-				chrome.tabs.create({"url": tabs[i]});
-			}
+			alert("tabs = " + tabs);
+			for (var index = 0; index < tabs.length; index++){
+				alert("new loop: index = " + index + " and tabs[index] = " + tabs[index]);
+
+				// if saved tab is a direct website, open it
+				if (tabs[index].startsWith("http")){
+					chrome.tabs.create({"url": tabs[index]});
+				}
+
+				// otherwise, check if it's the name of a user-defined multi-tab and open it
+				else {
+					alert(tabs[index] + " doesn't start with http, so get()");
+					chrome.storage.local.get(["myTabs"], function(result) {
+						alert("in storage.get");
+						var tabList = result.myTabs;
+						var multiTabName = tabs[index];
+						alert("multiTabName = " + multiTabName + " index = " + index);
+
+						// length is the total # of defined multitabs to search through
+						var length = tabList.length;  
+
+						// get the position of the tab name in the multitabs list, or return -1 if it doesn't exist
+						var pos;
+						var parsedMultiTab;
+						
+						for (pos = 0; pos < length; pos++){
+							parsedMultiTab = JSON.parse(tabList[pos]);
+							// check if we found a matching multitab name
+							alert("parsedMultiTab = " + parsedMultiTab + " and multiTabName = " + multiTabName);
+							if (parsedMultiTab.name === multiTabName)
+								break;
+						}
+						
+						// if pos < length, we found a defined tab so open up all the corresponding urls
+						if (pos < length){
+							var urlList = parsedMultiTab.urls;
+
+							// open the tabs in the tab list
+							for(var j = 0; j < urlList.length; j++){
+								chrome.tabs.create({"url": urlList[j]});
+							}
+						}  // end if
+					}); // end get
+
+				}  // end else
+			}  // end for
 		}
 	});
 	alert(content);
