@@ -17,8 +17,9 @@ class eventOb {
 }
 
 var eList = document.getElementById("eventList");
+// display events
 if (eList != null){
-	//load stored events from chrome storage
+	// load stored events from chrome storage
 	chrome.storage.local.get(["events"], function(result) {
 		if(result.events == undefined){
 			chrome.storage.local.set({"events": []});
@@ -88,10 +89,10 @@ function createEvent(eventObject) {
 		}
 	};
 	li.appendChild(dropdown);
-	myEvent.appendChild(li);
-	myEvent.addEventListener("click", function(){
+	li.addEventListener("click", function(){
 		clickEvent(eventObject);
 	});
+	myEvent.appendChild(li);
 	return myEvent;
 }
 
