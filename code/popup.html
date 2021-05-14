@@ -1,5 +1,4 @@
-  
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -32,6 +31,7 @@
       background-color: rgb(255, 255, 255);
       width: 400px;
       height: 580px;
+      text-align: center;
       padding: 0;
       margin: 0;
     }
@@ -198,6 +198,8 @@
       <h3>Schedule</h3>
       <input type="text" id="event" placeholder="add event">
       <input type="datetime-local" id="eventDate"><br>
+      <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="28"
+      placeholder="Add tabs to open on event" spellcheck="false"></textarea><br>
       Repeat Every:
       <div id="repeat">
         <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
@@ -208,8 +210,11 @@
         <label for="Sat"><input id="Sat" value="6" type="checkbox">Sat</label>
         <label for="Sun"><input id="Sun" value="0" type="checkbox">Sun</label>
       </div>
-      Remind Me When
-      <input type="time" id="remindTime"><br>
+      Remind Me When</br>
+          <div id="reminder">
+            <input type="time" style="width:60%;" id="remindTime">
+            <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i></br>
+          </div> 
       <!-- </div>  -->
       <button id="addEvent">Add</button>
       <button id="editEvent">Edit</button> 
@@ -237,6 +242,30 @@
       <div class = "tab-content">
         <!-- Schedule Tab Code -->
         <div id = "schedule" data-tab-content>
+          <!-- <h3>Schedule</h3>
+          <input type="text" id="event" placeholder="add event" required=""></label>
+          <input type="datetime-local" id="eventDate" required=""><br>
+          <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="28"
+              placeholder="Add tabs to open on event" spellcheck="false"></textarea><br>
+          Repeat Every:
+          <div id="repeat">
+            <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
+            <label for="Tue"><input id="Tue" value="2" type="checkbox">Tue</label>
+            <label for="Wed"><input id="Wed" value="3" type="checkbox">Wed</label>
+            <label for="Thu"><input id="Thu" value="4" type="checkbox">Thu</label>
+            <label for="Fri"><input id="Fri" value="5" type="checkbox">Fri</label>
+            <label for="Sat"><input id="Sat" value="6" type="checkbox">Sat</label>
+            <label for="Sun"><input id="Sun" value="0" type="checkbox">Sun</label>
+          </div>
+          Remind Me When</br>
+          <div id="reminder">
+            <input type="time" style="width:60%;" id="remindTime">
+            <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i></br>
+          </div> 
+          <button id="addEvent">Create</button>
+          <button id="editEvent">Edit</button> 
+          <div class="events">
+              <ul id = "eventList"> -->
          
           <div class = "sidebar">
             <h4>Tab Shortcuts</h4>
