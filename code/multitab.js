@@ -173,7 +173,7 @@ function urlListItem(url, pos, linkNum){
 		listItem.style = "display:flex; display:none;"
 	}
 	var listItemInner = document.createElement("div");
-	listItemInner.style = "min-width: 260px; max-width: 260px; text-overflow: ellipsis; overflow: hidden;white-space: nowrap;";
+	listItemInner.style = "min-width: 220px; max-width: 220px; text-overflow: ellipsis; overflow: hidden;white-space: nowrap;";
 	listItemInner.innerHTML = url;
 
 	listItem.appendChild(listItemInner);

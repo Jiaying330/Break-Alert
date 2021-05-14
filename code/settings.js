@@ -13,6 +13,7 @@ chrome.storage.sync.get(["visual"], function(result) {
 document.addEventListener('DOMContentLoaded', function () {
 	document.getElementById("openVisualSettings").addEventListener("click", openVisualSettings);
 	document.getElementById("resetMultiTabData").addEventListener("click", resetMultiTabData);
+	document.getElementById("resetTodoData").addEventListener("click", resetTodoData);
 	document.getElementById("toggleDarkMode").addEventListener("click", toggleDarkMode);
 	document.getElementById("toggleLightMode").addEventListener("click", toggleLightMode);
 });
@@ -22,6 +23,13 @@ function resetMultiTabData(){
     const myList = document.getElementById("allTabs");
     while (myList.childElementCount !== 0){
         myList.removeChild(myList.lastChild);
+    }
+}
+function resetTodoData(){
+    chrome.storage.sync.set({"tasks": []});
+    const myTodoList = document.getElementById("todoList");
+    while (myTodoList.childElementCount !== 0){
+        myTodoList.removeChild(myTodoList.lastChild);
     }
 }
 const visualSettings = document.getElementById('visualSettings');
