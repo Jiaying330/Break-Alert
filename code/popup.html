@@ -69,8 +69,8 @@
     }
     .sidebar{
       overflow: auto;
-      max-height: 580px;
-      width: 400px;
+      max-height: 300px;
+      width: 300px;
       text-align: center;
     }
     /* style todo list */
@@ -140,8 +140,8 @@
       list-style-type: none;
     }
     #allTabs{
-      min-height: 490px;
-      max-height: 490px;
+      min-height: 210px;
+      max-height: 210px;
       overflow: auto;
     }
     .clock_ui{
@@ -152,13 +152,13 @@
       margin: 0 auto;
     }
     .entireTab{
-      width: 380px;
+      width: 270px;
       min-height: 35px;
     }
     .tabRow{
       min-height: 35px;
       display: flex;
-      width: 380px;
+      width: 270px;
     }
     .tabRow:hover{
       background: rgb(136, 136, 136);
@@ -170,8 +170,7 @@
       font-size: 10px;
     }
     .tabName{
-      width: 385px;
-
+      width: 250px;
       height: 35px;
       text-align: start;
       padding-left: 10px;
@@ -184,6 +183,11 @@
       margin-left: auto;
       margin-right: 50px;
     }
+    .settingsButton{
+      cursor: pointer;
+      padding: 20px;    
+      border-bottom: 1px solid rgb(77, 77, 77);    
+    }
   </style>
 
 </head>
@@ -191,14 +195,27 @@
   <div class = "ceWindow">
     <!-- Left Side of Extension -->
     <div class = "left">
-      <div class = "sidebar">
-        <h4>Tab Shortcuts</h4>
-        <div id = "allTabs">
-        </div>
-        <div>
-          <input type="text" id = "newMTabName">
-          <button id="addTabButton">Add</button>
-        </div>
+      <h3>Schedule</h3>
+      <input type="text" id="event" placeholder="add event">
+      <input type="datetime-local" id="eventDate"><br>
+      Repeat Every:
+      <div id="repeat">
+        <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
+        <label for="Tue"><input id="Tue" value="2" type="checkbox">Tue</label>
+        <label for="Wed"><input id="Wed" value="3" type="checkbox">Wed</label>
+        <label for="Thu"><input id="Thu" value="4" type="checkbox">Thu</label>
+        <label for="Fri"><input id="Fri" value="5" type="checkbox">Fri</label>
+        <label for="Sat"><input id="Sat" value="6" type="checkbox">Sat</label>
+        <label for="Sun"><input id="Sun" value="0" type="checkbox">Sun</label>
+      </div>
+      Remind Me When
+      <input type="time" id="remindTime"><br>
+      <!-- </div>  -->
+      <button id="addEvent">Add</button>
+      <button id="editEvent">Edit</button> 
+      <!-- <button id="deleteEvent">Delete</button> --> 
+      <div class="events">
+          <ul id = "eventList">
       </div>
     </div>
     <div class = "middle"></div>
@@ -220,27 +237,15 @@
       <div class = "tab-content">
         <!-- Schedule Tab Code -->
         <div id = "schedule" data-tab-content>
-          <h3>Schedule</h3>
-          <input type="text" id="event" placeholder="add event">
-          <input type="datetime-local" id="eventDate"><br>
-          Repeat Every:
-          <div id="repeat">
-            <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
-            <label for="Tue"><input id="Tue" value="2" type="checkbox">Tue</label>
-            <label for="Wed"><input id="Wed" value="3" type="checkbox">Wed</label>
-            <label for="Thu"><input id="Thu" value="4" type="checkbox">Thu</label>
-            <label for="Fri"><input id="Fri" value="5" type="checkbox">Fri</label>
-            <label for="Sat"><input id="Sat" value="6" type="checkbox">Sat</label>
-            <label for="Sun"><input id="Sun" value="0" type="checkbox">Sun</label>
-          </div>
-          Remind Me When
-          <input type="time" id="remindTime"><br>
-          <!-- </div>  -->
-          <button id="addEvent">Add</button>
-          <button id="editEvent">Edit</button> 
-          <!-- <button id="deleteEvent">Delete</button> --> 
-          <div class="events">
-              <ul id = "eventList">
+          
+          <div class = "sidebar">
+            <h4>Tab Shortcuts</h4>
+            <div id = "allTabs">
+            </div>
+            <div>
+              <input type="text" id = "newMTabName">
+              <button id="addTabButton">Add</button>
+            </div>
           </div>
         </div>
       </div>
@@ -315,20 +320,33 @@
         </div>
         <!-- Settings Tab Code -->
         <div id = "settings" data-tab-content>
-          <h4>Settings</h4>
-          <div>
-            <div id = "openVisualSettings">Visual</div>
-            <div><a href = "https://www.google.com" target="_blank">Website</a></div>
-            <div><a href = "https://chrome.google.com/webstore/detail/break-alert/bilocpkncpeojgehfelfaecabikkdolb/reviews" target="_blank">Rate Break Alert</a></div>
-            <div id = "resetMultiTabData">Reset Multi-tab Data</div>
+          <div style="padding: 0%; margin: 0%;">
+            <div style="display: flex; width:300px; justify-content:space-between;" id = "openVisualSettings" class = "settingsButton">
+              <div>Visual</div>
+              <i class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
+            </div>
+            <a href = "https://www.google.com" style = "text-decoration: none; color: black;" target="_blank">
+              <div style="display: flex; width:300px; justify-content:space-between;"class = "settingsButton">
+                <div>Website</div>
+                <i class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
+              </div>
+            </a>
+            <a href = "https://chrome.google.com/webstore/detail/break-alert/bilocpkncpeojgehfelfaecabikkdolb/reviews" style = "text-decoration: none; color: black;" target="_blank">
+              <div style="display: flex; width:300px; justify-content:space-between;"class = "settingsButton">
+                <div>Rate Break Alert</div>
+                <i class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
+              </div>
+            </a>
+            <div style="display: flex; width:300px; justify-content:space-between;"id = "resetMultiTabData" class = "settingsButton">
+              <div>Reset Multi-tab Data</div>
+              <i class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
+            </div>
           </div>
         </div>
         <div id = "visualSettings" data-tab-content>
-          <h4>Visual Settings</h4>
           <div>
-            <div id = "toggleLightMode">Light Mode</div>
-            <div id = "toggleDarkMode">Dark Mode</div>
-            <div id = "toggleWarmMode">Warm Mode</div>
+            <div id = "toggleLightMode" class = "settingsButton">Light Mode</div>
+            <div id = "toggleDarkMode" class = "settingsButton">Dark Mode</div> 
           </div>
         </div>
       </div>
