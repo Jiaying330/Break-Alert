@@ -12,7 +12,7 @@ class eventOb {
 		this.time = time;
 		this.repeat = repeat;
 		this.remind = remind;
-    	this.tabs = tabs;
+    this.tabs = tabs;
 	}
 }
 
@@ -105,10 +105,18 @@ function clickEvent(eventObject) {
 	eventName.value = eventObject.text;
 	var eventDate = document.getElementById("eventDate");
 	eventDate.value = eventObject.time;
+
 	var eventTabs = document.getElementById("tabsToOpen");
-	eventTabs.value = eventObject.tabs;
+	var tabsString = JSON.stringify(eventObject.tabs);
+	var splitTabs = tabsString.replaceAll(',', '\n');  // replace all , by newlines
+	splitTabs = splitTabs.replaceAll('[', '');  // delete all [] and "" added from stringify
+	splitTabs = splitTabs.replaceAll(']', '');
+	splitTabs = splitTabs.replaceAll('"', '');
+	eventTabs.value = splitTabs;
+
 	var checkBox = document.getElementById("repeat");
 	var chks = checkBox.getElementsByTagName("INPUT");
+
 	for (var repeatIndex = 0; repeatIndex < eventObject.repeat.length; repeatIndex++) {
 		if (eventObject.repeat[repeatIndex] == 0) {
 			chks[6].checked = true;
@@ -118,19 +126,44 @@ function clickEvent(eventObject) {
 		}
 	}
 	var reminders = document.getElementById("reminder");
-	var rmds = reminders.getElementsByTagName("INPUT");
-	for (var remindIndex = 0; remindIndex < eventObject.remind.length; remindIndex++) {
-		if (remindIndex < rmds.length) {
-			rmds[remindIndex].value = eventObject.remind[remindIndex];
-		} else {
+	var inputReminders = reminders.getElementsByTagName("INPUT");
+	var maxReminders = Math.max(eventObject.remind.length, inputReminders.length);
+
+	// copy over reminders from event to input boxes
+	for (var remindIndex = 0; remindIndex < maxReminders; remindIndex++) {
+		if (remindIndex < inputReminders.length && remindIndex < eventObject.remind.length) {  // there are enough input boxes to copy event's reminders
+			inputReminders[remindIndex].value = eventObject.remind[remindIndex];
+		} else if (remindIndex >= inputReminders.length) { // not enough input boxes, so create another and copy over
+			var div = document.createElement("div");
 			var reminderInput = document.createElement("input");
 			reminderInput.setAttribute('type', 'time');
 			reminderInput.style = "width:60%";
-			document.getElementById("reminder").appendChild(reminderInput);
 			reminderInput.value = eventObject.remind[remindIndex];
+			div.append(reminderInput);  // append the reminder input to the div
+
+			var deleteReminder = document.createElement("i");
+			deleteReminder.className = "glyphicon glyphicon-minus-sign";
+			deleteReminder.id = "delReminder";
+			deleteReminder.style = "cursor:pointer; font-size:15px;";
+			deleteReminder.addEventListener("click", clickDelReminder);
+			div.appendChild(deleteReminder);  // append the - button to the div
+
+			reminders.appendChild(div);  // append the div containing the reminder and the - button
+		} else if (remindIndex >= eventObject.remind.length){  // more current reminders than the clicked event's reminders, so clear the extras
+			inputReminders[remindIndex].value = "";
 		}
 	}
+
+	//// delete all unused reminder input fields except the very first one
+	// 
+	// for (var remindIndex = maxReminders - 1; remindIndex > 0; remindIndex--){
+	// 	if (inputReminders[remindIndex].value = ""){  
+	// 		var element = inputReminders[remindIndex];
+	// 		element.parentElement.parentElement.removeChild(element.parentElement);
+	// 	}
+	// }
 }
+
 /* 
 	input: type of drop item, information to show
 	function: create div element to display event informations in dropdown
@@ -150,6 +183,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var buttonAddReminder = document.getElementById("addReminder");
   var buttonAddEvent = document.getElementById("addEvent");
   var buttonEditEvent = document.getElementById("editEvent");
+	var buttonDelReminder = document.getElementById("delReminder");
+	var buttonClearInputs = document.getElementById("clearInputs");
   if (buttonAddReminder != null){
     buttonAddReminder.addEventListener("click", clickAddReminder);
   }
@@ -159,18 +194,77 @@ document.addEventListener('DOMContentLoaded', function () {
   if (buttonEditEvent != null){
 		buttonEditEvent.addEventListener("click", clickEditEvent);
 	}
+	if (buttonDelReminder != null){
+    buttonDelReminder.addEventListener("click", clickDelReminder);
+  }
+	if (buttonClearInputs != null){
+    buttonClearInputs.addEventListener("click", clickClearInputs);
+  }
 });
+
+/*
+	function: clear all inputted fields in the events
+	(ie. event name, event time, etc.)
+*/
+function clickClearInputs(){
+	var eventName = document.getElementById("event");
+	eventName.value = "";
+	var eventDate = document.getElementById("eventDate");
+	eventDate.value = "";
+	var eventTabs = document.getElementById("tabsToOpen");
+	eventTabs.value = "";
+
+	// clear all checked boxes for repeating dates
+	var checkBox = document.getElementById("repeat");
+	var chks = checkBox.getElementsByTagName("INPUT");
+	for (var repeatIndex = 0; repeatIndex < 7; repeatIndex++) {
+		chks[repeatIndex].checked = false;
+	}
+	
+	// delete all reminders input boxes
+	var reminders = document.getElementById("reminder");
+	var inputReminders = reminders.getElementsByTagName("INPUT");
+	for (var remindIndex = inputReminders.length - 1; remindIndex >= 0 ; remindIndex--) {
+		inputReminders[remindIndex].value = "";
+		// delete all reminder input fields except the very first one
+		if (remindIndex != 0){  
+			var element = inputReminders[remindIndex];
+			element.parentElement.parentElement.removeChild(element.parentElement);
+		}
+	}
+}
 
 /* 
 	input: event 
 	function: create new input bar to display on html
 */
 function clickAddReminder(e) {
+	var div = document.createElement("div");
+
 	var reminderInput = document.createElement("input");
 	reminderInput.setAttribute('type', 'time');
 	reminderInput.style = "width:60%";
-	document.getElementById("reminder").appendChild(reminderInput);
+	div.append(reminderInput);
+
+	var deleteReminder = document.createElement("i");
+	deleteReminder.className = "glyphicon glyphicon-minus-sign";
+	deleteReminder.id = "delReminder";
+	deleteReminder.style = "cursor:pointer; font-size:15px;";
+	deleteReminder.addEventListener("click", clickDelReminder);
+
+	div.appendChild(deleteReminder);
+
+	document.getElementById("reminder").appendChild(div);
 }
+
+/* 
+	input: event 
+	function: delete input bar for reminder
+*/
+function clickDelReminder() {
+	this.parentElement.parentElement.removeChild(this.parentElement);
+}
+
 /* 
 	input: event 
 	function: set an event with specific date/time, and store in local storage
