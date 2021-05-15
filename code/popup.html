@@ -5,6 +5,11 @@
   <meta charset="UTF-8">
   <title>Document</title>
   <style>
+    /* have events scroll within the window */
+    .events {
+      max-height: 225px;
+      overflow: auto; 
+    }
     .darkMode{
       filter: invert(1) hue-rotate(180deg);
       /* background-color: rgb(34, 34, 34);
@@ -168,6 +173,7 @@
       height: 35px;
       padding-top: 9px;
       font-size: 10px;
+      
     }
     .tabName{
       width: 250px;
@@ -213,11 +219,11 @@
       Remind Me When</br>
           <div id="reminder">
             <input type="time" style="width:60%;" id="remindTime">
-            <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i></br>
+            <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i>
           </div> 
       <!-- </div>  -->
       <button id="addEvent">Add</button>
-      <button id="editEvent">Edit</button> 
+      <button id="editEvent">Save Changes</button> 
       <!-- <button id="deleteEvent">Delete</button> --> 
       <div class="events">
           <ul id = "eventList">
