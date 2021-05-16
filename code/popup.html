@@ -5,6 +5,11 @@
   <meta charset="UTF-8">
   <title>Document</title>
   <style>
+    /* have events scroll within the window */
+    .events {
+      max-height: 225px;
+      overflow: auto; 
+    }
     .darkMode{
       filter: invert(1) hue-rotate(180deg);
       /* background-color: rgb(34, 34, 34);
@@ -34,6 +39,7 @@
       text-align: center;
       padding: 0;
       margin: 0;
+      overflow: auto;
     }
     .right{
       background-color: rgb(255, 255, 255);
@@ -168,6 +174,7 @@
       height: 35px;
       padding-top: 9px;
       font-size: 10px;
+      
     }
     .tabName{
       width: 250px;
@@ -198,8 +205,9 @@
       <h3>Schedule</h3>
       <input type="text" id="event" placeholder="add event">
       <input type="datetime-local" id="eventDate"><br>
-      <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="28"
-      placeholder="Add tabs to open on event" spellcheck="false"></textarea><br>
+      <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="38" spellcheck="false"
+      placeholder="Add tabs to open on event. &#10Ex. https://yahoo.com or Multi-Tab1"
+                  ></textarea><br>
       Repeat Every:
       <div id="repeat">
         <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
@@ -213,11 +221,12 @@
       Remind Me When</br>
           <div id="reminder">
             <input type="time" style="width:60%;" id="remindTime">
-            <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i></br>
+            <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i>
           </div> 
       <!-- </div>  -->
       <button id="addEvent">Add</button>
-      <button id="editEvent">Edit</button> 
+      <button id="editEvent">Save Changes</button> 
+      <button id="clearInputs">Clear</button> 
       <!-- <button id="deleteEvent">Delete</button> --> 
       <div class="events">
           <ul id = "eventList">
@@ -232,7 +241,7 @@
       <div>Break Alert</div>
       <hr class = "solid"/>
       <div class = "buttonRow">
-        <i class = "glyphicon glyphicon-link" style="cursor:pointer;" data-tab-target = "#schedule"> </i>
+        <i class = "glyphicon glyphicon-th-list" style="cursor:pointer;" data-tab-target = "#tabs"> </i>
         <i class = "glyphicon glyphicon-list-alt" style="cursor:pointer;" data-tab-target = "#todo"></i>
         <i class = "glyphicon glyphicon-bell" style="cursor:pointer;" data-tab-target = "#alarm"></i>
         <i class = "glyphicon glyphicon-lock" style="cursor:pointer;" data-tab-target = "#lock"></i>
@@ -240,33 +249,8 @@
       </div>
       <hr class = "solid"/>
       <div class = "tab-content">
-        <!-- Schedule Tab Code -->
-        <div id = "schedule" data-tab-content>
-          <!-- <h3>Schedule</h3>
-          <input type="text" id="event" placeholder="add event" required=""></label>
-          <input type="datetime-local" id="eventDate" required=""><br>
-          <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="28"
-              placeholder="Add tabs to open on event" spellcheck="false"></textarea><br>
-          Repeat Every:
-          <div id="repeat">
-            <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
-            <label for="Tue"><input id="Tue" value="2" type="checkbox">Tue</label>
-            <label for="Wed"><input id="Wed" value="3" type="checkbox">Wed</label>
-            <label for="Thu"><input id="Thu" value="4" type="checkbox">Thu</label>
-            <label for="Fri"><input id="Fri" value="5" type="checkbox">Fri</label>
-            <label for="Sat"><input id="Sat" value="6" type="checkbox">Sat</label>
-            <label for="Sun"><input id="Sun" value="0" type="checkbox">Sun</label>
-          </div>
-          Remind Me When</br>
-          <div id="reminder">
-            <input type="time" style="width:60%;" id="remindTime">
-            <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i></br>
-          </div> 
-          <button id="addEvent">Create</button>
-          <button id="editEvent">Edit</button> 
-          <div class="events">
-              <ul id = "eventList"> -->
-         
+        <!-- User Defined Multi-Tab Code -->
+        <div id = "tabs" data-tab-content>
           <div class = "sidebar">
             <h4>Tab Shortcuts</h4>
             <div id = "allTabs">
