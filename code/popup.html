@@ -195,6 +195,18 @@
       padding: 20px;    
       border-bottom: 1px solid rgb(77, 77, 77);    
     }
+    table {
+      border-collapse: collapse;
+      width: 100%
+    }
+    td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 3px;
+    }
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
   </style>
 
 </head>
@@ -241,7 +253,7 @@
       <div>Break Alert</div>
       <hr class = "solid"/>
       <div class = "buttonRow">
-        <i class = "glyphicon glyphicon-th-list" style="cursor:pointer;" data-tab-target = "#tabs"> </i>
+        <i class = "glyphicon glyphicon-link" style="cursor:pointer;" data-tab-target = "#tabs"> </i>
         <i class = "glyphicon glyphicon-list-alt" style="cursor:pointer;" data-tab-target = "#todo"></i>
         <i class = "glyphicon glyphicon-bell" style="cursor:pointer;" data-tab-target = "#alarm"></i>
         <i class = "glyphicon glyphicon-lock" style="cursor:pointer;" data-tab-target = "#lock"></i>
@@ -318,8 +330,11 @@
             </div>
           </form>
           <button id="set">Set</button>
-          <button id="clear">Delete</button>
+          <!-- <button id="clear">Delete</button> -->
           <button id="edit">Edit</button><br>
+          <div class="alarms">
+            <ul id = "alarmList">
+          </div>
         </div>
         <!-- Blocked Site Tab Code -->
         <div id = "lock" data-tab-content>

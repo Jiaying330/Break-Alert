@@ -12,8 +12,43 @@ class eventOb {
 		this.time = time;
 		this.repeat = repeat;
 		this.remind = remind;
-    this.tabs = tabs;
+    	this.tabs = tabs;
 	}
+}
+
+/* 
+	input: repeat checkbox value
+	output: string represented by the value
+	function: convert to literal
+*/
+function getWeekday(num) {
+	var result;
+	switch(num) {
+		case "1":
+			result = "Mon";
+			break;
+		case "2":
+			result = "Tue";
+			break;
+		case "3":
+			result = "Wed";
+			break;
+		case "4":
+			result = "Thu";
+			break;
+		case "5":
+			result = "Fri";
+			break;
+		case "6":
+			result = "Sat";
+			break;
+		case "0":
+			result = "Sun";
+			break;
+		default:
+			result = "not detected";
+	}
+	return result;
 }
 
 var eList = document.getElementById("eventList");
@@ -70,17 +105,20 @@ function createEvent(eventObject) {
 		var div = this.parentElement.parentElement;
 		div.style.display = "none";
 	});
-	
+	li.style = "height: 40px";
 	var dropdown = document.createElement("i");
 	dropdown.className = "dropdown glyphicon glyphicon-triangle-bottom";
 	dropdown.onclick = function() {
 		if(dropdown.className === "dropdown glyphicon glyphicon-triangle-bottom") {
 			dropdown.className = "dropdown glyphicon glyphicon-triangle-top";
+			var eventTable = document.createElement("table");
 			// fill in dropdown
-			myEvent.appendChild(dropItem("time", eventObject.time));
-			myEvent.appendChild(dropItem("repeat", eventObject.repeat));
-			myEvent.appendChild(dropItem("reminder", eventObject.remind));
-			myEvent.appendChild(dropItem("tabs", eventObject.tabs));
+			eventTable.appendChild(dropItem("time", eventObject.time));
+			eventTable.appendChild(dropItem("repeat", numToWeekDay(eventObject.repeat)));
+			eventTable.appendChild(dropItem("reminder", eventObject.remind));
+			eventTable.appendChild(dropItem("tabs", eventObject.tabs));
+			myEvent.appendChild(eventTable);
+			
 		} else {
 			dropdown.className = "dropdown glyphicon glyphicon-triangle-bottom";
 			while(myEvent.childElementCount != 1) {
@@ -97,10 +135,25 @@ function createEvent(eventObject) {
 }
 
 /*
+	input: repeat value array
+	output: repeat string array
+	function: convert numeric values to string to represent weekdays
+*/
+function numToWeekDay(repeatArray) {
+	var result = new Array();
+	for (var arrayIndex = 0; arrayIndex < repeatArray.length; arrayIndex++) {
+		console.log(repeatArray[arrayIndex] + " : " + getWeekday(repeatArray[arrayIndex]));
+		result.push(getWeekday(repeatArray[arrayIndex]));
+	}
+	return result;
+}
+
+/*
 	input: event object
 	function: fill in the input area with informations stored in the event object
 */
 function clickEvent(eventObject) {
+	clickClearInputs();
 	var eventName = document.getElementById("event");
 	eventName.value = eventObject.text;
 	var eventDate = document.getElementById("eventDate");
@@ -169,14 +222,14 @@ function clickEvent(eventObject) {
 	function: create div element to display event informations in dropdown
 */
 function dropItem(type, info) {
-	var listItem = document.createElement("div");
-	listItem.style = "display:block;";
-	listItem.className = "listItemClass"
-	var listItemInner = document.createElement("div");
-	listItemInner.style = "text-align:left; background-color:#f0f5f5;";
-	listItemInner.innerHTML = type + ": " + info;
-	listItem.appendChild(listItemInner);
-	return listItem;
+	var row = document.createElement("tr");
+	var tdType = document.createElement("td");
+	tdType.appendChild(document.createTextNode(type));
+	var tdInfo = document.createElement("td");
+	tdInfo.appendChild(document.createTextNode(info));
+	row.appendChild(tdType);
+	row.appendChild(tdInfo);
+	return row;
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -296,6 +349,7 @@ function clickAddEvent(e) {
 		if(reminders.length > 0) {
 			createAlarm(newEvent);
 		}
+		clickClearInputs();
 	}
 	else {
 		alert("please fill out event name and date");
@@ -436,6 +490,7 @@ function clickEditEvent(e) {
 			}
 		}
 		eList.appendChild(createEvent(newEvent));
+		clickClearInputs();
 		
 	}
 	else {
@@ -482,20 +537,6 @@ function removeEvent(eventObject) {
 	if(eventObject.remind) {
 		removeAlarms(eventObject);
 	}
-	// var key = findEventKey(eventObject);
-	// if(key !== -1) {
-
-	// 	chrome.storage.local.get({events: []}, function(result) {
-	// 		list = result.events;
-	// 		list.splice(key, 1);
-	// 	});
-	// 	chrome.storage.local.set({"events": list}, function() {
-	// 		console.log("after deleting: " + list);
-	// 	});
-	// 	if(eventObject.remind.length > 0) {
-	// 		removeAlarms(eventObject);
-	// 	}
-	// }
 }
 
 /* 
@@ -525,40 +566,4 @@ function editEvent(eventObject) {
 	if (eventObject.remind) {
 		createAlarm(eventObject);
 	}
-	// var kexy = findEventKey(eventObject);
-	// if(key !== -1) {
-	// 	chrome.storage.local.get({events: []}, function(result) {
-	// 		list = result.events;
-	// 		if(list[key].remind.length > 0) {
-	// 			removeAlarms(list[key]);
-	// 		}
-	// 		list.splice(key, 1);
-	// 	});		
-	// 	list.push(JSON.stringify(eventObject)); 
-	// 	chrome.storage.local.set({"events": list}, function() {
-	// 		console.log("after deleting: " + list);
-	// 	});
-	// 	if (eventObject.remind !== "") {
-	// 		createAlarm(eventObject);
-	// 	}
-	// }
-}
-
-/*
-	input: event object
-	function: find the key for the event from local storage
-	output: key
-*/
-function findEventKey(eventObject) {
-	var list;
-	chrome.storage.local.get({events: []}, function(result) {
-		list = result.events;
-		for(var key in list) {
-			var json = JSON.parse(list[key]);
-			if(json.text.localeCompare(eventObject.text) === 0){
-				return key;
-			}
-		}
-	});
-	return -1;
 }
