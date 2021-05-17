@@ -31,6 +31,7 @@ function resetTodoData(){
     while (myTodoList.childElementCount !== 0){
         myTodoList.removeChild(myTodoList.lastChild);
     }
+    chrome.alarms.clearAll();
 }
 const visualSettings = document.getElementById('visualSettings');
 const settings = document.getElementById('settings');
