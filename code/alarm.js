@@ -1,9 +1,100 @@
+var aList = document.getElementById("alarmList");
+
+if (aList != null) {
+	chrome.storage.local.get({alarms: []}, function(result) {
+		if (result.alarms == undefined) {
+			chrome.storage.local.set({"alarms": []});
+		} else {
+			var resultList = result.alarms;
+			var copyResultList = [];
+			for (var i = 0; i < resultList.length; i++) {
+				var reader = JSON.parse(resultList[i]);
+				copyResultList.push(JSON.stringify(reader));
+			}
+
+			chrome.storage.local.set({"alarms": copyResultList}, function() {
+				console.log('Value initiate to: ' + copyResultList);
+			});
+
+			resultList = copyResultList;
+			for (var i = 0; i < resultList.length; i++) {
+				aList.appendChild(
+					createAlarmListElement(
+						JSON.parse(resultList[i])
+					)
+				);
+			}
+		}
+	});
+}
+
+function createAlarmListElement(alarm) {
+	var myAlarm = document.createElement("div");
+	myAlarm.className = "entireAlarm";
+	var text = alarm.text;
+	myAlarm.id = text;
+	var li = document.createElement("li");
+	li.textContent = text;
+	li.className = "alarmLi";
+	var buttonDelete = document.createElement("button");
+	buttonDelete.innerHTML = "Delete";
+	buttonDelete.className = "deleteAlarm";
+	li.appendChild(buttonDelete);
+	buttonDelete.addEventListener('click', function(){
+		removeAlarm(text);
+		var div = this.parentElement.parentElement;
+		div.style.display = "none";
+	});
+	var dropdown = document.createElement("i");
+	dropdown.className = "dropdown glyphicon glyphicon-triangle-bottom";
+	dropdown.onclick = function() {
+		if(dropdown.className === "dropdown glyphicon glyphicon-triangle-bottom") {
+			dropdown.className = "dropdown glyphicon glyphicon-triangle-top";
+			var alarmTable = document.createElement("table");
+			alarmTable.appendChild(dropItem("text", alarm.text));
+			alarmTable.appendChild(dropItem("time", alarm.time));
+			myAlarm.appendChild(alarmTable);
+		} else {
+			dropdown.className = "dropdown glyphicon glyphicon-triangle-bottom";
+			while(myAlarm.childElementCount != 1) {
+				myAlarm.removeChild(myAlarm.lastChild);
+			}
+		}
+	};
+	li.appendChild(dropdown);
+	li.addEventListener("click", function() {
+		clickAlarm(alarm);
+	});
+	myAlarm.appendChild(li);
+	return myAlarm;
+}
+
+function clickAlarm(alarm) {
+	var alarmName = document.getElementById("loopAlarm");
+	alarmName.value = alarm.text;
+	var min = alarm.time;
+	hour2 = Math.floor(alarm.time / 600);
+	if(min % 600 != 0) {
+		min = min - (hour2 * 600);
+		hour1 = Math.floor(min / 60);
+		if (min % 60 != 0) {
+			min = min - (hour1 * 60);
+			min2 = Math.floor(min / 10);
+			if (min % 10 != 0) {
+				min = min - (min2 * 10);
+				min1 = min;
+			}
+		}
+	}
+	setTimeUI();
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 	var buttonSet = document.getElementById("set");
-	var buttonClear = document.getElementById("clear");
+	//var buttonClear = document.getElementById("clear");
 	var buttonEdit = document.getElementById("edit");
 	buttonSet.addEventListener("click", clickSet);
-	buttonClear.addEventListener("click", clickClear); 
+	// buttonClear.addEventListener("click", clickClear); 
 	buttonEdit.addEventListener("click", clickEdit);
 });
 
@@ -12,25 +103,25 @@ document.addEventListener('DOMContentLoaded', function () {
 	function: set a loop alarm and store in local storage
 */
 function clickSet(e) {
-	var minutes = hour2 * 600 + hour1 * 60 + min2 * 10 + min1;
-  console.log(minutes);
+	var time = hour2 * 600 + hour1 * 60 + min2 * 10 + min1;
+  console.log(time);
 	var text = document.getElementById("loopAlarm").value;
   console.log(text);
     var repeatCheck = document.getElementById("loopCheck").checked;
   console.log(repeatCheck);
-	if(minutes !== 0 && text != ""){
+	if(time !== 0 && text != ""){
     	if(repeatCheck){
       		console.log("REPEAT");
       		chrome.alarms.create(text,{
-        		delayInMinutes : minutes, 
-        		periodInMinutes : minutes
+        		delayInMinutes : time, 
+        		periodInMinutes : time
       	});
-		  console.log("alarm created " + text + ": " + minutes );
+		  console.log("alarm created " + text + ": " + time );
     	} else {
-      		chrome.alarms.create(text,{delayInMinutes : minutes});
-		 	console.log("alarm created " + text + ": " + minutes );
+      		chrome.alarms.create(text,{delayInMinutes : time});
+		 	console.log("alarm created " + text + ": " + time );
     	}
-		addAlarms(text, minutes);
+		addAlarms(text, time);
     	hour2 = 0;
     	hour1 = 0;
     	min2 = 0;
@@ -38,6 +129,7 @@ function clickSet(e) {
 		setTimeUI();
     	document.getElementById("loopAlarm").value = "";
     	document.getElementById("loopCheck").checked = false;
+		aList.appendChild(createAlarmListElement({text, time}));
 	}
 }
 
@@ -57,12 +149,19 @@ function clickClear(e){
 */
 function clickEdit(e){
 	var text = document.getElementById("loopAlarm").value;
-	var minutes = hour2 * 600 + hour1 * 60 + min2 * 10 + min1;
+	var time = hour2 * 600 + hour1 * 60 + min2 * 10 + min1;
 	chrome.alarms.get(text, function(alarm) {
-		alarm.delayInMinutes = minutes;
-		alarm.periodInMinutes = minutes;
+		alarm.delayInMinutes = time;
+		alarm.periodInMinutes = time;
 	});
-	editAlarm(text, minutes);
+	editAlarm(text, time);
+	for (var i = 0; i < aList.childNodes.length; i++) {
+		if(aList.childNodes[i].id == text) {
+			aList.childNodes[i].style.display = "none";
+			aList.removeChild(aList.childNodes[i]);
+		}
+	}
+	aList.appendChild(createAlarmListElement({text, time}));
 }
 
 /* 
