@@ -1,0 +1,488 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- Import Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"/>
+  <!-- Import calendar.css -->
+  <link rel="stylesheet" href="calendar.css"/>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    /* have events scroll within the window */
+    .events {
+      max-height: 225px;
+      overflow: auto; 
+    }
+    .darkMode{
+      filter: invert(1) hue-rotate(180deg);
+      /* background-color: rgb(34, 34, 34);
+      color: rgb(218, 218, 218); */
+    }
+    .invert {
+      filter: invert(1) hue-rotate(180deg);
+    }
+    /* #chromeExtension{
+      background-color: rgb(34, 34, 34);
+    } */
+    [data-tab-content]{
+      display: none;
+    }
+    .active[data-tab-content]{
+      display: block;
+    }
+    .ceWindow {
+      height: 580px;
+      width: 701px;
+      display: flex;
+    }
+    .left{
+      background-color: rgb(255, 255, 255);
+      width: 400px;
+      height: 580px;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+      overflow: auto;
+    }
+    .right{
+      background-color: rgb(255, 255, 255);
+      width: 300px;
+      height: 580px;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+    }
+    .middle{
+      width: 1px;
+      height: 580px;
+      background: #bbbbbb;
+      padding: 0;
+      margin: 0;
+    }
+    .solid{
+      border-top: 1px solid #bbbbbb;
+      width: 300px,;
+      margin: 10px 0px 10px 0px;
+      padding: 0px;
+    }
+    .myButton{
+      margin-top: 20px;
+    }
+    .buttonRow{
+      display: flex;
+      padding: 0;
+      justify-content: space-around;
+    }
+    .glyphicon{
+      font-size: 22px;
+    }
+    .sidebar{
+      overflow: auto;
+      max-height: 300px;
+      width: 300px;
+      text-align: center;
+    }
+    /* style todo list */
+    ul {  
+      margin: 0;
+      padding: 0;
+    }
+    /* style todo list elements */
+    ul li {
+      list-style-type: none;
+      cursor: pointer;
+      position:relative;
+      padding: 8px 4px 8px 36px;
+      background: rgba(238, 238, 238, 0.911);
+      font-size: 14px;
+      transition: 0.2s;
+    }
+    ul li:hover {
+      background: rgba(221, 221, 221, 0.816)
+    }
+    /* for marking completed tasks */
+    ul li.checked {
+      background: #888;
+      color: #fff;
+      text-decoration: line-through;
+    }
+    /* add a check mark for completed tasks */
+    ul li.checked::before {
+      content: '';
+      position: absolute;
+      border-color: #fff;
+      border-style: solid;
+      border-width: 0 2px 2px 0;
+      top: 10px;
+      left: 16px;
+      transform: rotate(45deg);
+      height:15px;
+      width: 7px;
+    }
+    /* X button to remove a list item */
+    .close {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      padding: 10px 14px 10px 14px;
+    }
+    .close:hover {
+      background-color: #f44336;
+      color: white;
+    }
+    /* input box for adding item to todo list */
+    input {
+      margin: 0 2px 8px 0;
+      border-style: solid;
+      border-width: 1px;
+      border-radius: 2px;
+      width: 75%;
+      padding: 6px;
+      font-size: 14px;
+    }
+    .taskList {
+      max-height: 235px;
+      overflow: auto;
+    }
+    #todoList{
+      list-style-type: none;
+    }
+    #allTabs{
+      min-height: 210px;
+      max-height: 210px;
+      overflow: auto;
+      padding-bottom: 20px;
+    }
+    .clock_ui{
+      display: flex;
+      font-size: 27px;
+      width: 200px;
+      justify-content: space-around;
+      margin: 0 auto;
+    }
+    .entireTab{
+      width: 280px;
+      min-height: 35px;
+      justify-content: center;
+    }
+    .tabRow{
+      min-height: 35px;
+      display: flex;
+      width: 280px;
+      cursor: pointer;
+    }
+    .tabRow:hover{
+      background: rgb(173, 173, 173);
+      cursor: pointer;
+    }
+    .dropdown{
+      width: 35px;
+      height: 35px;
+      padding-top: 9px;
+      font-size: 10px;
+      
+    }
+    .tabName{
+      width: 270px;
+      height: 35px;
+      text-align: start;
+      padding-left: 10px;
+      padding-top: 6px;
+    }
+    .deleteButton .glyphicon{
+      font-size: 12px;
+    }
+    .settingsButton{
+      cursor: pointer;
+      padding: 20px;    
+      border-bottom: 1px solid rgb(77, 77, 77);    
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%
+    }
+    td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 3px;
+    }
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    .deleteButton{
+      border-radius: 4px;
+      background-color: #f44336;
+      border: none;
+      color: white;
+      padding: 6px 24px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 10px;
+      margin: 0px;
+      cursor: pointer;
+    }
+    .addButton{
+      background-color: #4554d4;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin: 0px;
+    }
+    .linkInput{
+      margin: 10px 0px 10px 0px;
+    }
+    .addButton .glyphicon{
+      font-size: 10px;
+    }
+    #newMTabName{
+      margin: 0px;
+    }
+    #addTabButton .glyphicon{
+      font-size: 12px;
+    }
+  </style>
+
+</head>
+<body id = "chromeExtension"> 
+  <div class = "ceWindow">
+    <!-- Left Side of Extension -->
+    <div class = "left">
+      <!-- Calender UI and Scheduler UI -->
+      <div class="container-calendar">
+        <!-- Calendar layer -->
+        <div class="calendar">
+
+          <!-- Month Section (Top section) -->
+          <div class="month">
+
+            <!-- Left Arrow Button -->
+            <i class="fas fa-angle-left prev"></i>
+            
+            <!-- Date section within Month -->
+            <div class="date">
+              <!-- Month header -->
+              <h1></h1>
+              <!-- Current date header -->
+              <p></p>
+            </div>
+            
+            <!-- Right Arrow Button -->
+            <i class="fas fa-angle-right next"></i>
+          </div>
+            
+          <!-- Week section -->
+          <div class="week">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+          </div>
+            
+          <!-- Day section -->
+          <div class="days"></div>
+        
+          <!-- Scheduler layer -->
+          <div class="scheduler">
+            
+            <!-- Button that returns to the calendar page -->
+            <div class="scheduler-return">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </div>
+            
+            <!-- Scheduler HTML -->
+            <h3>Schedule</h3>
+            <input type="text" id="event" placeholder="add event">
+            <input type="datetime-local" id="eventDate"><br>
+            <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="38" spellcheck="false"
+            placeholder="Add tabs to open on event. &#10Ex. https://yahoo.com or Multi-Tab1"
+            ></textarea><br>
+            Repeat Every:
+            <div id="repeat">
+              <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
+              <label for="Tue"><input id="Tue" value="2" type="checkbox">Tue</label>
+              <label for="Wed"><input id="Wed" value="3" type="checkbox">Wed</label>
+              <label for="Thu"><input id="Thu" value="4" type="checkbox">Thu</label>
+              <label for="Fri"><input id="Fri" value="5" type="checkbox">Fri</label>
+              <label for="Sat"><input id="Sat" value="6" type="checkbox">Sat</label>
+              <label for="Sun"><input id="Sun" value="0" type="checkbox">Sun</label>
+            </div>
+            Remind Me When</br>
+            <div id="reminder">
+              <input type="time" style="width:60%;" id="remindTime">
+              <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i>
+            </div> 
+            <!-- </div>  -->
+            <button id="addEvent">Add</button>
+            <button id="editEvent">Save Changes</button> 
+            <button id="clearInputs">Clear</button> 
+            <!-- <button id="deleteEvent">Delete</button> --> 
+            <div class="events">
+              <ul id = "eventList">
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    <div class = "middle"></div>
+    <!-- Right Side of Extension -->
+    <div class = "right">
+      <div class = "myButton">
+        <img src = "tree.png" class = "inverted" height="150"/>
+      </div>
+      <div>Break Alert</div>
+      <hr class = "solid"/>
+      <div class = "buttonRow">
+        <i class = "glyphicon glyphicon-link" style="cursor:pointer;" data-tab-target = "#tabs"> </i>
+        <i class = "glyphicon glyphicon-list-alt" style="cursor:pointer;" data-tab-target = "#todo"></i>
+        <i class = "glyphicon glyphicon-bell" style="cursor:pointer;" data-tab-target = "#alarm"></i>
+        <i class = "glyphicon glyphicon-lock" style="cursor:pointer;" data-tab-target = "#lock"></i>
+        <i class = "glyphicon glyphicon-cog" style="cursor:pointer;" data-tab-target = "#settings"></i>
+      </div>
+      <hr class = "solid"/>
+      <div class = "tab-content">
+        <!-- User Defined Multi-Tab Code -->
+        <div id = "tabs" data-tab-content>
+          <div class = "sidebar">
+            <h4>Tab Shortcuts</h4>
+            <div id = "allTabs">
+            </div>
+            <div style="display: flex; justify-content: center;">
+              <input type="text" id = "newMTabName">
+              <button id="addTabButton" class="addButton"><i class = "glyphicon glyphicon-plus" style="cursor: pointer;"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+        <!-- Todo List Tab Code -->
+        <div id = "todo" data-tab-content>
+          <div id = "todoHeader" class="header">
+            <h3>Todo</h3>
+            <input type="text" id="input" placeholder="Add task to list...">
+            <button id="addTaskListener">Add</button>
+          </div>
+          <div class = "taskList">
+            <!-- todoList is where the tasks will appear, default tasks below are optional -->
+            <ul id="todoList">
+              <!-- <li>Make todo list</li>
+              <li>Work on extension</li>
+              <li>Meet with TA</li> -->
+            </ul>
+          </div>
+        </div>
+        <!-- Alarm Tab Code -->
+        <div id = "alarm" data-tab-content class="active">
+          <h4>Set up an Alarm</h4>
+          <div class= "clock_ui">
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "hour2_up"></i></div>
+              <div id = "hour2">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "hour2_down"></i></div>
+            </div>
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "hour1_up"></i></div>
+              <div id = "hour1">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "hour1_down"></i></div>
+            </div>
+            <div style = "margin: auto 0;">:</div>
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "min2_up"></i></div>
+              <div id = "min2">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "min2_down"></i></div>
+            </div>
+            <div>
+              <div><i class = "glyphicon glyphicon-triangle-top" style="cursor:pointer; font-size: 15px;" id = "min1_up"></i></div>
+              <div id = "min1">0</div>
+              <div><i class = "glyphicon glyphicon-triangle-bottom" style="cursor:pointer; font-size: 15px;" id = "min1_down"></i></div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-around; width: 240px; margin-left: 30px;">
+            <div>Hours</div>
+            <div>Mins</div>
+          </div>
+          <form>
+            <div class="form-group" style="width: 200px; margin: 20px auto;">
+              <input type="text" class="form-control" id="loopAlarm" placeholder="Remind me to...">
+            </div>
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="loopCheck" style="margin: 0; width: 30px;">
+              <label class="form-check-label" for="loopCheck">Repeating alarm?</label>
+            </div>
+          </form>
+          <button id="set">Set</button>
+          <!-- <button id="clear">Delete</button> -->
+          <button id="edit">Edit</button><br>
+          <div class="alarms">
+            <ul id = "alarmList">
+          </div>
+        </div>
+        <!-- Blocked Site Tab Code -->
+        <div id = "lock" data-tab-content>
+          <h4>Website Blocker</h4>
+          <textarea id="textarea" rows="10" cols="30" spellcheck="false"></textarea><br>
+          <button id="save">Save</button><br><br>
+          <div style="display: flex; justify-content: space-around; width: 70px; margin-left: 120px;">
+            <input id="blockedcheckbox" type="checkbox">
+            <label for="blockedcheckbox">Enable</label>
+          </div>
+        </div>
+        <!-- Settings Tab Code -->
+        <div id = "settings" data-tab-content>
+          <div style="padding: 0%; margin: 0%;">
+            <div style="display: flex; width:300px; justify-content:space-between;" id = "openVisualSettings" class = "settingsButton">
+              <div>Visual</div>
+              <i class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
+            </div>
+            <a href = "https://www.google.com" style = "text-decoration: none; color: black;" target="_blank">
+              <div style="display: flex; width:300px; justify-content:space-between;"class = "settingsButton">
+                <div>Website</div>
+                <i class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
+              </div>
+            </a>
+            <a href = "https://chrome.google.com/webstore/detail/break-alert/bilocpkncpeojgehfelfaecabikkdolb/reviews" style = "text-decoration: none; color: black;" target="_blank">
+              <div style="display: flex; width:300px; justify-content:space-between;"class = "settingsButton">
+                <div>Rate Break Alert</div>
+                <i class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
+              </div>
+            </a>
+            <div style="display: flex; width:300px; justify-content:space-between;"id = "resetMultiTabData" class = "settingsButton">
+              <div>Reset Multi-tab Data</div>
+              <i class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
+            </div>
+            <div style="display: flex; width:300px; justify-content:space-between;"id = "resetTodoData" class = "settingsButton">
+              <div>Reset To-do List Data</div>
+              <i class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
+            </div>
+          </div>
+        </div>
+        <div id = "visualSettings" data-tab-content>
+          <div>
+            <div id = "toggleLightMode" class = "settingsButton">Light Mode</div>
+            <div id = "toggleDarkMode" class = "settingsButton">Dark Mode</div> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src = "settings.js" charset="utf-8"></script>
+  <script src = "popup.js" charset="utf-8"></script>
+  <script src = "multitab.js" charset="utf-8"></script>
+  <script src = "alarm.js" charset="utf-8"></script>
+  <script src = "todo.js" charset="utf-8"></script>
+  <script src = "schedule.js" charset="utf-8"></script>
+  <script src = "blockpage.js"></script>
+  <!-- Import calendar.js -->
+  <script src="calendar.js"></script>
+</body>
+</html>
