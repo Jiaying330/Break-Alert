@@ -88,8 +88,10 @@ function createTab(name, urls, pos){
 				}
 				myTab.appendChild(inputRow(pos, myTab));
 				var deleteButton = document.createElement("div");
-				deleteButton.innerHTML = "Delete";
-				deleteButton.style = "cursor: pointer; color: red;"; 
+				deleteButton.className = "deleteButton";
+				var deleteTabIcon = document.createElement("i");
+				deleteTabIcon.className = "glyphicon glyphicon-trash";
+				deleteButton.appendChild(deleteTabIcon);
 				deleteButton.onclick = function () {
 					myTabsList[pos] = JSON.stringify({
 						name : '',
@@ -131,7 +133,11 @@ function inputRow(pos, myTab){
 	inputRow.className = "inputRow";
 	inputRow.appendChild(insertTabBar(pos));
 	var btn = document.createElement("BUTTON");
-	btn.innerHTML = "Add";
+	btn.className = "addButton";
+	
+	var addIcon = document.createElement("i");
+	addIcon.className = "glyphicon glyphicon-plus";
+	btn.appendChild(addIcon);
 	btn.onclick = function () {
 		var text = document.getElementById("input"+pos).value;
 		document.getElementById("input"+pos).value = "";
@@ -173,12 +179,13 @@ function urlListItem(url, pos, linkNum){
 		listItem.style = "display:flex; display:none;"
 	}
 	var listItemInner = document.createElement("div");
-	listItemInner.style = "min-width: 220px; max-width: 220px; text-overflow: ellipsis; overflow: hidden;white-space: nowrap;";
+	listItemInner.style = "min-width: 200px; max-width: 200px; text-overflow: ellipsis; overflow: hidden;white-space: nowrap;";
 	listItemInner.innerHTML = url;
 
 	listItem.appendChild(listItemInner);
 	var deleteButton = document.createElement("i");
-	deleteButton.className = "deleteButton glyphicon glyphicon-remove";
+	deleteButton.className = "glyphicon glyphicon-remove";
+	deleteButton.style = "font-size: 12px; cursor:pointer; margin-top:2px";
 	listItem.appendChild(deleteButton);
 	deleteButton.onclick = function(){
 		chrome.storage.sync.get(["myTabs"], function(result) {
@@ -203,6 +210,7 @@ function urlListItem(url, pos, linkNum){
 {/* <input type="text" class="form-control" id="loopAlarm" placeholder="Remind me to..."> */}
 function insertTabBar(pos){
 	var input = document.createElement("input");
+	input.className = "linkInput";
 	input.setAttribute('type', 'text');
 	input.setAttribute("id", "input"+pos);
 	return input;

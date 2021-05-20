@@ -1,7 +1,7 @@
 {
   "name": "Break Alert",
   "description": "CSE115A Chrome Extension project",
-  "version": "0.1.0",
+  "version": "2.0",
   "manifest_version": 2,
   "icons": {
       "16": "./tree16.png",
