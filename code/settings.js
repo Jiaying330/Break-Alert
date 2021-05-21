@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.getElementById("resetTodoData").addEventListener("click", resetTodoData);
 	document.getElementById("toggleDarkMode").addEventListener("click", toggleDarkMode);
 	document.getElementById("toggleLightMode").addEventListener("click", toggleLightMode);
+    document.getElementById("resetAlarmData").addEventListener("click", resetAlarmData);
 });
 
 function resetMultiTabData(){
@@ -31,7 +32,6 @@ function resetTodoData(){
     while (myTodoList.childElementCount !== 0){
         myTodoList.removeChild(myTodoList.lastChild);
     }
-    chrome.alarms.clearAll();
 }
 const visualSettings = document.getElementById('visualSettings');
 const settings = document.getElementById('settings');
@@ -54,4 +54,20 @@ function toggleLightMode(){
         result.classList.remove('invert');
     })
     chrome.storage.sync.set({"visual": "light"});
+}
+
+function resetAlarmData(){
+    chrome.alarms.clearAll();
+    chrome.storage.local.set({"alarms": []});
+    chrome.storage.local.set({"events": []});
+
+    const eList = document.getElementById("eventList");
+    while (eList.childElementCount !== 0){
+        eList.removeChild(eList.lastChild);
+    }
+
+    const aList = document.getElementById("alarmList");
+    while (aList.childElementCount !== 0){
+        aList.removeChild(aList.lastChild);
+    }
 }
