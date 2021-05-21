@@ -41,7 +41,10 @@ chrome.alarms.onAlarm.addListener(function(alarm){
 		for (; (alarmIndex < eventsList.length) && (JSON.parse(eventsList[alarmIndex]).text != name); alarmIndex++);
 
 		// parse through the corresponding event in eventsList and extract its tabs array
-		tabs = JSON.parse(eventsList[alarmIndex]).tabs;
+		if (typeof(eventsList[alarmIndex]) != "undefined"){
+			tabs = JSON.parse(eventsList[alarmIndex]).tabs;
+		}
+		
 	});
 
 	chrome.storage.sync.get(["myTabs"], function(result) {

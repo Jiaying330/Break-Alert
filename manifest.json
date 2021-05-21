@@ -1,0 +1,34 @@
+{
+  "name": "Break Alert",
+  "description": "CSE115A Chrome Extension project",
+  "version": "2.0",
+  "manifest_version": 2,
+  "icons": {
+      "16": "icon/tree16.png",
+      "32": "icon/tree32.png",
+      "48": "icon/tree48.png",
+      "128": "icon/tree128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["code/javascript/alarm.js", 
+             "code/javascript/blockpage.js",
+             "code/javascript/multitab.js",
+             "code/javascript/popup.js",
+             "code/javascript/settings.js",
+             "code/javascript/schedule.js"]
+    }
+  ],
+  "browser_action": {
+    "default_title": "Break Alert",
+    "default_popup": "code/popup.html"
+  },
+  "background": {
+    "scripts": ["code/javascript/eventPage.js", 
+                "code/javascript/background.js",
+                "code/javascript/todo.js"],
+    "persistent": false
+  },
+  "permissions": ["tabs", "storage", "alarms"]
+}
