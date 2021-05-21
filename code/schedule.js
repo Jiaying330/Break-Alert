@@ -206,15 +206,6 @@ function clickEvent(eventObject) {
 			inputReminders[remindIndex].value = "";
 		}
 	}
-
-	//// delete all unused reminder input fields except the very first one
-	// 
-	// for (var remindIndex = maxReminders - 1; remindIndex > 0; remindIndex--){
-	// 	if (inputReminders[remindIndex].value = ""){  
-	// 		var element = inputReminders[remindIndex];
-	// 		element.parentElement.parentElement.removeChild(element.parentElement);
-	// 	}
-	// }
 }
 
 /* 
@@ -498,6 +489,7 @@ function clickEditEvent(e) {
 		return;
 	}
 }
+
 /* 
 	input: event object
 	function: add the event to the local storage

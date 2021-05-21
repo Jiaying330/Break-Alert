@@ -178,7 +178,6 @@
       height: 35px;
       padding-top: 9px;
       font-size: 10px;
-      
     }
     .tabName{
       width: 270px;
@@ -243,6 +242,54 @@
     #addTabButton .glyphicon{
       font-size: 12px;
     }
+
+    .left input[type=text]{
+      width: 50%;
+      height: 40px;
+      padding: 15px 15px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    } 
+    .left input[type=datetime-local] {
+      width: 50%;
+      height: 40px;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid color #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    } 
+    .left input[type=time] {
+      width: 50%;
+      height: 40px;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid color #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    } 
+    .left textarea {
+      width: 70%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    } 
+    .left label  {
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 40px;
+      box-sizing: border-box;
+      background-color: #d5ee91;
+    } 
   </style>
 
 </head>
@@ -251,12 +298,12 @@
     <!-- Left Side of Extension -->
     <div class = "left">
       <h3>Schedule</h3>
-      <input type="text" id="event" placeholder="add event">
-      <input type="datetime-local" id="eventDate"><br>
+      <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: larger;">Event Title*  <input type="text" id="event" maxlength="40" placeholder="add event"></span><br>
+      <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: larger;">Event Date* </span><input type="datetime-local" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"id="eventDate"><br>
       <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="38" spellcheck="false"
       placeholder="Add tabs to open on event. &#10Ex. https://yahoo.com or Multi-Tab1"
                   ></textarea><br>
-      Repeat Every:
+      <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: larger;">Repeat Every: </span><br>
       <div id="repeat">
         <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
         <label for="Tue"><input id="Tue" value="2" type="checkbox">Tue</label>
@@ -266,7 +313,8 @@
         <label for="Sat"><input id="Sat" value="6" type="checkbox">Sat</label>
         <label for="Sun"><input id="Sun" value="0" type="checkbox">Sun</label>
       </div>
-      Remind Me When</br>
+      <p></p>
+      <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: larger;">Remind Me When </span></br>
           <div id="reminder">
             <input type="time" style="width:60%;" id="remindTime">
             <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i>
@@ -275,7 +323,6 @@
       <button id="addEvent">Add</button>
       <button id="editEvent">Save Changes</button> 
       <button id="clearInputs">Clear</button> 
-      <!-- <button id="deleteEvent">Delete</button> --> 
       <div class="events">
           <ul id = "eventList">
       </div>
