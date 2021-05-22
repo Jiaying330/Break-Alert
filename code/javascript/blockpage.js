@@ -13,17 +13,21 @@ if (textarea != null){
   ].join("\n");
 }
 
-save.addEventListener("click", () => {
-  const blocked = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
+if (save != null){
+  save.addEventListener("click", () => {
+    const blocked = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
 
-  chrome.storage.local.set({ blocked });
-});
+    chrome.storage.local.set({ blocked });
+  });
+}
 
-blockedcheckbox.addEventListener("change", (event) => {
-  const enabled = event.target.checked;
+if (blockedcheckbox != null){
+  blockedcheckbox.addEventListener("change", (event) => {
+    const enabled = event.target.checked;
 
-  chrome.storage.local.set({ enabled });
-});
+    chrome.storage.local.set({ enabled });
+  });
+}
 
 window.addEventListener("DOMContentLoaded", () => {
   chrome.storage.local.get(["blocked", "enabled"], function (local) {
