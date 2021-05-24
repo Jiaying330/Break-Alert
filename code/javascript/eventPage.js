@@ -1,14 +1,11 @@
 //
-// BE CAREFUL PUTTING ANYTHING HERE AT THE TOP OF 
-// THIS FILE! IT HAS BEEN CAUSING STUFF TO BREAK (ie. THE
-// TAB OPENING ONALARM DOESN'T WORK SOMETIMES WHEN THERE'S
-// STUFF HERE)
-//
 // ALSO NOTE THAT CONSOLE.LOG() STATEMENTS DON'T PRINT AT ALL
-// IN THIS JS FILE FOR SOME REASON!!! :(
+// IN THIS JS FILE FOR SOME REASON! :(
+//
+// USE ALERT() INSTEAD TO DEBUG
 //
 // WHEN MAKING CHANGES IN THIS FILE, MAKE SURE TO MANUALLY UPDATE
-// THE EXTENSION; SOME CHANGES AREN'T IMMEDIATELY IMPLEMENTED (IDK WHY)
+// THE EXTENSION; SOME CHANGES AREN'T IMMEDIATELY IMPLEMENTED
 //
 
 chrome.alarms.onAlarm.addListener(function(alarm){
@@ -18,19 +15,15 @@ chrome.alarms.onAlarm.addListener(function(alarm){
 	var splitAlarmName = (alarm.name).split("__");
 	var name = splitAlarmName[0];
 	content = name;
-	chrome.storage.local.get({alarms: []}, function(result) {
-		var alarmList = result.alarms;
-		var alarmIndex;
-		for (alarmIndex = 0; (alarmIndex < alarmList.length && (JSON.parse(alarmList[alarmIndex]).text != name)); alarmIndex++){}
-		if(alarmIndex < alarmList.length) {
-			if(typeof alarm.when != "undefined") {
-				alarmList.splice(alarmIndex, 1);
-				chrome.storage.local.set({"alarms": alarmList}, function() {
-				})
-			}
-		}
-		
-	});
+
+	// if we don't have a repeating alarm, remove it from the list
+	// (this only executes on alarms, NOT events, which is what we want)
+	// alert("alarm delay = " + alarm.delayInMinutes);
+	// alert("alarm period = " + alarm.periodInMinutes);
+	if (typeof alarm.periodInMinutes === "undefined"){
+		// alert("im not a repeating alarm");
+		removeNonRepeatingAlarm(alarm.name);  
+	}
 
 	// get events array from Chrome Storage and extract the tabs from event
 	var tabs = [];  // array to store tasks from event into
@@ -89,3 +82,32 @@ chrome.alarms.onAlarm.addListener(function(alarm){
 
 	alert(content);
 });
+
+
+/* 
+  NOTE: this function is a "copy" of the same function removeAlarm() in alarm.js
+	It seems that eventPage.js is unable to reference the function from alarm.js so it
+	is redefined with some modifications here (to simply delete non-repeating alarms)
+
+	input: text(name) of the alarm
+	function: remove an alarm with the key from the local storage
+*/
+function removeNonRepeatingAlarm(text) {
+	var list;
+	chrome.storage.local.get({alarms: []}, function(result) {
+		list = result.alarms;
+		for(var key in list) {
+			var json = JSON.parse(list[key]);
+			if(json.text.localeCompare(text) == 0) {
+				list.splice(key, 1);
+				break;
+			}
+		}
+		
+		chrome.storage.local.set({"alarms": list}, function() {
+			console.log("after deleting: " + list);
+		});
+	});
+
+	
+}
