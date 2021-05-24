@@ -290,6 +290,10 @@
       box-sizing: border-box;
       background-color: #d5ee91;
     } 
+    #settings{
+      overflow: auto;
+      max-height: 325px;
+    }
   </style>
 
 </head>
@@ -331,14 +335,14 @@
     <!-- Right Side of Extension -->
     <div class = "right">
       <div class = "myButton">
-        <img src = "tree.png" class = "inverted" height="150"/>
+        <img src = "../icon/tree.png" class = "inverted" height="150"/>
       </div>
       <div>Break Alert</div>
       <hr class = "solid"/>
       <div class = "buttonRow">
-        <i class = "glyphicon glyphicon-link" style="cursor:pointer;" data-tab-target = "#tabs"> </i>
-        <i class = "glyphicon glyphicon-list-alt" style="cursor:pointer;" data-tab-target = "#todo"></i>
-        <i class = "glyphicon glyphicon-bell" style="cursor:pointer;" data-tab-target = "#alarm"></i>
+        <i class = "glyphicon glyphicon-th-list" style="cursor:pointer;" data-tab-target = "#tabs"> </i>
+        <i class = "glyphicon glyphicon-list-alt" style="cursor:pointer;" data-tab-target = "#todo" name="openTodoListTab"></i>
+        <i class = "glyphicon glyphicon-time" style="cursor:pointer;" data-tab-target = "#alarm"></i>
         <i class = "glyphicon glyphicon-lock" style="cursor:pointer;" data-tab-target = "#lock"></i>
         <i class = "glyphicon glyphicon-cog" style="cursor:pointer;" data-tab-target = "#settings"></i>
       </div>
@@ -456,6 +460,10 @@
               <div>Reset To-do List Data</div>
               <i class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
             </div>
+            <div style="display: flex; width:300px; justify-content:space-between;"id = "resetAlarmData" class = "settingsButton">
+              <div>Reset Alarm and Event Data</div>
+              <i class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
+            </div>
           </div>
         </div>
         <div id = "visualSettings" data-tab-content>
@@ -467,12 +475,12 @@
       </div>
     </div>
   </div>
-  <script src = "settings.js" charset="utf-8"></script>
-  <script src = "popup.js" charset="utf-8"></script>
-  <script src = "multitab.js" charset="utf-8"></script>
-  <script src = "alarm.js" charset="utf-8"></script>
-  <script src = "todo.js" charset="utf-8"></script>
-  <script src = "schedule.js" charset="utf-8"></script>
-  <script src = "blockpage.js"></script>
+  <script src = "javascript/settings.js" charset="utf-8"></script>
+  <script src = "javascript/popup.js" charset="utf-8"></script>
+  <script src = "javascript/multitab.js" charset="utf-8"></script>
+  <script src = "javascript/alarm.js" charset="utf-8"></script>
+  <script src = "javascript/todo.js" charset="utf-8"></script>
+  <script src = "javascript/schedule.js" charset="utf-8"></script>
+  <script src = "javascript/blockpage.js"></script>
 </body>
 </html>
