@@ -97,8 +97,8 @@ function createTab(name, urls, pos){
 						name : '',
 						urls : [] 
 					});
-					myTab.style = "display:none;"
-								console.log(myTabsList);
+					myTab.style = "display:none;";
+					console.log(myTabsList);
 					chrome.storage.sync.set({"myTabs": myTabsList}, function(){
 						console.log('Value set to ' + myTabsList);
 					});
@@ -140,6 +140,7 @@ function inputRow(pos, myTab){
 	btn.appendChild(addIcon);
 	btn.onclick = function () {
 		var text = document.getElementById("input"+pos).value;
+		console.log(text);
 		document.getElementById("input"+pos).value = "";
 		myTab.insertBefore(urlListItem(text, pos, myTab.childElementCount - 3), myTab.children[myTab.childElementCount - 2]);
 		chrome.storage.sync.get(["myTabs"], function(result) {
