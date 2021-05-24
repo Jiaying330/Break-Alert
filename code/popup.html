@@ -107,7 +107,7 @@
     ul li.checked::before {
       content: '';
       position: absolute;
-      border-color: #fff;
+      border-color: rgb(39, 39, 39);
       border-style: solid;
       border-width: 0 2px 2px 0;
       top: 10px;
@@ -170,7 +170,6 @@
       cursor: pointer;
     }
     .tabRow:hover{
-      background: rgb(173, 173, 173);
       cursor: pointer;
     }
     .dropdown{
@@ -193,7 +192,7 @@
     .settingsButton{
       cursor: pointer;
       padding: 20px;    
-      border-bottom: 1px solid rgb(77, 77, 77);    
+      border-bottom: 1px solid rgb(0, 0, 0);    
     }
     table {
       border-collapse: collapse;
@@ -240,12 +239,26 @@
     #newMTabName{
       margin: 0px;
     }
+    #input{
+      margin: 0px;
+    }
     #addTabButton .glyphicon{
       font-size: 12px;
     }
     #settings{
       overflow: auto;
       max-height: 325px;
+    }
+    .customButton{
+      border: none;
+      color: white;
+      padding: 5px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
     }
   </style>
 
@@ -258,8 +271,7 @@
       <input type="text" id="event" placeholder="add event">
       <input type="datetime-local" id="eventDate"><br>
       <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="38" spellcheck="false"
-      placeholder="Add tabs to open on event. &#10Ex. https://yahoo.com or Multi-Tab1"
-                  ></textarea><br>
+      placeholder="Add tabs to open on event. &#10Ex. https://yahoo.com or Multi-Tab1"></textarea><br>
       Repeat Every:
       <div id="repeat">
         <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
@@ -271,15 +283,13 @@
         <label for="Sun"><input id="Sun" value="0" type="checkbox">Sun</label>
       </div>
       Remind Me When</br>
-          <div id="reminder">
-            <input type="time" style="width:60%;" id="remindTime">
-            <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i>
-          </div> 
-      <!-- </div>  -->
+      <div id="reminder">
+        <input type="time" style="width:60%;" id="remindTime">
+        <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i>
+      </div> 
       <button id="addEvent">Add</button>
       <button id="editEvent">Save Changes</button> 
       <button id="clearInputs">Clear</button> 
-      <!-- <button id="deleteEvent">Delete</button> --> 
       <div class="events">
           <ul id = "eventList">
       </div>
@@ -318,15 +328,14 @@
         <div id = "todo" data-tab-content>
           <div id = "todoHeader" class="header">
             <h3>Todo</h3>
-            <input type="text" id="input" placeholder="Add task to list...">
-            <button id="addTaskListener">Add</button>
+            <div style="display: flex; justify-content: center;">
+              <input type = "text" id = "input" placeholder = "Add task to list...">
+              <button id="addTaskListener" class="addButton"><i class = "glyphicon glyphicon-plus" style="cursor: pointer;"></i></button>
+            </div>
           </div>
           <div class = "taskList">
             <!-- todoList is where the tasks will appear, default tasks below are optional -->
             <ul id="todoList">
-              <!-- <li>Make todo list</li>
-              <li>Work on extension</li>
-              <li>Meet with TA</li> -->
             </ul>
           </div>
         </div>
@@ -369,9 +378,8 @@
               <label class="form-check-label" for="loopCheck">Repeating alarm?</label>
             </div>
           </form>
-          <button id="set">Set</button>
-          <!-- <button id="clear">Delete</button> -->
-          <button id="edit">Edit</button><br>
+          <div class = "customButton" id = "set" style="background-color: #4554d4;">Set</div>
+          <div class = "customButton" id = "edit" style="background-color: #f44336;">Edit</div>
           <div class="alarms">
             <ul id = "alarmList">
           </div>
@@ -380,7 +388,7 @@
         <div id = "lock" data-tab-content>
           <h4>Website Blocker</h4>
           <textarea id="textarea" rows="10" cols="30" spellcheck="false"></textarea><br>
-          <button id="save">Save</button><br><br>
+          <div class = "customButton" id = "save" style="background-color: #4554d4;">Save</div><br><br>
           <div style="display: flex; justify-content: space-around; width: 70px; margin-left: 120px;">
             <input id="blockedcheckbox" type="checkbox">
             <label for="blockedcheckbox">Enable</label>
@@ -407,11 +415,11 @@
             </a>
             <div style="display: flex; width:300px; justify-content:space-between;"id = "resetMultiTabData" class = "settingsButton">
               <div>Reset Multi-tab Data</div>
-              <i class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
+              <i id = "reset_multi_tab" class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
             </div>
             <div style="display: flex; width:300px; justify-content:space-between;"id = "resetTodoData" class = "settingsButton">
               <div>Reset To-do List Data</div>
-              <i class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
+              <i id = "reset_todo" class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
             </div>
             <div style="display: flex; width:300px; justify-content:space-between;"id = "resetAlarmData" class = "settingsButton">
               <div>Reset Alarm and Event Data</div>
