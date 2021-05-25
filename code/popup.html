@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- Import Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"/>
+  <!-- Import calendar.css for calendar -->
+  <link rel="stylesheet" href="calendar.css"/>
   <meta charset="UTF-8">
   <title>Document</title>
   <style>
@@ -266,32 +270,87 @@
 <body id = "chromeExtension"> 
   <div class = "ceWindow">
     <!-- Left Side of Extension -->
+    
     <div class = "left">
-      <h3>Schedule</h3>
-      <input type="text" id="event" placeholder="add event">
-      <input type="datetime-local" id="eventDate"><br>
-      <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="38" spellcheck="false"
-      placeholder="Add tabs to open on event. &#10Ex. https://yahoo.com or Multi-Tab1"></textarea><br>
-      Repeat Every:
-      <div id="repeat">
-        <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
-        <label for="Tue"><input id="Tue" value="2" type="checkbox">Tue</label>
-        <label for="Wed"><input id="Wed" value="3" type="checkbox">Wed</label>
-        <label for="Thu"><input id="Thu" value="4" type="checkbox">Thu</label>
-        <label for="Fri"><input id="Fri" value="5" type="checkbox">Fri</label>
-        <label for="Sat"><input id="Sat" value="6" type="checkbox">Sat</label>
-        <label for="Sun"><input id="Sun" value="0" type="checkbox">Sun</label>
-      </div>
-      Remind Me When</br>
-      <div id="reminder">
-        <input type="time" style="width:60%;" id="remindTime">
-        <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i>
-      </div> 
-      <button id="addEvent">Add</button>
-      <button id="editEvent">Save Changes</button> 
-      <button id="clearInputs">Clear</button> 
-      <div class="events">
-          <ul id = "eventList">
+      <!-- Calender UI and Scheduler UI -->
+      <div class="container-calendar">
+        <!-- Calendar layer -->
+        <div class="calendar">
+
+          <!-- Month Section (Top section) -->
+          <div class="month">
+
+            <!-- Left Arrow Button -->
+            <i class="fas fa-angle-left prev"></i>
+            
+            <!-- Date section within Month -->
+            <div class="date">
+              <!-- Month header -->
+              <h1></h1>
+              <!-- Current date header -->
+              <p></p>
+            </div>
+            
+            <!-- Right Arrow Button -->
+            <i class="fas fa-angle-right next"></i>
+          </div>
+            
+          <!-- Week section -->
+          <div class="week">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+          </div>
+            
+          <!-- Day section -->
+          <div class="days"></div>
+        
+          <!-- Scheduler layer -->
+          <div class="scheduler">
+            
+            <!-- Button that returns to the calendar page -->
+            <div class="scheduler-return">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </div>
+            
+            <!-- Scheduler HTML -->
+            <h3>Schedule</h3>
+            <input type="text" id="event" placeholder="add event">
+            <input type="datetime-local" id="eventDate"><br>
+            <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="38" spellcheck="false"
+            placeholder="Add tabs to open on event. &#10Ex. https://yahoo.com or Multi-Tab1"
+            ></textarea><br>
+            Repeat Every:
+            <div id="repeat">
+              <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
+              <label for="Tue"><input id="Tue" value="2" type="checkbox">Tue</label>
+              <label for="Wed"><input id="Wed" value="3" type="checkbox">Wed</label>
+              <label for="Thu"><input id="Thu" value="4" type="checkbox">Thu</label>
+              <label for="Fri"><input id="Fri" value="5" type="checkbox">Fri</label>
+              <label for="Sat"><input id="Sat" value="6" type="checkbox">Sat</label>
+              <label for="Sun"><input id="Sun" value="0" type="checkbox">Sun</label>
+            </div>
+            Remind Me When</br>
+            <div id="reminder">
+              <input type="time" style="width:60%;" id="remindTime">
+              <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i>
+            </div> 
+            <!-- </div>  -->
+            <button id="addEvent">Add</button>
+            <button id="editEvent">Save Changes</button> 
+            <button id="clearInputs">Clear</button> 
+            <!-- <button id="deleteEvent">Delete</button> --> 
+            <div class="events">
+              <ul id = "eventList">
+            </div>
+          </div>
+
+
+        </div>
       </div>
     </div>
     <div class = "middle"></div>
@@ -443,5 +502,6 @@
   <script src = "javascript/todo.js" charset="utf-8"></script>
   <script src = "javascript/schedule.js" charset="utf-8"></script>
   <script src = "javascript/blockpage.js"></script>
+  <script src = "javascript/calendar.js"></script>
 </body>
 </html>
