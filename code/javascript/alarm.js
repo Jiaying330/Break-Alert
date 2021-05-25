@@ -91,10 +91,10 @@ function clickAlarm(alarm) {
 
 document.addEventListener('DOMContentLoaded', function () {
 	var buttonSet = document.getElementById("set");
-	//var buttonClear = document.getElementById("clear");
+	var buttonClear = document.getElementById("clear");
 	var buttonEdit = document.getElementById("edit");
 	buttonSet.addEventListener("click", clickSet);
-	// buttonClear.addEventListener("click", clickClear); 
+	buttonClear.addEventListener("click", clickClear); 
 	buttonEdit.addEventListener("click", clickEdit);
 });
 
@@ -134,13 +134,16 @@ function clickSet(e) {
 }
 
 /* 
-	input: event
-	function: delete a loop alarm and update in local storage
+	function: clear current entries in input boxes
 */
-function clickClear(e){
-	var text = document.getElementById("loopAlarm").value;
-	chrome.alarms.clear(text);
-	removeAlarm(text);
+function clickClear(){
+	document.getElementById("loopAlarm").value = "";
+  document.getElementById("loopCheck").checked = false;
+	hour2 = 0;
+	hour1 = 0;
+	min2 = 0;
+	min1 = 0;
+	setTimeUI();
 }
 
 /* 
@@ -180,7 +183,7 @@ function addAlarms(text, time) {
 
 /* 
 	input: text(name) of the alarm
-	function: remove an alarm with the key from the local storage 
+	function: remove an alarm with the key from the local storage and chrome.alarms
 */
 function removeAlarm(text) {
 	var list;
@@ -190,13 +193,31 @@ function removeAlarm(text) {
 			var json = JSON.parse(list[key]);
 			if(json.text.localeCompare(text) == 0) {
 				list.splice(key, 1);
+
+				// delete the actual alarm from chrome.alarms if it's a repeating alarm
+				// (so that it doesn't popup anymore after it's deleted from storage) 
+				//
+				// determine if alarm is repeating by checking if periodInMinutes is defined
+				chrome.alarms.get(text, function(alarm){
+					alert("alarm name is " + text);
+					// alert("alarm to check is " + alarm.periodInMinutes);
+					var isRepeating = alarm.periodInMinutes;
+					if (typeof isRepeating != "undefined"){
+						// alert("chrome.clear is called for alarm " + text);
+						chrome.alarms.clear(text);
+					}
+				});
+
 				break;
 			}
 		}
+		
 		chrome.storage.local.set({"alarms": list}, function() {
 			console.log("after deleting: " + list);
 		});
 	});
+
+	
 }
 
 /* 
