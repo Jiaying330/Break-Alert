@@ -27,11 +27,11 @@ async function enableBreakAlert(){
   try{
     // force all execution to wait for isActiveBreakAlert() to return
     isActive = await isActiveBreakAlert();
-    alert("isActive is " + isActive);
+    // alert("isActive is " + isActive);
   }
   catch (status) {
     // isActive (status) is false
-    alert("isActive is  " + status);
+    // alert("isActive is  " + status);
   }
   
   // check for empty input boxes before creating the alarm and storing it
