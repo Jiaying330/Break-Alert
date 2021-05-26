@@ -97,7 +97,9 @@ function createEvent(eventObject) {
 	li.className = "eventLi";
 	var buttonD = document.createElement("button");
 	buttonD.innerHTML = "Delete";
-	buttonD.className = "deleteEvent";
+	buttonD.id = "deleteEvent";
+	buttonD.className = "customButton";
+	buttonD.style = "background-color: red;";
 	li.appendChild(buttonD);
 	buttonD.addEventListener('click', function(){
 		removeEvent(eventObject);
@@ -456,7 +458,6 @@ function clickEditEvent(e) {
 	var timeDifference = (new Date(date)).getTime - now.getTime();
 	var text = document.getElementById("event").value;
 	if(date != "" && text != "") {
-
 		//extract input
 		var checkBox = document.getElementById("repeat");
 		var chks = checkBox.getElementsByTagName("INPUT");
@@ -480,7 +481,6 @@ function clickEditEvent(e) {
 		}
 		eList.appendChild(createEvent(newEvent));
 		clickClearInputs();
-		
 	}
 	else {
 		alert("please fill out event name and date");
@@ -537,7 +537,8 @@ function editEvent(eventObject) {
 	var list;
 	chrome.storage.local.get({events: []}, function(result) {
 		list = result.events;
-		for(var key in list) {
+		var key;
+		for(key in list) {
 			var event = list[key];
 			var json = JSON.parse(list[key]);
 			if(json.text.localeCompare(eventObject.text) == 0){

@@ -20,27 +20,21 @@ driver.get('chrome-extension://gpmlkclebboedbdipgpmmkgnbdjdkgck/code/popup.html'
 # do nothing for 2 seconds
 time.sleep(2) 
 
-# # switch to todolist tab
-# switch_to_todolist_button = driver.find_element_by_name("openTodoListTab")
-# switch_to_todolist_button.click()
-
+# switch to scheduler setting page
 switch_to_scheduler = driver.find_element_by_css_selector("div.days div")
 switch_to_scheduler.click()
 
 time.sleep(2)
 
-# select the input box to type data into it
+# select the input box to type event name into it
 inputEventTitle = driver.find_element_by_id("event")
 inputEventTitle.send_keys("event 1")
 
-
+# input date into eventDate input box
 js = "document.getElementById('eventDate').removeAttribute('readonly')" 
 driver.execute_script(js)
-# driver.find_element_by_xpath()
 js2 = "document.getElementById('eventDate').value='2021-06-06T06:06'"
 driver.execute_script(js2)
-# inputEventDate = driver.find_element_by_id("eventDate")
-# inputEventDate.send_keys("111111111111111111")
 
 
 time.sleep(1)
@@ -48,6 +42,11 @@ time.sleep(1)
 # add event 
 addEventButton = driver.find_element_by_id("addEvent")
 addEventButton.click()
+
+time.sleep(1)
+
+eventLi = driver.find_element_by_class_name("entireEvent")
+eventLi.click()
 
 # time.sleep(1)
 

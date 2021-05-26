@@ -316,11 +316,12 @@
       border-radius: 5px;
       cursor: pointer;
     }
+    div.scheduler {
+      overflow: auto;
+    }
+
   </style>
 </head>
-
-
-
 
 <body id = "chromeExtension"> 
   <div class = "ceWindow">
@@ -363,10 +364,6 @@
             
           <!-- Day section -->
           <div class="days"></div>
-        
-          <div class="events">
-            <ul id = "eventList">
-          </div>
 
           <!-- Scheduler layer -->
           <div class="scheduler">
@@ -400,9 +397,13 @@
                     <input type="time" style="width:60%;" id="remindTime">
                     <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i>
                   </div> 
-              <button class = "customButton" style="background-color: green;" id="addEvent">Add</button>
-              <button class = "customButton" style="background-color: blue;" id="editEvent">Save Changes</button> 
-              <button class = "customButton" style="background-color: red;" id="clearInputs">Clear</button> 
+              <button class = "customButton" style="background-color: rgb(103, 201, 103);" id="addEvent">Add</button>
+              <button class = "customButton" style="background-color: rgb(85, 85, 219);" id="editEvent">Save Changes</button> 
+              <button class = "customButton" style="background-color: rgb(196, 78, 78);" id="clearInputs">Clear</button> 
+              <p></p>
+              <div class="events">
+                <ul id = "eventList">
+              </div>
           </div>
 
 
