@@ -296,6 +296,11 @@
       box-sizing: border-box;
       background-color: #d5ee91;
     } 
+    .entireEvent {
+      background-color: wheat;
+      min-height: 35px;
+      justify-content: center;
+    }
     #settings{
       overflow: auto;
       max-height: 325px;
@@ -312,14 +317,16 @@
       cursor: pointer;
     }
   </style>
-
 </head>
+
+
+
+
 <body id = "chromeExtension"> 
   <div class = "ceWindow">
     <!-- Left Side of Extension -->
     
     <div class = "left">
-      
       <!-- Calender UI and Scheduler UI -->
       <div class="container-calendar">
         <!-- Calendar layer -->
@@ -357,6 +364,10 @@
           <!-- Day section -->
           <div class="days"></div>
         
+          <div class="events">
+            <ul id = "eventList">
+          </div>
+
           <!-- Scheduler layer -->
           <div class="scheduler">
             
@@ -372,6 +383,7 @@
               <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="38" spellcheck="false"
                         placeholder="Add tabs to open on event. &#10Ex. https://yahoo.com or Multi-Tab1"
                   ></textarea><br>
+              <p></p>
               <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: larger;">Repeat Every: </span><br>
               <div id="repeat">
                 <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
@@ -388,13 +400,11 @@
                     <input type="time" style="width:60%;" id="remindTime">
                     <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i>
                   </div> 
-              <!-- </div>  -->
-              <button id="addEvent">Add</button>
-              <button id="editEvent">Save Changes</button> 
-              <button id="clearInputs">Clear</button> 
-              <div class="events">
-                  <ul id = "eventList">
-              </div>
+              <button class = "customButton" style="background-color: green;" id="addEvent">Add</button>
+              <button class = "customButton" style="background-color: blue;" id="editEvent">Save Changes</button> 
+              <button class = "customButton" style="background-color: red;" id="clearInputs">Clear</button> 
+          </div>
+
 
         </div>
       </div>
@@ -408,9 +418,9 @@
       <div>Break Alert</div>
       <hr class = "solid"/>
       <div class = "buttonRow">
-        <i class = "glyphicon glyphicon-th-list" style="cursor:pointer;" data-tab-target = "#tabs"> </i>
+        <i class = "glyphicon glyphicon-link" style="cursor:pointer;" data-tab-target = "#tabs"> </i>
         <i class = "glyphicon glyphicon-list-alt" style="cursor:pointer;" data-tab-target = "#todo" name="openTodoListTab"></i>
-        <i class = "glyphicon glyphicon-time" style="cursor:pointer;" data-tab-target = "#alarm"></i>
+        <i class = "glyphicon glyphicon-bell" style="cursor:pointer;" data-tab-target = "#alarm"></i>
         <i class = "glyphicon glyphicon-lock" style="cursor:pointer;" data-tab-target = "#lock"></i>
         <i class = "glyphicon glyphicon-cog" style="cursor:pointer;" data-tab-target = "#settings"></i>
       </div>

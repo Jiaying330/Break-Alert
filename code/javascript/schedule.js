@@ -82,7 +82,6 @@ if (eList != null){
 	});
 }
 
-
 /* 
 	input: event object
 	function: create li element to display event
@@ -105,7 +104,6 @@ function createEvent(eventObject) {
 		var div = this.parentElement.parentElement;
 		div.style.display = "none";
 	});
-	li.style = "height: 40px";
 	var dropdown = document.createElement("i");
 	dropdown.className = "dropdown glyphicon glyphicon-triangle-bottom";
 	dropdown.onclick = function() {
