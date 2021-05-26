@@ -365,6 +365,27 @@
           <!-- Day section -->
           <div class="days"></div>
 
+          <!-- Break Alert section -->
+          <div class="breakAlert">
+            <h5>Break Alert</h5>
+
+            <div style="display:flex; flex-direction: row; justify-content: space-evenly; align-items: center">
+              Duration between breaks (minutes):
+              <input type="number" id="productiveDuration" min="1" max="999" style="width:15%">
+            </div>
+
+            <div style="display:flex; flex-direction: row; justify-content: space-evenly; align-items: center">
+              Duration of breaks (minutes):
+              <input type="number" id="breakDuration" min="1" max="999" style="width:15%">
+            </div>
+
+            <div style="display:flex; flex-direction: row; justify-content: space-evenly; align-items: center">
+              <button id="enableBreakAlert">Enable</button>
+              <button id="disableBreakAlert">Disable</button>
+            </div>
+
+          </div>
+        
           <!-- Scheduler layer -->
           <div class="scheduler">
             
@@ -563,5 +584,6 @@
   <script src = "javascript/schedule.js" charset="utf-8"></script>
   <script src = "javascript/blockpage.js"></script>
   <script src = "javascript/calendar.js"></script>
+  <script src = "javascript/breakalert.js" charset="utf-8"></script>
 </body>
 </html>

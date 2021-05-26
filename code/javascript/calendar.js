@@ -6,24 +6,29 @@ input date is in the storage
 Error: Currently not function properly, return undefined instead of boolean
 */
 function checkEvent(month, day){
-    let result;
+  return new Promise((success, failure) => {
     chrome.storage.local.get({events: []}, function(result) {
       let eventList = result.events;
       for (let evnt in eventList) {
         let eventDate = eventList[evnt].match(/\d{0,6}\-\d{0,2}\-\d{0,2}/g)[0].split("-");
         let eventMonth = Number(eventDate[1]);
         let eventDay = Number(eventDate[2]);
-  
+
         if (eventMonth === month && eventDay === day) {
-          result = true;
+          // "return" true
+          console.log("TRUE! " + month + ", " + day + " has event(s)");
+          success(true);
         } else {
-          result = false;
+          // "return" false
+          console.log("FALSE! " + month + ", " + day + " DOESNT have an event");
+          failure(false);
         }
       }
     });
-  
-    return true;
-  }
+
+  })
+
+}
   
   // Date object
   const date = new Date();
@@ -33,7 +38,7 @@ function checkEvent(month, day){
   Output: properly set calendar window
   Function: set the variables and add content for the calendar for correct display
   */
-  const renderCalendar = () => {
+  async function renderCalendar(){
     // set date to the first day
     date.setDate(1);
   
@@ -96,8 +101,16 @@ function checkEvent(month, day){
     for (let i = firstDayIndex; i > 0; i--) {
   
       // check if these days are in local storage
-      let eventExist = checkEvent(date.getMonth(), prevLastDay - i + 1);
-  
+      // (try and catch block are necessary since checkEvent() returns a promise)
+      var eventExist;
+      try{
+        // force all execution to wait for checkEvent() to return
+        eventExist = await checkEvent(date.getMonth(), prevLastDay - i + 1);
+      }
+      catch (status) {
+        // eventExist (status) is false
+      }
+
       // if so, set event=True; else, set event=False
       if (eventExist === true) {
         days += `<div class="prev-date" event=True>${prevLastDay - i + 1}</div>`;
@@ -109,9 +122,17 @@ function checkEvent(month, day){
     
     // Add days from the current month to the calendar
     for (let j = 1; j <= lastDay; j++) {
-  
+
       // check if these days are in local storage
-      let eventExist = checkEvent(date.getMonth() + 1, j);
+      // (try and catch block are necessary since checkEvent() returns a promise)
+      var eventExist;
+      try{
+        // force all execution to wait for checkEvent() to return
+        eventExist = await checkEvent(date.getMonth() + 1, j);
+      }
+      catch (status) {
+        // eventExist (status) is false
+      }
   
       // check if the day is the current day
       // if so, add class="today"
@@ -139,7 +160,17 @@ function checkEvent(month, day){
     for (let k = 1; k <= nextDays; k++) {
   
       // check if these days are in local storage
-      let eventExist = checkEvent(date.getMonth() + 2, k);
+      // (try and catch block are necessary since checkEvent() returns a promise)
+      var eventExist;
+      try{
+        // force all execution to wait for checkEvent() to return
+        eventExist = await checkEvent(date.getMonth() + 2, k);
+        // alert("eventExist is " + eventExist);
+      }
+      catch (status) {
+        // eventExist (status) is false
+      }
+      
   
       // if so, set event=True; else, set event=False
       if (eventExist === true) {

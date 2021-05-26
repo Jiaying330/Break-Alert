@@ -199,7 +199,7 @@ function removeAlarm(text) {
 				//
 				// determine if alarm is repeating by checking if periodInMinutes is defined
 				chrome.alarms.get(text, function(alarm){
-					alert("alarm name is " + text);
+					// alert("alarm name is " + text);
 					// alert("alarm to check is " + alarm.periodInMinutes);
 					var isRepeating = alarm.periodInMinutes;
 					if (typeof isRepeating != "undefined"){
