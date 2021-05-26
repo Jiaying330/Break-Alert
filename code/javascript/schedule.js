@@ -105,8 +105,10 @@ function createEvent(eventObject) {
 		removeEvent(eventObject);
 		var div = this.parentElement.parentElement;
 		div.style.display = "none";
+		removeEListChild(text);
 	});
 	var dropdown = document.createElement("i");
+	dropdown.id = "dropdown";
 	dropdown.className = "dropdown glyphicon glyphicon-triangle-bottom";
 	dropdown.onclick = function() {
 		if(dropdown.className === "dropdown glyphicon glyphicon-triangle-bottom") {
@@ -220,6 +222,7 @@ function dropItem(type, info) {
 	tdInfo.appendChild(document.createTextNode(info));
 	row.appendChild(tdType);
 	row.appendChild(tdInfo);
+	row.id = type;
 	return row;
 }
 
@@ -473,18 +476,26 @@ function clickEditEvent(e) {
 		var newEvent = new eventOb(text, date, repeat, reminders, tabs);
 		editEvent(newEvent);
 
-		for(var i = 0; i < eList.childNodes.length; i++) {
-			if(eList.childNodes[i].id == text) {
-				eList.childNodes[i].style.display = "none";
-				eList.removeChild(eList.childNodes[i]);
-			}
-		}
+		removeEListChild(text);
 		eList.appendChild(createEvent(newEvent));
 		clickClearInputs();
 	}
 	else {
 		alert("please fill out event name and date");
 		return;
+	}
+}
+
+/*
+	input: name of the event
+	function: remove the eList element corresponding to the name of the event
+*/
+function removeEListChild(text) {
+	for(var i = 0; i < eList.childNodes.length; i++) {
+		if(eList.childNodes[i].id == text) {
+			eList.childNodes[i].style.display = "none";
+			eList.removeChild(eList.childNodes[i]);
+		}
 	}
 }
 
