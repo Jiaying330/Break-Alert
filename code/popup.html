@@ -318,6 +318,11 @@
     }
     div.scheduler {
       overflow: auto;
+      height: 460px
+    }
+
+    div.calendar {
+      overflow: auto;
     }
 
   </style>
@@ -363,8 +368,8 @@
           </div>
             
           <!-- Day section -->
-          <div class="days"></div>
-
+          <div style="margin-bottom: 15px;"class="days"></div>
+        
           <!-- Scheduler layer -->
           <div class="scheduler">
             
@@ -374,13 +379,14 @@
             </div>
             
             <!-- Scheduler HTML -->
-            <h3>Schedule</h3>
+            <h3 style="margin-top: 1px;">Schedule</h3>
               <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: larger;">Event Title*  </span><input type="text" id="event" maxlength="40" placeholder="add event"><br>
               <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: larger;">Event Date* </span><input type="datetime-local" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"id="eventDate"><br>
               <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="38" spellcheck="false"
                         placeholder="Add tabs to open on event. &#10Ex. https://yahoo.com or Multi-Tab1"
                   ></textarea><br>
-              <p></p>
+
+              <!-- Checkboxes for repeating events -->
               <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: larger;">Repeat Every: </span><br>
               <div id="repeat">
                 <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
@@ -392,6 +398,8 @@
                 <label for="Sun"><input id="Sun" value="0" type="checkbox">Sun</label>
               </div>
               <p></p>
+
+              <!-- Reminder time input -->
               <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: larger;">Remind Me When </span></br>
                   <div id="reminder">
                     <input type="time" style="width:60%;" id="remindTime">
@@ -399,15 +407,14 @@
                   </div> 
               <button class = "customButton" style="background-color: rgb(103, 201, 103);" id="addEvent">Add</button>
               <button class = "customButton" style="background-color: rgb(85, 85, 219);" id="editEvent">Save Changes</button> 
-              <button class = "customButton" style="background-color: rgb(196, 78, 78);" id="clearInputs">Clear</button> 
-              <p></p>
-              <div class="events">
-                <ul id = "eventList">
-                </ul>
-              </div>
+              <button class = "customButton" style="background-color: rgb(196, 78, 78);" id="clearInputs">Clear Input</button> 
           </div>
 
-
+          <!-- Event List -->
+          <div class="events">
+            <ul id = "eventList">
+            </ul>
+          </div>
         </div>
       </div>
     </div>

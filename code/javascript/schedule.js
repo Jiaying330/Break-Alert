@@ -155,6 +155,11 @@ function numToWeekDay(repeatArray) {
 	function: fill in the input area with informations stored in the event object
 */
 function clickEvent(eventObject) {
+	// check if the scheduler window is showing, if not, no need to fill
+	var scheduler_show = document.querySelector(".scheduler").classList;
+	if (!scheduler_show.contains("show")) {
+		return;
+	} 
 	clickClearInputs();
 	var eventName = document.getElementById("event");
 	eventName.value = eventObject.text;
@@ -230,21 +235,21 @@ document.addEventListener('DOMContentLoaded', function () {
   var buttonAddReminder = document.getElementById("addReminder");
   var buttonAddEvent = document.getElementById("addEvent");
   var buttonEditEvent = document.getElementById("editEvent");
-	var buttonDelReminder = document.getElementById("delReminder");
-	var buttonClearInputs = document.getElementById("clearInputs");
+  var buttonDelReminder = document.getElementById("delReminder");
+  var buttonClearInputs = document.getElementById("clearInputs");
   if (buttonAddReminder != null){
     buttonAddReminder.addEventListener("click", clickAddReminder);
   }
-	if (buttonAddEvent != null){
+  if (buttonAddEvent != null){
   	buttonAddEvent.addEventListener("click", clickAddEvent);
-	}
+  }
   if (buttonEditEvent != null){
-		buttonEditEvent.addEventListener("click", clickEditEvent);
-	}
-	if (buttonDelReminder != null){
+	buttonEditEvent.addEventListener("click", clickEditEvent);
+  }
+  if (buttonDelReminder != null){
     buttonDelReminder.addEventListener("click", clickDelReminder);
   }
-	if (buttonClearInputs != null){
+  if (buttonClearInputs != null){
     buttonClearInputs.addEventListener("click", clickClearInputs);
   }
 });
@@ -265,7 +270,9 @@ function clickClearInputs(){
 	var checkBox = document.getElementById("repeat");
 	var chks = checkBox.getElementsByTagName("INPUT");
 	for (var repeatIndex = 0; repeatIndex < 7; repeatIndex++) {
-		chks[repeatIndex].checked = false;
+		if (chks[repeatIndex] != null) {
+			chks[repeatIndex].checked = false;
+		}
 	}
 	
 	// delete all reminders input boxes
