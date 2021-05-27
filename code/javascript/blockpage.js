@@ -1,5 +1,6 @@
 const textarea = document.getElementById("textarea");
 const save = document.getElementById("save");
+const clearlink = document.getElementById("clearlink");
 const blockedcheckbox = document.getElementById("blockedcheckbox");
 
 if (textarea != null){
@@ -16,8 +17,15 @@ if (textarea != null){
 if (save != null){
   save.addEventListener("click", () => {
     const blocked = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
-
     chrome.storage.local.set({ blocked });
+  });
+}
+
+if (clearlink != null){
+  clearlink.addEventListener("click", () => {
+    textarea.value = '';
+    const blocked = null;
+    chrome.storage.local.set({blocked});
   });
 }
 
