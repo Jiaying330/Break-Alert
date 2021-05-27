@@ -181,7 +181,6 @@
       height: 35px;
       padding-top: 9px;
       font-size: 10px;
-      
     }
     .tabName{
       width: 270px;
@@ -249,6 +248,59 @@
     #addTabButton .glyphicon{
       font-size: 12px;
     }
+
+    .left input[type=text]{
+      width: 50%;
+      height: 40px;
+      padding: 15px 15px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    } 
+    .left input[type=datetime-local] {
+      width: 50%;
+      height: 40px;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid color #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    } 
+    .left input[type=time] {
+      width: 50%;
+      height: 40px;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid color #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    } 
+    .left textarea {
+      width: 70%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    } 
+    .left label  {
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 40px;
+      box-sizing: border-box;
+      background-color: #d5ee91;
+    } 
+    .entireEvent {
+      background-color: wheat;
+      min-height: 35px;
+      justify-content: center;
+    }
     #settings{
       overflow: auto;
       max-height: 325px;
@@ -264,9 +316,13 @@
       border-radius: 5px;
       cursor: pointer;
     }
-  </style>
+    div.scheduler {
+      overflow: auto;
+    }
 
+  </style>
 </head>
+
 <body id = "chromeExtension"> 
   <div class = "ceWindow">
     <!-- Left Side of Extension -->
@@ -308,6 +364,27 @@
             
           <!-- Day section -->
           <div class="days"></div>
+
+          <!-- Break Alert section -->
+          <div class="breakAlert">
+            <h5>Break Alert</h5>
+
+            <div style="display:flex; flex-direction: row; justify-content: space-evenly; align-items: center">
+              Duration between breaks (minutes):
+              <input type="number" id="productiveDuration" min="1" max="999" style="width:15%">
+            </div>
+
+            <div style="display:flex; flex-direction: row; justify-content: space-evenly; align-items: center">
+              Duration of breaks (minutes):
+              <input type="number" id="breakDuration" min="1" max="999" style="width:15%">
+            </div>
+
+            <div style="display:flex; flex-direction: row; justify-content: space-evenly; align-items: center">
+              <button id="enableBreakAlert">Enable</button>
+              <button id="disableBreakAlert">Disable</button>
+            </div>
+
+          </div>
         
           <!-- Scheduler layer -->
           <div class="scheduler">
@@ -319,34 +396,36 @@
             
             <!-- Scheduler HTML -->
             <h3>Schedule</h3>
-            <input type="text" id="event" placeholder="add event">
-            <input type="datetime-local" id="eventDate"><br>
-            <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="38" spellcheck="false"
-            placeholder="Add tabs to open on event. &#10Ex. https://yahoo.com or Multi-Tab1"
-            ></textarea><br>
-            Repeat Every:
-            <div id="repeat">
-              <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
-              <label for="Tue"><input id="Tue" value="2" type="checkbox">Tue</label>
-              <label for="Wed"><input id="Wed" value="3" type="checkbox">Wed</label>
-              <label for="Thu"><input id="Thu" value="4" type="checkbox">Thu</label>
-              <label for="Fri"><input id="Fri" value="5" type="checkbox">Fri</label>
-              <label for="Sat"><input id="Sat" value="6" type="checkbox">Sat</label>
-              <label for="Sun"><input id="Sun" value="0" type="checkbox">Sun</label>
-            </div>
-            Remind Me When</br>
-            <div id="reminder">
-              <input type="time" style="width:60%;" id="remindTime">
-              <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i>
-            </div> 
-            <!-- </div>  -->
-            <button id="addEvent">Add</button>
-            <button id="editEvent">Save Changes</button> 
-            <button id="clearInputs">Clear</button> 
-            <!-- <button id="deleteEvent">Delete</button> --> 
-            <div class="events">
-              <ul id = "eventList">
-            </div>
+              <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: larger;">Event Title*  </span><input type="text" id="event" maxlength="40" placeholder="add event"><br>
+              <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: larger;">Event Date* </span><input type="datetime-local" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"id="eventDate"><br>
+              <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="38" spellcheck="false"
+                        placeholder="Add tabs to open on event. &#10Ex. https://yahoo.com or Multi-Tab1"
+                  ></textarea><br>
+              <p></p>
+              <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: larger;">Repeat Every: </span><br>
+              <div id="repeat">
+                <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
+                <label for="Tue"><input id="Tue" value="2" type="checkbox">Tue</label>
+                <label for="Wed"><input id="Wed" value="3" type="checkbox">Wed</label>
+                <label for="Thu"><input id="Thu" value="4" type="checkbox">Thu</label>
+                <label for="Fri"><input id="Fri" value="5" type="checkbox">Fri</label>
+                <label for="Sat"><input id="Sat" value="6" type="checkbox">Sat</label>
+                <label for="Sun"><input id="Sun" value="0" type="checkbox">Sun</label>
+              </div>
+              <p></p>
+              <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: larger;">Remind Me When </span></br>
+                  <div id="reminder">
+                    <input type="time" style="width:60%;" id="remindTime">
+                    <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i>
+                  </div> 
+              <button class = "customButton" style="background-color: rgb(103, 201, 103);" id="addEvent">Add</button>
+              <button class = "customButton" style="background-color: rgb(85, 85, 219);" id="editEvent">Save Changes</button> 
+              <button class = "customButton" style="background-color: rgb(196, 78, 78);" id="clearInputs">Clear</button> 
+              <p></p>
+              <div class="events">
+                <ul id = "eventList">
+                </ul>
+              </div>
           </div>
 
 
@@ -362,9 +441,9 @@
       <div>Break Alert</div>
       <hr class = "solid"/>
       <div class = "buttonRow">
-        <i class = "glyphicon glyphicon-th-list" style="cursor:pointer;" data-tab-target = "#tabs"> </i>
+        <i class = "glyphicon glyphicon-link" style="cursor:pointer;" data-tab-target = "#tabs"> </i>
         <i class = "glyphicon glyphicon-list-alt" style="cursor:pointer;" data-tab-target = "#todo" name="openTodoListTab"></i>
-        <i class = "glyphicon glyphicon-time" style="cursor:pointer;" data-tab-target = "#alarm"></i>
+        <i class = "glyphicon glyphicon-bell" style="cursor:pointer;" data-tab-target = "#alarm"></i>
         <i class = "glyphicon glyphicon-lock" style="cursor:pointer;" data-tab-target = "#lock"></i>
         <i class = "glyphicon glyphicon-cog" style="cursor:pointer;" data-tab-target = "#settings"></i>
       </div>
@@ -450,12 +529,12 @@
         <div id = "lock" data-tab-content>
           <h4>Website Blocker</h4>
           <textarea id="textarea" rows="10" cols="30" spellcheck="false"></textarea><br>
+          <div class = "customButton" id = "save" style="background-color: #4554d4;">Save</div>
+          <div class = "customButton" id = "clearlink" style="background-color: #f44336;">Clear all</div>
           <div style="display: flex; justify-content: space-around; width: 70px; margin-left: 120px;">
             <input id="blockedcheckbox" type="checkbox">
             <label for="blockedcheckbox">Enable</label>
           </div>
-          <div class = "customButton" id = "save" style="background-color: #4554d4;">Save</div>
-          <div class = "customButton" id = "clearlink" style="background-color: #f44336;">Clear all</div>
         </div>
         <!-- Settings Tab Code -->
         <div id = "settings" data-tab-content>
@@ -464,7 +543,7 @@
               <div>Visual</div>
               <i class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
             </div>
-            <a href = "https://www.google.com" style = "text-decoration: none; color: black;" target="_blank">
+            <a href = "https://jiaying330.github.io/Break-Alert-Landing-Page/" style = "text-decoration: none; color: black;" target="_blank">
               <div style="display: flex; width:300px; justify-content:space-between;"class = "settingsButton">
                 <div>Website</div>
                 <i class = "glyphicon glyphicon-chevron-right" style="cursor:pointer; font-size: 15px;"> </i>
@@ -507,5 +586,6 @@
   <script src = "javascript/schedule.js" charset="utf-8"></script>
   <script src = "javascript/blockpage.js"></script>
   <script src = "javascript/calendar.js"></script>
+  <script src = "javascript/breakalert.js" charset="utf-8"></script>
 </body>
 </html>
