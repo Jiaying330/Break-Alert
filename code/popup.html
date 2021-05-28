@@ -7,8 +7,9 @@
 
   <!-- Import css files -->
   <link rel="stylesheet" href="css/calendar.css"/>
+  <link rel="stylesheet" href="css/scheduler.css"/>
   <link rel="stylesheet" href="css/todo.css"/>
-
+  
   <meta charset="UTF-8">
   <title>Document</title>
   <style>
@@ -134,18 +135,6 @@
       padding: 20px;    
       border-bottom: 1px solid rgb(0, 0, 0);    
     }
-    table {
-      border-collapse: collapse;
-      width: 100%
-    }
-    td {
-      border: 1px solid #dddddd;
-      text-align: left;
-      padding: 3px;
-    }
-    tr:nth-child(even) {
-      background-color: #dddddd;
-    }
     .deleteButton{
       border-radius: 4px;
       background-color: #f44336;
@@ -185,59 +174,6 @@
     #addTabButton .glyphicon{
       font-size: 12px;
     }
-
-    .left input[type=text]{
-      width: 50%;
-      height: 40px;
-      padding: 15px 15px;
-      margin: 8px 0;
-      display: inline-block;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    } 
-    .left input[type=datetime-local] {
-      width: 50%;
-      height: 40px;
-      padding: 12px 20px;
-      margin: 8px 0;
-      display: inline-block;
-      border: 1px solid color #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    } 
-    .left input[type=time] {
-      width: 50%;
-      height: 40px;
-      padding: 12px 20px;
-      margin: 8px 0;
-      display: inline-block;
-      border: 1px solid color #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    } 
-    .left textarea {
-      width: 70%;
-      padding: 12px 20px;
-      margin: 8px 0;
-      display: inline-block;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    } 
-    .left label  {
-      display: inline-block;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      width: 40px;
-      box-sizing: border-box;
-      background-color: #d5ee91;
-    } 
-    .entireEvent {
-      background-color: wheat;
-      min-height: 35px;
-      justify-content: center;
-    }
     #settings{
       overflow: auto;
       max-height: 325px;
@@ -253,15 +189,7 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    div.scheduler {
-      overflow: auto;
-      height: 460px
-    }
-
-    div.calendar {
-      overflow: auto;
-    }
-
+    
   </style>
 </head>
 
@@ -338,14 +266,14 @@
             
             <!-- Scheduler HTML -->
             <h3 style="margin-top: 1px;">Schedule</h3>
-              <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: larger;">Event Title*  </span><input type="text" id="event" maxlength="40" placeholder="add event"><br>
-              <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: larger;">Event Date* </span><input type="datetime-local" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size:14px;" id="eventDate"><br>
+              <span class="schedulerInput">Event Title*  </span><input type="text" id="event" maxlength="40" placeholder="add event"><br>
+              <span class="schedulerInput">Event Date* </span><input type="datetime-local" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size:14px;" id="eventDate"><br>
               <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="40" spellcheck="false" style="width: 80%;"
                         placeholder="Add tabs to open on event. &#10Ex. https://yahoo.com or Multi-Tab1"
                   ></textarea><br>
 
               <!-- Checkboxes for repeating events -->
-              <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: larger;">Repeat Every: </span><br>
+              <span class="schedulerInput">Repeat Every: </span><br>
               <div id="repeat">
                 <label for="Mon"><input id="Mon" value="1" type="checkbox">Mon</label>
                 <label for="Tue"><input id="Tue" value="2" type="checkbox">Tue</label>
@@ -358,7 +286,7 @@
               <p></p>
 
               <!-- Reminder time input -->
-              <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: larger;">Remind Me When </span></br>
+              <span class="schedulerInput">Remind Me When </span></br>
                   <div id="reminder">
                     <input type="time" style="width:60%;" id="remindTime">
                     <i class = "glyphicon glyphicon-plus-sign" style="cursor:pointer;font-size:15px;" id="addReminder"></i>

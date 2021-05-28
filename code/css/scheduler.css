@@ -1,0 +1,78 @@
+div.scheduler {
+    overflow: auto;
+    height: 460px
+  }
+
+  div.calendar {
+    overflow: auto;
+  }
+
+  .schedulerInput {
+    color: rgb(60, 114, 7); 
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: larger;
+  }
+  .entireEvent {
+    background-color: wheat;
+    min-height: 35px;
+    justify-content: center;
+  }
+  .left input[type=text]{
+    width: 50%;
+    height: 40px;
+    padding: 15px 15px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  } 
+  .left input[type=datetime-local] {
+    width: 50%;
+    height: 40px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid color #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  } 
+  .left input[type=time] {
+    width: 50%;
+    height: 40px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid color #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  } 
+  .left textarea {
+    width: 70%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  } 
+  .left label  {
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 40px;
+    box-sizing: border-box;
+    background-color: #d5ee91;
+  } 
+  table {
+    border-collapse: collapse;
+    width: 100%
+  }
+  td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 3px;
+  }
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
