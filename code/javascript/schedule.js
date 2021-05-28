@@ -405,8 +405,11 @@ function createAlarm(eventObject) {
 			chrome.alarms.create(eventObject.text + "__" + i, {
 				when: Number(now) + timeDifference
 			});
-			console.log("when = " + Number(now) + timeDifference);
-			console.log("alarm created" + eventObject.text + "__" + i);
+			chrome.alarms.get(eventObject.text + "__" + i, function(alarm){
+				console.log("when = " + Number(now) + timeDifference);
+				console.log("alarm created" + alarm.name);
+			})
+			
 		}
 		return;
 	}
