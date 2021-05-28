@@ -4,7 +4,7 @@
 // Function: check the input date with the local storage to see if the
 // input date is in the storage
 // */
-function checkEvent(currMonth, currDay){
+function checkEvent(currYear, currMonth, currDay){
 
   return new Promise((success, failure) => {
 
@@ -17,11 +17,26 @@ function checkEvent(currMonth, currDay){
         let eventMonth = Number(event[1]);
         let eventDay = Number(event[2]);
 
+        
         if (eventMonth === currMonth && eventDay === currDay) {
           hasEvent = true;
           break;
         }
 
+        
+        var currDate = new Date()
+        currDate.setFullYear(currYear, currMonth-1, currDay); 
+        var weekday = currDate.getDay();
+        var currEvent = JSON.parse(eventList[eventIndex]);
+        var eventDate = new Date(currEvent.time);
+        
+        // check for repeating event
+        for (var repeatIndex = 0; repeatIndex < currEvent.repeat.length; repeatIndex++) {
+          if (currDate > eventDate && (weekday == currEvent.repeat[repeatIndex])) {
+            hasEvent = true;
+            break;
+          }
+        }
       }
 
       if (hasEvent === true) {
@@ -105,7 +120,7 @@ async function renderCalendar () {
   for (let i = firstDayIndex; i > 0; i--) {
     let eventExist;
     try {
-      eventExist = await checkEvent (date.getMonth(), prevLastDay - i + 1);
+      eventExist = await checkEvent (date.getFullYear(), date.getMonth(), prevLastDay - i + 1);
     } catch (status) {}
 
     if (eventExist === true) {
@@ -120,7 +135,7 @@ async function renderCalendar () {
   for (let j = 1; j <= lastDay; j++) {
     let eventExist;
     try {
-      eventExist = await checkEvent(date.getMonth() + 1, j);
+      eventExist = await checkEvent(date.getFullYear(), date.getMonth() + 1, j);
     } catch (status) {}
   
     // check if the day is the current day
@@ -146,7 +161,7 @@ async function renderCalendar () {
   for (let k = 1; k <= nextDays; k++) {
     let eventExist;
     try {
-      eventExist = await checkEvent(date.getMonth() + 2, k);
+      eventExist = await checkEvent(date.getFullYear(), date.getMonth() + 2, k);
     } catch (status) {}
 
     if (eventExist === true) {
