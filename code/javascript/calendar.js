@@ -14,11 +14,12 @@ function checkEvent(currYear, currMonth, currDay){
 
       for (let eventIndex in eventList) {
         let event = eventList[eventIndex].match(/\d{0,6}\-\d{0,2}\-\d{0,2}/g)[0].split("-");
+        let eventYear = Number(event[0]);
         let eventMonth = Number(event[1]);
         let eventDay = Number(event[2]);
 
         
-        if (eventMonth === currMonth && eventDay === currDay) {
+        if (eventMonth === currMonth && eventDay === currDay && eventYear === currYear) {
           hasEvent = true;
           break;
         }
