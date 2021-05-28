@@ -11,6 +11,8 @@ To install (2 methods):
   4. Select `load unpacked` and select the Break-Alert/ cloned repo
   5. Open the puzzle piece icon in top right corner once again and pin the `Break Alert` extension to the extension area (if not already pinned)
 
+---
+
 ##  Multi-tab
 ### Implemented features:
 - open multiple links on one button press
@@ -39,6 +41,16 @@ To install (2 methods):
 
 ### Issues:
   - Event symbols are displayed incorrectly
+
+---
+
+## Todo List
+### Implemented features:
+- Add and delete tasks to list
+- Ability to mark task as completed (with strikethrough)
+
+### Issues:
+- The state of items being completed (striked through) currently does not save
 
 ---
 
