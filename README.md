@@ -1,6 +1,17 @@
 # Break-Alert
-Chrome browser extension that has the user insert a time interval of a break alert
+Chrome browser extension to remind user when to take breaks and improve overall productivity.
 
+##  Installation
+To install (2 methods):
+- From Chrome Browser Store: https://chrome.google.com/webstore/detail/break-alert/bilocpkncpeojgehfelfaecabikkdolb/ (note this may be not the most recent version due to extension review process)
+- Manually: 
+  1. Clone this repo
+  2. Open the puzzle piece icon in top right corner of browser and click `manage extensions`
+  3. Enable `Developer Mode` in the top right corner of the page
+  4. Select `load unpacked` and select the Break-Alert/ cloned repo
+  5. Open the puzzle piece icon in top right corner once again and pin the `Break Alert` extension to the extension area (if not already pinned)
+
+---
 
 ##  Multi-tab
 ### Implemented features:
@@ -16,6 +27,7 @@ Chrome browser extension that has the user insert a time interval of a break ale
   - Framework not functional in extension
 
 ---
+
 ##  Calendar
 ### Implemented features:
 - Create a clean and simple `calendar UI`
@@ -30,9 +42,19 @@ Chrome browser extension that has the user insert a time interval of a break ale
 ### Issues:
   - Event symbols are displayed incorrectly
 
+---
+
+## Todo List
+### Implemented features:
+- Add and delete tasks to list
+- Ability to mark task as completed (with strikethrough)
+
+### Issues:
+- The state of items being completed (striked through) currently does not save
 
 ---
-Sources Used:
+
+### Sources Used:
 * Todo/Task List: https://www.w3schools.com/howto/howto_js_todolist.asp.
 * Style Guide for CSS/HTML: https://google.github.io/styleguide/htmlcssguide.html
 * Style Guide for Javascript: https://google.github.io/styleguide/jsguide.html#file-name
