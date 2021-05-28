@@ -1,23 +1,32 @@
 # tests for todo list
 
 # To run this test on Windows, open Git Bash and run 'pip install selenium'. Then
-# simply click this file to run it
+# open up a git bash window in the Break-Alert/ folder and run `py tests/todolist_tests.py`
+
+# NOTE: the extension id hardcoded from the ChromeDriver is currently unique to the crx file
+# created when the extension is packed together
+# 
+# this testing file DOES NOT currently use the version from the Chrome Store since it is not
+# up to date (due to delay of reviewing our extension updates before accepting it into the store)
 
 import time
 from selenium import webdriver
 
 # link to the chrome extension in .crx form
-extension_path = '../code.crx'
+# 
+# NOTE: this path may need to be changed to whereever the packed crx file is located on your
+# local system
+extension_path = '../Break-Alert.crx'
 chop = webdriver.ChromeOptions()
 chop.add_extension(extension_path)
 
-# link to chromedriver.exe
-path_to_chromedriver = './chromedriver.exe'
+# link to chromedriver.exe 
+# (however, don't need to explicitly use the path since it's defined in my system env variables)
+path_to_chromedriver = 'tests/chromedriver.exe'
 driver = webdriver.Chrome(path_to_chromedriver, options=chop)
 
-# hardcoded id from chromedriver : ifofbjinpigefmlmffefmockecioklam (this opens the popup but the id is unique to my laptop only)
-# id from extension: ikpmenhphlekealoglgagfcednkdcacp
-driver.get('chrome-extension://ifofbjinpigefmlmffefmockecioklam/popup.html')
+# hardcoded id from chromedriver : helkojdkocknicnipdafippibaecpnbk (this opens the extension but the id is unique to my laptop only)
+driver.get('chrome-extension://helkojdkocknicnipdafippibaecpnbk/code/popup.html')
 
 # do nothing for 2 seconds
 time.sleep(2) 

@@ -4,8 +4,11 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <!-- Import Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"/>
-  <!-- Import calendar.css for calendar -->
+
+  <!-- Import css files -->
   <link rel="stylesheet" href="css/calendar.css"/>
+  <link rel="stylesheet" href="css/todo.css"/>
+
   <meta charset="UTF-8">
   <title>Document</title>
   <style>
@@ -82,72 +85,6 @@
       max-height: 300px;
       width: 300px;
       text-align: center;
-    }
-    /* style todo list */
-    ul {  
-      margin: 0;
-      padding: 0;
-    }
-    /* style todo list elements */
-    ul li {
-      list-style-type: none;
-      cursor: pointer;
-      position:relative;
-      padding: 8px 4px 8px 36px;
-      background: rgba(238, 238, 238, 0.911);
-      font-size: 14px;
-      transition: 0.2s;
-    }
-    ul li:hover {
-      background: rgba(221, 221, 221, 0.816)
-    }
-    /* for marking completed tasks */
-    ul li.checked {
-      background: #888;
-      color: #fff;
-      text-decoration: line-through;
-    }
-    /* add a check mark for completed tasks */
-    ul li.checked::before {
-      content: '';
-      position: absolute;
-      border-color: rgb(39, 39, 39);
-      border-style: solid;
-      border-width: 0 2px 2px 0;
-      top: 10px;
-      left: 16px;
-      transform: rotate(45deg);
-      height:15px;
-      width: 7px;
-    }
-    /* X button to remove a list item */
-    .close {
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      padding: 10px 14px 10px 14px;
-    }
-    .close:hover {
-      background-color: #f44336;
-      color: white;
-    }
-    /* input box for adding item to todo list */
-    input {
-      margin: 0 2px 8px 0;
-      border-style: solid;
-      border-width: 1px;
-      border-radius: 2px;
-      width: 75%;
-      padding: 6px;
-      font-size: 14px;
-    }
-    .taskList {
-      max-height: 235px;
-      overflow: auto;
-    }
-    #todoList{
-      list-style-type: none;
     }
     #allTabs{
       min-height: 210px;
@@ -397,8 +334,8 @@
             <!-- Scheduler HTML -->
             <h3>Schedule</h3>
               <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: larger;">Event Title*  </span><input type="text" id="event" maxlength="40" placeholder="add event"><br>
-              <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: larger;">Event Date* </span><input type="datetime-local" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"id="eventDate"><br>
-              <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="38" spellcheck="false"
+              <span style="color: rgb(60, 114, 7); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: larger;">Event Date* </span><input type="datetime-local" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size:14px;" id="eventDate"><br>
+              <textarea id="tabsToOpen" name="tabsToOpen" rows="2" cols="40" spellcheck="false" style="width: 80%;"
                         placeholder="Add tabs to open on event. &#10Ex. https://yahoo.com or Multi-Tab1"
                   ></textarea><br>
               <p></p>
