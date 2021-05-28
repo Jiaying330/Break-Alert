@@ -17,7 +17,8 @@
              "code/javascript/multitab.js",
              "code/javascript/popup.js",
              "code/javascript/settings.js",
-             "code/javascript/schedule.js"]
+             "code/javascript/schedule.js",
+             "code/javascript/breakalert.js"]
     }
   ],
   "browser_action": {

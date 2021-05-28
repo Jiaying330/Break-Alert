@@ -82,7 +82,6 @@ if (eList != null){
 	});
 }
 
-
 /* 
 	input: event object
 	function: create li element to display event
@@ -98,15 +97,18 @@ function createEvent(eventObject) {
 	li.className = "eventLi";
 	var buttonD = document.createElement("button");
 	buttonD.innerHTML = "Delete";
-	buttonD.className = "deleteEvent";
+	buttonD.id = "deleteEvent";
+	buttonD.className = "customButton";
+	buttonD.style = "background-color: red;";
 	li.appendChild(buttonD);
 	buttonD.addEventListener('click', function(){
 		removeEvent(eventObject);
 		var div = this.parentElement.parentElement;
 		div.style.display = "none";
+		removeEListChild(text);
 	});
-	li.style = "height: 40px";
 	var dropdown = document.createElement("i");
+	dropdown.id = "dropdown";
 	dropdown.className = "dropdown glyphicon glyphicon-triangle-bottom";
 	dropdown.onclick = function() {
 		if(dropdown.className === "dropdown glyphicon glyphicon-triangle-bottom") {
@@ -206,15 +208,6 @@ function clickEvent(eventObject) {
 			inputReminders[remindIndex].value = "";
 		}
 	}
-
-	//// delete all unused reminder input fields except the very first one
-	// 
-	// for (var remindIndex = maxReminders - 1; remindIndex > 0; remindIndex--){
-	// 	if (inputReminders[remindIndex].value = ""){  
-	// 		var element = inputReminders[remindIndex];
-	// 		element.parentElement.parentElement.removeChild(element.parentElement);
-	// 	}
-	// }
 }
 
 /* 
@@ -229,6 +222,7 @@ function dropItem(type, info) {
 	tdInfo.appendChild(document.createTextNode(info));
 	row.appendChild(tdType);
 	row.appendChild(tdInfo);
+	row.id = type;
 	return row;
 }
 
@@ -467,7 +461,6 @@ function clickEditEvent(e) {
 	var timeDifference = (new Date(date)).getTime - now.getTime();
 	var text = document.getElementById("event").value;
 	if(date != "" && text != "") {
-
 		//extract input
 		var checkBox = document.getElementById("repeat");
 		var chks = checkBox.getElementsByTagName("INPUT");
@@ -483,21 +476,29 @@ function clickEditEvent(e) {
 		var newEvent = new eventOb(text, date, repeat, reminders, tabs);
 		editEvent(newEvent);
 
-		for(var i = 0; i < eList.childNodes.length; i++) {
-			if(eList.childNodes[i].id == text) {
-				eList.childNodes[i].style.display = "none";
-				eList.removeChild(eList.childNodes[i]);
-			}
-		}
+		removeEListChild(text);
 		eList.appendChild(createEvent(newEvent));
 		clickClearInputs();
-		
 	}
 	else {
 		alert("please fill out event name and date");
 		return;
 	}
 }
+
+/*
+	input: name of the event
+	function: remove the eList element corresponding to the name of the event
+*/
+function removeEListChild(text) {
+	for(var i = 0; i < eList.childNodes.length; i++) {
+		if(eList.childNodes[i].id == text) {
+			eList.childNodes[i].style.display = "none";
+			eList.removeChild(eList.childNodes[i]);
+		}
+	}
+}
+
 /* 
 	input: event object
 	function: add the event to the local storage
@@ -547,7 +548,8 @@ function editEvent(eventObject) {
 	var list;
 	chrome.storage.local.get({events: []}, function(result) {
 		list = result.events;
-		for(var key in list) {
+		var key;
+		for(key in list) {
 			var event = list[key];
 			var json = JSON.parse(list[key]);
 			if(json.text.localeCompare(eventObject.text) == 0){

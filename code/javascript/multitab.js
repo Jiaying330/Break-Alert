@@ -6,7 +6,7 @@
  * Sets Chrome storage "myTabs" to [] if undefined
  * 
  */
-chrome.storage.sync.get(["myTabs"], function(result) {
+ chrome.storage.sync.get(["myTabs"], function(result) {
 	if(result.myTabs == undefined){
 		chrome.storage.sync.set({"myTabs": []});
 	} else {
@@ -119,6 +119,19 @@ function createTab(name, urls, pos){
 	return myTab;
 }
 
+function urlTextMatch(url){
+	if(url.substring(0,8) == "https://"){
+
+	}else{
+		if(url.substring(0,4) == "www."){
+			url = "https://" + url;
+		}else{
+			url = "https://www." + url;
+		}
+	}
+	return url;
+}
+
 /**
  * 
  * @param {Number} pos 
@@ -141,6 +154,7 @@ function inputRow(pos, myTab){
 	btn.onclick = function () {
 		var text = document.getElementById("input"+pos).value;
 		console.log(text);
+		text = urlTextMatch(text);
 		document.getElementById("input"+pos).value = "";
 		myTab.insertBefore(urlListItem(text, pos, myTab.childElementCount - 3), myTab.children[myTab.childElementCount - 2]);
 		chrome.storage.sync.get(["myTabs"], function(result) {
