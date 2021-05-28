@@ -369,6 +369,27 @@
             
           <!-- Day section -->
           <div style="margin-bottom: 15px;"class="days"></div>
+
+          <!-- Break Alert section -->
+          <div class="breakAlert">
+            <h5>Break Alert</h5>
+
+            <div style="display:flex; flex-direction: row; justify-content: space-evenly; align-items: center">
+              Duration between breaks (minutes):
+              <input type="number" id="productiveDuration" min="1" max="999" style="width:15%">
+            </div>
+
+            <div style="display:flex; flex-direction: row; justify-content: space-evenly; align-items: center">
+              Duration of breaks (minutes):
+              <input type="number" id="breakDuration" min="1" max="999" style="width:15%">
+            </div>
+
+            <div style="display:flex; flex-direction: row; justify-content: space-evenly; align-items: center">
+              <button id="enableBreakAlert">Enable</button>
+              <button id="disableBreakAlert">Disable</button>
+            </div>
+
+          </div>
         
           <!-- Scheduler layer -->
           <div class="scheduler">
@@ -515,7 +536,8 @@
         <div id = "lock" data-tab-content>
           <h4>Website Blocker</h4>
           <textarea id="textarea" rows="10" cols="30" spellcheck="false"></textarea><br>
-          <div class = "customButton" id = "save" style="background-color: #4554d4;">Save</div><br><br>
+          <div class = "customButton" id = "save" style="background-color: #4554d4;">Save</div>
+          <div class = "customButton" id = "clearlink" style="background-color: #f44336;">Clear all</div>
           <div style="display: flex; justify-content: space-around; width: 70px; margin-left: 120px;">
             <input id="blockedcheckbox" type="checkbox">
             <label for="blockedcheckbox">Enable</label>
@@ -571,5 +593,6 @@
   <script src = "javascript/schedule.js" charset="utf-8"></script>
   <script src = "javascript/blockpage.js"></script>
   <script src = "javascript/calendar.js"></script>
+  <script src = "javascript/breakalert.js" charset="utf-8"></script>
 </body>
 </html>
