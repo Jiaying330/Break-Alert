@@ -194,19 +194,8 @@ function removeAlarm(text) {
 			if(json.text.localeCompare(text) == 0) {
 				list.splice(key, 1);
 
-				// delete the actual alarm from chrome.alarms if it's a repeating alarm
-				// (so that it doesn't popup anymore after it's deleted from storage) 
-				//
-				// determine if alarm is repeating by checking if periodInMinutes is defined
-				chrome.alarms.get(text, function(alarm){
-					// alert("alarm name is " + text);
-					// alert("alarm to check is " + alarm.periodInMinutes);
-					var isRepeating = alarm.periodInMinutes;
-					if (typeof isRepeating != "undefined"){
-						// alert("chrome.clear is called for alarm " + text);
-						chrome.alarms.clear(text);
-					}
-				});
+				// delete the actual alarm to prevent it from triggering anymore
+				chrome.alarms.clear(text);
 
 				break;
 			}
