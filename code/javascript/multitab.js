@@ -120,7 +120,7 @@ function createTab(name, urls, pos){
 }
 
 function urlTextMatch(url){
-	if(url.substring(0,8) == "https://"){
+	if(url.substring(0,8) == "https://" || url.substring(0,7) == "http://"){
 
 	}else{
 		if(url.substring(0,4) == "www."){
