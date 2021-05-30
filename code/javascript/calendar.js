@@ -228,6 +228,13 @@ document.querySelector(".next").addEventListener("click", () => {
 // Click to hide the scheduler window
 document.querySelector(".scheduler-return").addEventListener("click", () => {
   document.querySelector(".scheduler").classList.remove("show");
+  
+  // clear all previous inputs
+  var buttonClearInputs = document.getElementById("clearInputs");
+  if (buttonClearInputs != null){
+    buttonClearInputs.click();
+  }
+
   renderCalendar();
 });
   
