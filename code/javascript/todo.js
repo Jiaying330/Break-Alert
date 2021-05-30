@@ -26,7 +26,8 @@ chrome.storage.sync.get({tasks: []}, function(result) {
 
 document.addEventListener('DOMContentLoaded', function () {
 	var taskAdder = document.getElementById("addTaskListener");
-	taskAdder.addEventListener("click", addNewTask);
+  if (taskAdder != null)
+	  taskAdder.addEventListener("click", addNewTask);
 });
 
 function addNewTask(){

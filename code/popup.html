@@ -40,6 +40,11 @@
       width: 701px;
       display: flex;
     }
+    .top{
+      width: 701px;
+      height: 40px;
+      border-bottom: 1px solid #bbbbbb;
+    }
     .left{
       background-color: rgb(255, 255, 255);
       width: 400px;
@@ -71,7 +76,8 @@
       padding: 0px;
     }
     .myButton{
-      margin-top: 20px;
+      /* margin-top: 20px; */
+      margin-left: 30px;
     }
     .buttonRow{
       display: flex;
@@ -197,11 +203,33 @@
       overflow: auto;
       max-height: 325px;
     }
+    .breakAlert input[type=number]{
+      width: 20%;
+      height: 30px;
+      /* padding: 15px 15px; */
+      margin: 3px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .breakAlert div {
+      display:flex; 
+      flex-direction: row; 
+      justify-content: space-evenly; 
+      align-items: center
+    }
     
   </style>
 </head>
 
 <body id = "chromeExtension"> 
+  <div class = "top">
+    <div class = "myButton">
+      <img src = "../icon/tree.png" class = "inverted" height="35" style="margin-top: 3px">
+      BreakAlert
+    </div>
+  </div>
   <div class = "ceWindow">
     <!-- Left Side of Extension -->
     
@@ -244,7 +272,7 @@
           <div style="margin-bottom: 15px;"class="days"></div>
 
           <!-- Break Alert section -->
-          <div class="breakAlert">
+          <!-- <div class="breakAlert">
             <h5>Break Alert</h5>
 
             <div style="display:flex; flex-direction: row; justify-content: space-evenly; align-items: center">
@@ -262,7 +290,7 @@
               <button id="disableBreakAlert">Disable</button>
             </div>
 
-          </div>
+          </div> -->
         
           <!-- Scheduler layer -->
           <div class="scheduler">
@@ -315,10 +343,30 @@
     <div class = "middle"></div>
     <!-- Right Side of Extension -->
     <div class = "right">
-      <div class = "myButton">
-        <img src = "../icon/tree.png" class = "inverted" height="150"/>
-      </div>
-      <div>Break Alert</div>
+      <!-- <div class = "myButton">  -->
+        <!-- Break Alert section -->
+          <div class="breakAlert" style="text-align: center; height: 150px;">
+            <h5>Break Alert</h5>
+
+            <div>
+              <span>Work Duration:
+              <input type="number" id="productiveDuration" min="1" max="999" > Minutes</span>
+            </div>
+
+            <div>
+              <span>Break Duration:
+              <input type="number" id="breakDuration" min="1" max="999" > Minutes</span>
+            </div>
+
+            <div>
+              <button class="customButton" id="enableBreakAlert" style="background-color: rgb(103, 201, 103);">Enable</button>
+              <button class="customButton" id="disableBreakAlert" style="background-color: rgb(196, 78, 78);">Disable</button>
+            </div>
+
+          </div>
+        <!-- <img src = "../icon/tree.png" class = "inverted" height="150"/> -->
+      <!-- </div>  -->
+      <!-- <div>Break Alert</div> -->
       <hr class = "solid"/>
       <div class = "buttonRow">
         <i class = "glyphicon glyphicon-link" style="cursor:pointer;" data-tab-target = "#tabs"> </i>
