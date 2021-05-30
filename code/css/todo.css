@@ -44,7 +44,7 @@ ul li.checked::before {
   padding: 10px 14px 10px 14px;
 }
 .close:hover {
-  background-color: #f44336;
+  background-color: #ff1100;
   color: white;
 }
 /* input box for adding item to todo list */
@@ -58,6 +58,7 @@ input {
   font-size: 14px;
 }
 .taskList {
+  margin: 10px 0 0 0; 
   max-height: 235px;
   overflow: auto;
 }
