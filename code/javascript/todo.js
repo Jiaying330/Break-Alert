@@ -48,6 +48,7 @@ function addNewTask(){
 } 
 
 function createTaskItem(task, done, pos){
+  var myTask = task;
   var li = document.createElement("li");
   var t = document.createTextNode(task);
   li.appendChild(t);
@@ -61,7 +62,7 @@ function createTaskItem(task, done, pos){
       var reader = JSON.parse(taskArr[pos]);
       var isFinished = !reader.done;
       taskArr[pos] = JSON.stringify({
-        task : reader.task,
+        task : myTask,
         done : isFinished
       });
       chrome.storage.sync.set({"tasks": taskArr}, function(){
@@ -69,6 +70,26 @@ function createTaskItem(task, done, pos){
       });
     });
   }
+  
+  var span = document.createElement("SPAN");  // create and append the X (close button)
+  var txt = document.createTextNode("\u00D7");  // to the list element in HTML
+  span.className = "close";
+  span.appendChild(txt);
+  span.onclick = function (){
+    chrome.storage.sync.get(["tasks"], function(result) {
+      var taskList = result.tasks;
+      taskList[pos] = JSON.stringify({
+        task : "",
+        done : false
+      });
+      myTask = "";
+      li.style = "display:none;";
+      chrome.storage.sync.set({"tasks": taskList}, function(){
+        console.log('Value set to ' + taskList);
+      });
+    })
+  }
+  li.appendChild(span);
   myTodoList.appendChild(li);
 }
 
