@@ -242,20 +242,31 @@ function addNewMultitab() {
 		chrome.storage.sync.get(["myTabs"], function(result) {
 			console.log(result.myTabs);
 			var tabList = result.myTabs;
-			tabList.push(JSON.stringify({
-				name: str, 
-				urls: []
-			}));
-			chrome.storage.sync.set({"myTabs": tabList}, function(){
-				console.log('Value set to ' + tabList);
-			});
-			myList.appendChild(
-				createTab(
-					str, 
-					[],
-					tabList.length - 1
-				)
-			);
+			var isRepeat = false;
+
+			for(var i = 0; i < tabList.length; i++){
+				var reader = JSON.parse(tabList[i]);
+				if(str == reader.name){
+					isRepeat = true;
+				}
+			}
+
+			if(!isRepeat){
+				tabList.push(JSON.stringify({
+					name: str, 
+					urls: []
+				}));
+				chrome.storage.sync.set({"myTabs": tabList}, function(){
+					console.log('Value set to ' + tabList);
+				});
+				myList.appendChild(
+					createTab(
+						str, 
+						[],
+						tabList.length - 1
+					)
+				);
+			}
 		});
 	}
 	document.getElementById("newMTabName").value = "";

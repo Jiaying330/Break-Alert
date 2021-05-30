@@ -126,6 +126,9 @@
       text-align: start;
       padding-left: 10px;
       padding-top: 6px;
+	    text-overflow: ellipsis; 
+      overflow: hidden;
+      white-space: nowrap;
     }
     .deleteButton .glyphicon{
       font-size: 12px;
@@ -188,6 +191,11 @@
       font-size: 14px;
       border-radius: 5px;
       cursor: pointer;
+    }
+
+    #alarm{
+      overflow: auto;
+      max-height: 325px;
     }
     
   </style>
