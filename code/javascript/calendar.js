@@ -184,19 +184,18 @@ async function renderCalendar () {
       var inputDate = new Date(date);
       inputDate.setDate(schedule[n].innerHTML);
       if (schedule[n].className == "next-date") {
-        var inputMonth = date.getMonth() == 11 ? 0 : date.getMonth()+1;
+        var inputMonth = date.getMonth() == 11 ? 0 : date.getMonth() + 1;
         var inputYear = date.getMonth() == 11 ? date.getFullYear() + 1 : date.getFullYear();
         inputDate.setMonth(inputMonth);
         inputDate.setFullYear(inputYear);
       } else if (schedule[n].className == "prev-date") {
-        var inputMonth = date.getMonth() == 0 ? 11 : date.getMonth()-1;
+        var inputMonth = date.getMonth() == 0 ? 11 : date.getMonth() - 1;
         var inputYear = date.getMonth() == 0 ? date.getFullYear() - 1 : date.getFullYear();
         inputDate.setMonth(inputMonth);
         inputDate.setFullYear(inputYear);
       }
       
       inputDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-      console.log("inputDate = " + inputDate);
       document.getElementById("eventDate").value = inputDate.toISOString().slice(0, 16);
       document.querySelector(".scheduler").classList.add("show");
     });
