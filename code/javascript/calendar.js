@@ -153,8 +153,7 @@ async function renderCalendar () {
         days += `<div hasEvent=True>${j}</div>`;
       } else {
         days += `<div hasEvent=False>${j}</div>`;
-      }
-        
+      }        
     }
   }
   
