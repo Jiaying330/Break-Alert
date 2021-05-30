@@ -127,6 +127,55 @@ function openEventTabs(name){
 
 // function to switch break alert alarm from productive mode to break mode (and vice versa)
 //
-function handleBreakAlert(){
-	alert("this is a break alert alarm");
+async function handleBreakAlert(){
+	const blockedcheckbox = document.getElementById("blockedcheckbox");
+
+	// add the productivePeriod and breakPeriod to chrome storage
+	await chrome.storage.sync.get("breakAlertData", function(result) {
+		var parsedBreakAlertData = JSON.parse(result.breakAlertData);
+
+		// if we were in productive mode
+		if (parsedBreakAlertData.mode == "productive"){
+			var breakTime = parsedBreakAlertData.break;
+
+			// disable website blocking
+			if (blockedcheckbox != null){
+				blockedcheckbox.checked = false;
+			}
+			const enabled = false;
+			chrome.storage.local.set({ enabled });
+			
+			// change chrome storage to be on break mode
+			parsedBreakAlertData.mode = "break";
+
+			// set new alarm for a break and alert user
+			chrome.alarms.create("BreakAlert", {delayInMinutes : parseInt(breakTime)});
+			alert("Great work! Take a break for " + breakTime + " minutes.");
+		} 
+		// else we were in break mode
+		else {	
+			var productiveTime = parsedBreakAlertData.productive;
+
+			// enable website blocking again
+			if (blockedcheckbox != null){
+				blockedcheckbox.checked = true;
+			}
+			const enabled = true;
+			chrome.storage.local.set({ enabled });
+
+			// change chrome storage to be on productive mode
+			parsedBreakAlertData.mode = "productive";
+			
+			// set new alarm for being productive and alert user
+			chrome.alarms.create("BreakAlert", {delayInMinutes : parseInt(productiveTime)});
+			alert("Break over! Get back to work for another " + productiveTime + " minutes.");
+		}
+
+		// change the mode of the break alert and update chrome storage
+		var data = JSON.stringify(parsedBreakAlertData);
+		chrome.storage.sync.set({"breakAlertData": data}, function(){
+			alert("after setting breakAlertData: " + data);
+		});  // end set 
+
+	});  // end get
 }
