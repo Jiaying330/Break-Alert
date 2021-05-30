@@ -112,7 +112,7 @@ async function renderCalendar () {
   document.querySelector(".date h1").innerHTML = months[date.getMonth()];
   
   // Add current date to the month header
-  document.querySelector(".date p").innerHTML = new Date().toDateString();
+  document.querySelector(".date p").innerHTML = date.getFullYear();
   
   // define a string of innerHTML to set days
   let days = "";
