@@ -129,11 +129,11 @@ function openEventTabs(name){
 
 // function to switch break alert alarm from productive mode to break mode (and vice versa)
 //
-async function handleBreakAlert(){
+function handleBreakAlert(){
 	const blockedcheckbox = document.getElementById("blockedcheckbox");
 
 	// add the productivePeriod and breakPeriod to chrome storage
-	await chrome.storage.sync.get("breakAlertData", function(result) {
+	chrome.storage.sync.get("breakAlertData", function(result) {
 		var parsedBreakAlertData = JSON.parse(result.breakAlertData);
 
 		// if we were in productive mode
@@ -152,7 +152,7 @@ async function handleBreakAlert(){
 
 			// set new alarm for a break and alert user
 			chrome.alarms.create("BreakAlert", {delayInMinutes : parseInt(breakTime)});
-			alert("Great work! Take a break for " + breakTime + " minutes.");
+			alert("Great work! Take a break for " + breakTime + " minute(s).");
 		} 
 		// else we were in break mode
 		else {	
@@ -170,13 +170,13 @@ async function handleBreakAlert(){
 			
 			// set new alarm for being productive and alert user
 			chrome.alarms.create("BreakAlert", {delayInMinutes : parseInt(productiveTime)});
-			alert("Break over! Get back to work for another " + productiveTime + " minutes.");
+			alert("Break over! Get back to work for another " + productiveTime + " minute(s).");
 		}
 
 		// change the mode of the break alert and update chrome storage
 		var data = JSON.stringify(parsedBreakAlertData);
 		chrome.storage.sync.set({"breakAlertData": data}, function(){
-			alert("after setting breakAlertData: " + data);
+			// alert("after setting breakAlertData: " + data);
 		});  // end set 
 
 	});  // end get
