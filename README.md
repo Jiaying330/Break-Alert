@@ -49,13 +49,11 @@ To install (2 methods):
 - Add and delete tasks to list
 - Ability to mark task as completed (with strikethrough)
 
-### Issues:
-- The state of items being completed (striked through) currently does not save
-
 ---
 
 ### Sources Used:
 * Todo/Task List: https://www.w3schools.com/howto/howto_js_todolist.asp.
+* Adding "enter" key to trigger a button click: https://www.w3schools.com/howto/howto_js_trigger_button_enter.asp
 * Style Guide for CSS/HTML: https://google.github.io/styleguide/htmlcssguide.html
 * Style Guide for Javascript: https://google.github.io/styleguide/jsguide.html#file-name
 * ChromeDriver for Testing with Selenium: https://chromedriver.chromium.org/getting-started, https://www.selenium.dev/, https://selenium-python.readthedocs.io/getting-started.html, https://www.selenium.dev/selenium/docs/api/py/webdriver_remote/selenium.webdriver.remote.webelement.html
