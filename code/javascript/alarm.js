@@ -36,21 +36,12 @@ function createAlarmListElement(alarm) {
 	var li = document.createElement("li");
 	li.textContent = text;
 	li.className = "alarmLi";
-	var buttonDelete = document.createElement("button");
-	buttonDelete.innerHTML = "Delete";
-	buttonDelete.className = "deleteAlarm";
-	li.appendChild(buttonDelete);
-	buttonDelete.addEventListener('click', function(){
-		removeAlarm(text);
-		var div = this.parentElement.parentElement;
-		div.style.display = "none";
-	});
 	var dropdown = document.createElement("i");
 	dropdown.className = "dropdown glyphicon glyphicon-triangle-bottom";
 	dropdown.onclick = function() {
+		var alarmTable = document.createElement("table");
 		if(dropdown.className === "dropdown glyphicon glyphicon-triangle-bottom") {
 			dropdown.className = "dropdown glyphicon glyphicon-triangle-top";
-			var alarmTable = document.createElement("table");
 			alarmTable.appendChild(dropItem("text", alarm.text));
 			alarmTable.appendChild(dropItem("time", alarm.time));
 			myAlarm.appendChild(alarmTable);
@@ -60,6 +51,19 @@ function createAlarmListElement(alarm) {
 				myAlarm.removeChild(myAlarm.lastChild);
 			}
 		}
+
+		var deleteButton = document.createElement("div");
+		deleteButton.className = "deleteButton";
+		deleteButton.style = "margin-left: 50px;";
+		var deleteTabIcon = document.createElement("i");
+		deleteTabIcon.className = "glyphicon glyphicon-trash";
+		deleteButton.appendChild(deleteTabIcon);
+		alarmTable.appendChild(deleteButton);
+		deleteButton.addEventListener('click', function(){
+			removeAlarm(text);
+			var div = this.parentElement.parentElement;
+			div.style.display = "none";
+		});
 	};
 	li.appendChild(dropdown);
 	li.addEventListener("click", function() {
