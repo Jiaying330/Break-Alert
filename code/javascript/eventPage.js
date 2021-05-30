@@ -16,22 +16,24 @@ chrome.alarms.onAlarm.addListener(function(alarm){
 	var splitAlarmName = (alarm.name).split("__");
 	var name = splitAlarmName[0];
 
-	// if we don't have a repeating alarm, remove it from the list
-	// (this only executes on alarms, NOT events, which is what we want)
-	if (typeof alarm.periodInMinutes === "undefined"){
-		removeNonRepeatingAlarm(alarm.name);  
-	}
-
 	// check if alert is break alert and reschedule it to switch from productive 
 	// to break mode or vice versa
 	if (name == "BreakAlert"){
 		handleBreakAlert();
 	}
+	// else we have a normal alarm/event
+	else {
+		// if we don't have a repeating alarm, remove it from the list
+		// (this only executes on alarms, NOT events, which is what we want)
+		if (typeof alarm.periodInMinutes === "undefined"){
+			removeNonRepeatingAlarm(alarm.name);  
+		}
 
-	// call helper function to get tabs list from event and open them
-	openEventTabs(name);
+		// call helper function to get tabs list from event and open them
+		openEventTabs(name);
 
-	alert(name);
+		alert(name);
+	}
 });
 
 
