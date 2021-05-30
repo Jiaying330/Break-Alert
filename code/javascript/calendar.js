@@ -182,7 +182,8 @@ async function renderCalendar () {
   for (let n = 0; n < schedule.length; n++) {
     schedule[n].addEventListener("click", () => {
       var inputDate = new Date(date);
-      inputDate.setDate(schedule[n].innerHTML);
+      var inputDay = schedule[n].innerHTML.split('<')[0];
+      inputDate.setDate(inputDay);
       if (schedule[n].className == "next-date") {
         var inputMonth = date.getMonth() == 11 ? 0 : date.getMonth() + 1;
         var inputYear = date.getMonth() == 11 ? date.getFullYear() + 1 : date.getFullYear();
@@ -194,7 +195,6 @@ async function renderCalendar () {
         inputDate.setMonth(inputMonth);
         inputDate.setFullYear(inputYear);
       }
-      
       inputDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
       document.getElementById("eventDate").value = inputDate.toISOString().slice(0, 16);
       document.querySelector(".scheduler").classList.add("show");
