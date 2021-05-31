@@ -51,7 +51,7 @@ To install (2 methods):
 
 ---
 
-##  Multi-tab
+##  Website Blocker
 ### Implemented features:
 - User can edit websites they don't want to see
 - Block websites that user input to website blocker
