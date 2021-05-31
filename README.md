@@ -76,3 +76,5 @@ To install (2 methods):
 * ChromeDriver for Testing with Selenium: https://chromedriver.chromium.org/getting-started, https://www.selenium.dev/, https://selenium-python.readthedocs.io/getting-started.html, https://www.selenium.dev/selenium/docs/api/py/webdriver_remote/selenium.webdriver.remote.webelement.html
 * Setting up Selenium w/ Chrome Extensions specifically: https://www.browserstack.com/guide/test-chrome-extensions-in-selenium, https://www.blazemeter.com/blog/6-easy-steps-testing-your-chrome-extension-selenium
 * For learning async/await and promises in JS: https://www.youtube.com/watch?v=V_Kr9OSfDeU, https://www.youtube.com/watch?v=DHvZLI7Db8E
+* Website Blocker guide: https://dev.to/penge/learn-the-most-useful-chrome-apis-by-creating-block-site-chrome-extension-2de8#:~:text=Block%20Site%20is%20a%20simple,you%20say%20so%20in%20Options
+* API references for Website Blocker: https://developer.chrome.com/docs/extensions/reference/
