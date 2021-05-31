@@ -10,7 +10,7 @@ chop = webdriver.ChromeOptions()
 chop.add_extension(extension_path)
 
 # link to chromedriver(mac version)
-path_to_chromedriver = '/Users/houjiaying/Documents/GitHub/Break-Alert/tests/chromedriver'
+path_to_chromedriver = '/Users/houjiaying/Documents/GitHub/Break-Alert/testing/chromedriver'
 driver = webdriver.Chrome(path_to_chromedriver, options=chop)
 
 # hardcoded id from chromedriver : gpmlkclebboedbdipgpmmkgnbdjdkgck (this opens the popup but the id is unique to my laptop only)
