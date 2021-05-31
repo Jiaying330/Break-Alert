@@ -95,13 +95,13 @@ function createEvent(eventObject) {
 	li.textContent = text;
 	li.id = text;
 	li.className = "eventLi";
-	var buttonD = document.createElement("button");
-	buttonD.innerHTML = "Delete";
-	buttonD.id = "deleteEvent";
-	buttonD.className = "customButton";
-	buttonD.style = "background-color: red;";
-	li.appendChild(buttonD);
-	buttonD.addEventListener('click', function(){
+	var spanDelete = document.createElement("SPAN");
+	var txt = document.createTextNode("\u00D7");
+	spanDelete.appendChild(txt);
+	spanDelete.className = "close";
+	spanDelete.id = "deleteEvent";
+	li.appendChild(spanDelete);
+	spanDelete.addEventListener('click', function(){
 		removeEvent(eventObject);
 		var div = this.parentElement.parentElement;
 		div.style.display = "none";
