@@ -51,6 +51,23 @@ To install (2 methods):
 
 ---
 
+##  Multi-tab
+### Implemented features:
+- User can edit websites they don't want to see
+- Block websites that user input to website blocker
+- Popup to remind user this is a blocked website
+
+### Usage:
+- Enable
+1. Insert links (1 link each line) into textbox. Example: "facebook.com"
+2. Click "Save" button to save the links for blocking
+3. Click "Enable" check box to enable the website blocker
+- Disable
+1. If "Enable" check box was checked, click "Enable" check box to cancel the website blocker
+- Delete all links
+1. Click "Clear all" button to clear all links
+---
+
 ### Sources Used:
 * Todo/Task List: https://www.w3schools.com/howto/howto_js_todolist.asp.
 * Adding "enter" key to trigger a button click: https://www.w3schools.com/howto/howto_js_trigger_button_enter.asp
