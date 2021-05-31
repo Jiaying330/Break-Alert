@@ -44,6 +44,24 @@ To install (2 methods):
 
 ---
 
+##  Scheduler
+### Implemented features:
+- Create, Edit, Delete event 
+- Event list dropdown
+- Allows user to set repeating event
+- Allows user to set multiple reminders
+- Allows user to add multi tabs to events that when the alarm fires, the tabs will be opened automatically
+
+### Usage:
+1. Click `Add` to add event
+2. Click `Save Changes` to edit event.
+3. Click `Clear Input` to clear input box value.
+4. Click `dropdown bar` to auto fill event informations to input boxes
+5. Click `dropdown arrow` on `dropdown bar` to display event informations
+6. Click `X` on `dropdown bar` to delete event
+
+---
+
 ## Todo List
 ### Implemented features:
 - Add and delete tasks to list
