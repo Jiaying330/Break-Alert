@@ -281,27 +281,6 @@
             
           <!-- Day section -->
           <div style="margin-bottom: 15px;"class="days"></div>
-
-          <!-- Break Alert section -->
-          <!-- <div class="breakAlert">
-            <h5>Break Alert</h5>
-
-            <div style="display:flex; flex-direction: row; justify-content: space-evenly; align-items: center">
-              Duration between breaks (minutes):
-              <input type="number" id="productiveDuration" min="1" max="999" style="width:15%">
-            </div>
-
-            <div style="display:flex; flex-direction: row; justify-content: space-evenly; align-items: center">
-              Duration of breaks (minutes):
-              <input type="number" id="breakDuration" min="1" max="999" style="width:15%">
-            </div>
-
-            <div style="display:flex; flex-direction: row; justify-content: space-evenly; align-items: center">
-              <button id="enableBreakAlert">Enable</button>
-              <button id="disableBreakAlert">Disable</button>
-            </div>
-
-          </div> -->
         
           <!-- Scheduler layer -->
           <div class="scheduler">
@@ -341,13 +320,14 @@
               <button class = "customButton" style="background-color: rgb(103, 201, 103);" id="addEvent">Add</button>
               <button class = "customButton" style="background-color: rgb(85, 85, 219);" id="editEvent">Save Changes</button> 
               <button class = "customButton" style="background-color: rgb(196, 78, 78);" id="clearInputs">Clear Input</button> 
+              <!-- Event List -->
+              <div class="events">
+                <ul id = "eventList">
+                </ul>
+              </div>
           </div>
 
-          <!-- Event List -->
-          <div class="events">
-            <ul id = "eventList">
-            </ul>
-          </div>
+          
         </div>
       </div>
     </div>
