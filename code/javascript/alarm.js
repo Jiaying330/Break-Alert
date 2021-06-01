@@ -54,7 +54,7 @@ function createAlarmListElement(alarm) {
 
 		var deleteButton = document.createElement("div");
 		deleteButton.className = "deleteButton";
-		deleteButton.style = "margin-left: 50px;";
+		deleteButton.style = "margin-left: 70px;";
 		var deleteTabIcon = document.createElement("i");
 		deleteTabIcon.className = "glyphicon glyphicon-trash";
 		deleteButton.appendChild(deleteTabIcon);
