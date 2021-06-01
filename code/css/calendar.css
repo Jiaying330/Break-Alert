@@ -2,187 +2,250 @@
  * 
  * Calendar and Scheduler window
  * 
+ ***********************************/
+.container-calendar {
+  display: flex;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  width: 400px;
+  display: grid;
+}
+
+/*************************************
+ * 
+ * Calendar window section
+ * 
  ************************************/
- .container-calendar {
-    display: flex;
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    width: 400px;
-    display: grid;
-  }
-  
-  /*************************************
-   * 
-   * Calendar window section
-   * 
-   ************************************/
-  
-  /* Calendar window */
-  .calendar {
-    width: 400px;
-    height: 540px;
-    padding: 5px;
-    overflow: hidden;
-  }
-  
-  /*************************************
-   * 
-   * Month section (Calendar)
-   * 
-   ************************************/
-  
-   /* Month section window */
-  .month {
-    height: 35%;
-    color: #151426;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
-    padding: 5px;
-    font-size: 24px;
-    font-weight: 400;
-  }
-  
-  /* Left arrow and right arrow buttons */
-  .month i {
-    font-size: 2.5rem;
-    cursor: pointer;
-  }
-  
-  /* Change the color of arrow buttons when hovering */
-  .month i:hover {
-    color: #9cc925;
-  }
-  
-  /* Month Header */
-  .month h1 {
-    text-transform: uppercase;
-    letter-spacing: 0.1rem;
-  }
-  
-  /*************************************
-   * 
-   * Week section (Calendar)
-   * 
-   ************************************/
-  
-   /* Week section window */
-  .week {
-    height: 2.5rem;
-    display: flex;
-    align-items: center;
-  }
-  
-  /* Format the weekdays as shown in a normal calendar*/
-  .week div {
-    font-size: 1.5rem;
-    font-weight: 600;
-    width: 100%;
-    height: 50px;
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    justify-content: center;
-    align-items: center;
-    padding: 7px;
-    color: #c3c2c8;
-  }
-  
-  /*************************************
-   * 
-   * Day section (Calendar)
-   * 
-   ************************************/
-  
-   /* Format the days in the current month as shown in a normal calendar */
-  .days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    color: #151426;
-    padding-left: 7px;
-  }
-  
-  /* Day window in each cell */
-  .days div {
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    display: flex;
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
-  }
-  
-  /* Display differnt color and border when hovering not current days */
-  .days div:hover:not(.today) {
-    background-color: #9cc925;
-    color: #ffffff;
-    border-radius: 50%
-  }
-  
-  /* Display different color for days of previous and next month */
-  .prev-date,
-  .next-date {
-    color: #d1d1d1;
-  }
-  
-  /* Indicate the current day */
-  .today {
-    background-color: #9cc925;
-    border-radius: 10px;
-  }
-  
-  /* Display different color when hovering current day */
-  .today:hover {
-    color: #ffffff;
-  }
-  
-  /* Icon that indicate event exists for the day */
-  i.fa.fa-circle {
-    color: orange;
-    position: absolute;
-    top: 10%;
-    left: 70%;
-    font-size: 9px;
-  }
-  
-  /*************************************
-   * 
-   * Scheduler window section
-   * 
-   ************************************/
-  
-   /* Scheduler window, hidden by default */
-  .scheduler {
-    background-color: #ffffff;
-    position: absolute;
-    width: 400px;
-    height: 580px;
-    padding: 5px;
-    top: 0;
-    left: 0;
-    color: #151426;
-    visibility: hidden;
-    pointer-events: none;
-  }
-  
-  /* Show the scheduler window */
-  .scheduler.show {
-    visibility: visible;
-    pointer-events: visible;
-  }
-  
-  /* Return to calender button */
-  .scheduler-return {
-    position: relative;
-    cursor: pointer;
-    font-size: 1.75rem;
-    width: 25px;
-    left: 94%;
-  }
-  
-  /* Display different color when hovering return button */
-  .scheduler-return:hover {
-    color: #9cc925;
-  }
+
+/* Calendar window */
+.calendar {
+  width: 400px;
+  height: 540px;
+  padding: 5px;
+  overflow: hidden;
+}
+
+/*************************************
+ * 
+ * Month section (Calendar)
+ * 
+ ************************************/
+
+/* Month section window */
+.month {
+  height: 35%;
+  color: #151426;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  padding: 5px;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+/* Left arrow and right arrow buttons */
+.month i {
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+
+/* Change the color of arrow buttons when hovering */
+.month i:hover {
+  color: #9cc925;
+}
+
+/* Month Header */
+.month h1 {
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
+
+/*************************************
+ * 
+ * Week section (Calendar)
+ * 
+ ************************************/
+
+/* Week section window */
+.week {
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Format the weekdays as shown in a normal calendar*/
+.week div {
+  font-size: 1.5rem;
+  font-weight: 600;
+  width: 100%;
+  height: 50px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  justify-content: center;
+  align-items: center;
+  padding: 7px;
+  color: #c3c2c8;
+}
+
+/*************************************
+ * 
+ * Day section (Calendar)
+ * 
+ ************************************/
+
+/* Format the days in the current month as shown in a normal calendar */
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  color: #151426;
+  padding-left: 7px;
+}
+
+/* Day window in each cell */
+.days div {
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  display: flex;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+}
+
+/* Display differnt color and border when hovering not current days */
+.days div:hover:not(.today) {
+  background-color: #9cc925;
+  color: #ffffff;
+  border-radius: 50%
+}
+
+/* Display different color for days of previous and next month */
+.prev-date,
+.next-date {
+  color: #d1d1d1;
+}
+
+/* Indicate the current day */
+.today {
+  background-color: #9cc925;
+  border-radius: 10px;
+}
+
+/* Display different color when hovering current day */
+.today:hover {
+  color: #ffffff;
+}
+
+/* Icon that indicate event exists for the day */
+i.fa.fa-circle {
+  color: orange;
+  position: absolute;
+  top: 10%;
+  left: 70%;
+  font-size: 9px;
+}
+
+/*************************************
+ * 
+ * Calendar event page window section
+ * 
+ ************************************/
+
+/* calendar event page window, hidden by default */
+.calendar-eventPage {
+  background-color: #ffffff;
+  position: absolute;
+  width: 400px;
+  height: 540px;
+  padding: 5px;
+  top: 40px;
+  left: 0;
+  color: #151426;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Show the event page window */
+.calendar-eventPage.show {
+  visibility: visible;
+  pointer-events: visible;
+}
+
+/* Return to calender button */
+.calendar-eventPage-return .fa.fa-times{
+  position: relative;
+  cursor: pointer;
+  font-size: 1.75rem;
+  left: 175px;
+  top: 5px;
+}
+
+/* Display different color when hovering redirect buttons */
+.calendar-eventPage-return:hover,
+.calendar-eventPage-to-scheduler:hover {
+  color: #9cc925;
+}
+
+/* event page to sheduler button */
+.calendar-eventPage-to-scheduler .fa.fa-edit {
+  cursor: pointer;
+  width: fit-content;
+  font-size: 1.75rem;
+}
+
+/* event page list */
+ul.eventPage-list li {
+  padding: 8px 4px 8px;
+}
+
+.eventPage-header {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.eventPage-footer {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/*************************************
+ * 
+ * Scheduler window section
+ * 
+ ************************************/
+
+/* Scheduler window, hidden by default */
+.scheduler {
+  background-color: #ffffff;
+  position: absolute;
+  width: 400px;
+  height: 580px;
+  padding: 5px;
+  top: 0;
+  left: 0;
+  color: #151426;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Show the scheduler window */
+.scheduler.show {
+  visibility: visible;
+  pointer-events: visible;
+}
+
+/* Return to calender button */
+.scheduler-return .fa.fa-times{
+  position: relative;
+  cursor: pointer;
+  font-size: 1.75rem;
+  left: 175px;
+  top: 5px;
+}
+
+/* Display different color when hovering return button */
+.scheduler-return:hover {
+  color: #9cc925;
+}

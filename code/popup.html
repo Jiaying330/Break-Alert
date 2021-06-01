@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Import bootstrap css -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <!-- Import Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"/>
-
   <!-- Import css files -->
   <link rel="stylesheet" href="css/calendar.css"/>
   <link rel="stylesheet" href="css/scheduler.css"/>
@@ -160,6 +160,34 @@
             
           <!-- Day section -->
           <div style="margin-bottom: 15px;"class="days"></div>
+
+          <!-- Calendar event page layer -->
+          <div class="calendar-eventPage">
+
+            <header class="eventPage-header">
+
+              <!-- Button that returns to the calendar base page -->
+              <div class="calendar-eventPage-return">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </div>
+
+              <!-- current date info -->
+              <h1 id="eventPage-header"></h1>
+
+            </header>
+
+            <main>
+              <ul class="eventPage-list"></ul>
+            </main>
+
+            <footer class="eventPage-footer">
+              <!-- Button that goes to the scheduler page -->
+              <div class="calendar-eventPage-to-scheduler">
+                <i class="fa fa-edit" aria-hidden="true"></i>
+              </div>
+            </footer>
+
+          </div>
         
           <!-- Scheduler layer -->
           <div class="scheduler" style="margin-top: 40px;">
