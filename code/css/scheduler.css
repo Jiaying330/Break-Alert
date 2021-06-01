@@ -1,5 +1,6 @@
 div.scheduler {
   overflow: auto;
+  height: 550px;
 }
 
 div.calendar {
