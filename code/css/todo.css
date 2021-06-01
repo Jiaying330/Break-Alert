@@ -59,7 +59,7 @@ input {
 }
 .taskList {
   margin: 10px 0 0 0; 
-  max-height: 235px;
+  max-height: 215px;
   overflow: auto;
 }
 #todoList{
