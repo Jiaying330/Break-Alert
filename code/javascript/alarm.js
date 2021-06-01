@@ -119,10 +119,8 @@ function clickSet(e) {
 	if (time !== 0 && text != ""){
     createChromeAlarm(text, time);
 		addAlarms(text, time);
-    	hour2 = 0;
-    	hour1 = 0;
-    	min2 = 0;
-    	min1 = 0;
+		resetAlarmValues();
+    	
 		setTimeUI();
     	document.getElementById("loopAlarm").value = "";
     	document.getElementById("loopCheck").checked = false;
@@ -150,15 +148,22 @@ function createChromeAlarm(text, time){
 }
 
 /* 
+	function: reset alarm ui values 
+*/
+function resetAlarmValues() {
+	hour2 = 0;
+    hour1 = 0;
+    min2 = 0;
+    min1 = 0;
+}
+
+/* 
 	function: clear current entries in input boxes
 */
 function clickClear(){
 	document.getElementById("loopAlarm").value = "";
   document.getElementById("loopCheck").checked = false;
-	hour2 = 0;
-	hour1 = 0;
-	min2 = 0;
-	min1 = 0;
+	resetAlarmValues();
 	setTimeUI();
 }
 
@@ -232,12 +237,14 @@ function addHour2(){
 	}
 	setTimeUI();
 }
+
 function subHour2(){
 	if(hour2 > 0){
 		hour2 -= 1;
 	}
 	setTimeUI();
 }
+
 function addHour1(){
 	if(hour1 <= 8){
 		hour1 += 1;
@@ -249,6 +256,7 @@ function addHour1(){
 	}
 	setTimeUI();
 }
+
 function subHour1(){
 	if(hour1 > 0){
 		hour1 -= 1;
@@ -260,18 +268,21 @@ function subHour1(){
 	}
 	setTimeUI();
 }
+
 function addMin2(){
 	if(min2 <= 4){
 		min2 += 1;
 	}
 	setTimeUI();
 }
+
 function subMin2(){
 	if(min2 > 0){
 		min2 -= 1;
 	}
 	setTimeUI();
 }
+
 function addMin1(){
 	if(min1 <= 8){
 		min1 += 1;
@@ -283,6 +294,7 @@ function addMin1(){
 	}
 	setTimeUI();
 }
+
 function subMin1(){
 	if(min1 > 0){
 		min1 -= 1;
