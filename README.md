@@ -44,11 +44,46 @@ To install (2 methods):
 
 ---
 
+##  Scheduler
+### Implemented features:
+- Create, Edit, Delete event 
+- Event list dropdown
+- Allows user to set repeating event
+- Allows user to set multiple reminders
+- Allows user to add multi tabs to events that when the alarm fires, the tabs will be opened automatically
+
+### Usage:
+1. Click `Add` to add event
+2. Click `Save Changes` to edit event.
+3. Click `Clear Input` to clear input box value.
+4. Click `dropdown bar` to auto fill event informations to input boxes
+5. Click `dropdown arrow` on `dropdown bar` to display event informations
+6. Click `X` on `dropdown bar` to delete event
+
+---
+
 ## Todo List
 ### Implemented features:
 - Add and delete tasks to list
 - Ability to mark task as completed (with strikethrough)
 
+---
+
+##  Website Blocker
+### Implemented features:
+- User can edit websites they don't want to see
+- Block websites that user input to website blocker
+- Popup to remind user this is a blocked website
+
+### Usage:
+- Enable
+1. Insert links (1 link each line) into textbox. Example: "facebook.com"
+2. Click "Save" button to save the links for blocking
+3. Click "Enable" check box to enable the website blocker
+- Disable
+1. If "Enable" check box was checked, click "Enable" check box to cancel the website blocker
+- Delete all links
+1. Click "Clear all" button to clear all links
 ---
 
 ### Sources Used:
@@ -59,3 +94,6 @@ To install (2 methods):
 * ChromeDriver for Testing with Selenium: https://chromedriver.chromium.org/getting-started, https://www.selenium.dev/, https://selenium-python.readthedocs.io/getting-started.html, https://www.selenium.dev/selenium/docs/api/py/webdriver_remote/selenium.webdriver.remote.webelement.html
 * Setting up Selenium w/ Chrome Extensions specifically: https://www.browserstack.com/guide/test-chrome-extensions-in-selenium, https://www.blazemeter.com/blog/6-easy-steps-testing-your-chrome-extension-selenium
 * For learning async/await and promises in JS: https://www.youtube.com/watch?v=V_Kr9OSfDeU, https://www.youtube.com/watch?v=DHvZLI7Db8E
+* Website Blocker guide: https://dev.to/penge/learn-the-most-useful-chrome-apis-by-creating-block-site-chrome-extension-2de8#:~:text=Block%20Site%20is%20a%20simple,you%20say%20so%20in%20Options
+* API references for Website Blocker: https://developer.chrome.com/docs/extensions/reference/
+* Icon: https://www.pngwing.com/en/free-png-vhwdg
