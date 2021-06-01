@@ -2,10 +2,25 @@
 document.addEventListener('DOMContentLoaded', function () {
 	var buttonEnable = document.getElementById("enableBreakAlert");
 	var buttonDisable = document.getElementById("disableBreakAlert");
-  if (buttonEnable != null)
-	  buttonEnable.addEventListener("click", enableBreakAlert);
+  var breakAlertInput = document.getElementById("breakDuration");
+
   if (buttonDisable != null)
 	  buttonDisable.addEventListener("click", disableBreakAlert); 
+
+  if (breakAlertInput != null && buttonEnable != null){
+	  buttonEnable.addEventListener("click", enableBreakAlert);
+
+    // Allow for user to hit "enter" to add the breakalert (instead of having to click)
+    breakAlertInput.addEventListener("keyup", function(event) {
+      // Number 13 is the "Enter" key on the keyboard
+      // keyCode element is deprecated but it still works
+      if (event.keyCode === 13) {
+        // Trigger the button element with a click
+        buttonEnable.click();
+      }
+    });
+  }
+  
 });
 
 // disable break alert (clear saved data in chrome storage)

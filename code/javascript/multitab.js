@@ -48,7 +48,21 @@
  */
 document.addEventListener('DOMContentLoaded', function () {
 	var buttonTabAdder = document.getElementById("addTabButton");
-	buttonTabAdder.addEventListener("click", addNewMultitab);
+	var multiTabInput = document.getElementById("newMTabName");
+
+	if (multiTabInput != null && buttonTabAdder != null){
+		// Allow for user to hit "enter" to add the multitab (instead of having to click)
+    multiTabInput.addEventListener("keyup", function(event) {
+      // Number 13 is the "Enter" key on the keyboard
+      // keyCode element is deprecated but it still works
+      if (event.keyCode === 13) {
+        // Trigger the button element with a click
+        buttonTabAdder.click();
+      }
+    });
+
+		buttonTabAdder.addEventListener("click", addNewMultitab);
+	}
 });
 
 const myList = document.getElementById("allTabs");
