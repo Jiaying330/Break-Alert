@@ -1,3 +1,6 @@
+/**
+ * Copied from https://dev.to/penge/learn-the-most-useful-chrome-apis-by-creating-block-site-chrome-extension-2de8#:~:text=Block%20Site%20is%20a%20simple,you%20say%20so%20in%20Options
+ */
 chrome.runtime.onInstalled.addListener(function () {
   chrome.storage.local.get(["blocked", "enabled"], function (local) {
     if (!Array.isArray(local.blocked)) {
