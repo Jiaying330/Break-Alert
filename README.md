@@ -96,3 +96,4 @@ To install (2 methods):
 * For learning async/await and promises in JS: https://www.youtube.com/watch?v=V_Kr9OSfDeU, https://www.youtube.com/watch?v=DHvZLI7Db8E
 * Website Blocker guide: https://dev.to/penge/learn-the-most-useful-chrome-apis-by-creating-block-site-chrome-extension-2de8#:~:text=Block%20Site%20is%20a%20simple,you%20say%20so%20in%20Options
 * API references for Website Blocker: https://developer.chrome.com/docs/extensions/reference/
+* Icon: https://www.pngwing.com/en/free-png-vhwdg
