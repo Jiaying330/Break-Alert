@@ -1,5 +1,10 @@
 var myTodoList = document.getElementById("todoList");
 
+/**
+ * At the start of opening the application:
+ * todo list will be formated
+ * todo tasks will be displayed
+ */
 chrome.storage.sync.get({tasks: []}, function(result) {
 	if(result.tasks == undefined){
 		chrome.storage.sync.set({"tasks": []});
@@ -43,6 +48,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+/**
+ * 
+ * Reads user inputs to create new task
+ * Calls createTaskItem and stores item into chrome storage
+ * 
+ */
 function addNewTask(){
   let str = document.getElementById("addTaskInput").value;
   if(str != ""){
@@ -61,6 +72,14 @@ function addNewTask(){
   document.getElementById("addTaskInput").value = "";
 } 
 
+/**
+ * 
+ * @param {String} task 
+ * @param {boolean} done 
+ * @param {number} pos 
+ * @returns A new task item row
+ * 
+ */
 function createTaskItem(task, done, pos){
   var myTask = task;
   var li = document.createElement("li");
