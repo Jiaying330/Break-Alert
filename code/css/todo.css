@@ -65,3 +65,6 @@ input {
 #todoList{
   list-style-type: none;
 }
+#addTaskInput{
+  margin: 0px;
+}

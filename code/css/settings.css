@@ -1,0 +1,9 @@
+.settingsButton{
+  cursor: pointer;
+  padding: 20px;    
+  border-bottom: 1px solid rgb(0, 0, 0);    
+}    
+#settings{
+  overflow: auto;
+  max-height: 325px;
+}

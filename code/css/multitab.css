@@ -1,0 +1,75 @@
+#allTabs{
+  min-height: 210px;
+  max-height: 210px;
+  overflow: auto;
+  padding-bottom: 20px;
+}
+.entireTab{
+  width: 280px;
+  min-height: 35px;
+  justify-content: center;
+}
+.tabRow{
+  min-height: 35px;
+  display: flex;
+  width: 280px;
+  cursor: pointer;
+}
+.tabRow:hover{
+  cursor: pointer;
+}
+.dropdown{
+  width: 35px;
+  height: 35px;
+  padding-top: 9px;
+  font-size: 10px;
+}
+.tabName{
+  width: 270px;
+  height: 35px;
+  text-align: start;
+  padding-left: 10px;
+  padding-top: 6px;
+  text-overflow: ellipsis; 
+  overflow: hidden;
+  white-space: nowrap;
+}
+.deleteButton .glyphicon{
+  font-size: 12px;
+}
+.deleteButton{
+  border-radius: 4px;
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 6px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+  margin: 0px;
+  cursor: pointer;
+}
+.addButton{
+  background-color: #4554d4;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  margin: 0px;
+}
+.linkInput{
+  margin: 10px 0px 10px 0px;
+}
+.addButton .glyphicon{
+  font-size: 10px;
+}
+#newMTabName{
+  margin: 0px;
+}
+#addTabButton .glyphicon{
+  font-size: 12px;
+}
