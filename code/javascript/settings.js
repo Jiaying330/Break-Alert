@@ -51,6 +51,11 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("resetAlarmData").addEventListener("click", resetAlarmData);
 });
 
+/**
+ * resetMultiTabData
+ * Sets the chrome storage "myTabs" to an empty array
+ * Pops off every item that is a child of the tab list
+ */
 function resetMultiTabData(){
     chrome.storage.sync.set({"myTabs": []});
     const myList = document.getElementById("allTabs");
@@ -58,6 +63,12 @@ function resetMultiTabData(){
         myList.removeChild(myList.lastChild);
     }
 }
+
+/**
+ * resetTodoData
+ * Sets the chrome storage "tasks" to an empty array
+ * Pops off every item that is a child of the task list
+ */
 function resetTodoData(){
     chrome.storage.sync.set({"tasks": []});
     const myTodoList = document.getElementById("todoList");
@@ -67,10 +78,15 @@ function resetTodoData(){
 }
 const visualSettings = document.getElementById('visualSettings');
 const settings = document.getElementById('settings');
+/**
+ * openVisualSettings
+ * Opens up the Dark/Light mode option page
+ */
 function openVisualSettings(){
     settings.classList.remove('active');
     visualSettings.classList.add('active');
 }
+
 function toggleMode(){
     document.documentElement.classList.toggle('darkMode');
     document.querySelectorAll('.inverted').forEach((result) => {
@@ -95,6 +111,11 @@ function toggleLightMode(){
     chrome.storage.sync.set({"visual": "light"});
 }
 
+/**
+ * resetAlarmData
+ * Sets the chrome storage "alarms" and "events" to an empty array
+ * Pops off every item that is a child of the event and alarm list
+ */
 function resetAlarmData(){
     chrome.alarms.clearAll();
     chrome.storage.local.set({"alarms": []});
