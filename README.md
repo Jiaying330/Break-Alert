@@ -38,9 +38,6 @@ To install (2 methods):
 2. Click `days` in `calendar UI` to display the `scheduler UI`.
 3. Click `X` in `scheduler UI` (at the top-right corner) to return to `calendar UI`.
 
-### Issues:
-  - Event symbols are displayed incorrectly
-
 ---
 
 ##  Scheduler
