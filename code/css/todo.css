@@ -1,3 +1,6 @@
+#todo{
+  max-height: 300px;
+}    
 /* style todo list */
 ul {  
   margin: 0;
@@ -59,7 +62,7 @@ input {
 }
 .taskList {
   margin: 10px 0 0 0; 
-  max-height: 235px;
+  max-height: 215px;
   overflow: auto;
 }
 #todoList{

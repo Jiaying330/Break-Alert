@@ -195,7 +195,12 @@ async function renderCalendar () {
         inputDate.setFullYear(inputYear);
       }
       inputDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-      document.getElementById("eventDate").value = inputDate.toISOString().slice(0, 16);
+
+      // range checking to make sure inputDate is a valid number
+      if (!isNaN(inputDate)){
+        document.getElementById("eventDate").value = inputDate.toISOString().slice(0, 16);
+      }
+      
       document.querySelector(".scheduler").classList.add("show");
     });
   }
