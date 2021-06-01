@@ -228,10 +228,10 @@ function clickEvent(eventObject) {
 			chks[eventObject.repeat[repeatIndex] - 1].checked = true;
 		}
 	}
+	//a
 	var reminders = document.getElementById("reminder");
 	var inputReminders = reminders.getElementsByTagName("INPUT");
 	var maxReminders = Math.max(eventObject.remind.length, inputReminders.length);
-
 	// copy over reminders from event to input boxes
 	for (var remindIndex = 0; remindIndex < maxReminders; remindIndex++) {
 		if (enoughReminderInputBoxes(remindIndex, inputReminders.length, eventObject.remind.length)) {  

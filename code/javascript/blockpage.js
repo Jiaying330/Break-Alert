@@ -1,3 +1,7 @@
+/**
+ * Copied from:
+ * https://dev.to/penge/learn-the-most-useful-chrome-apis-by-creating-block-site-chrome-extension-2de8#:~:text=Block%20Site%20is%20a%20simple,you%20say%20so%20in%20Options
+ */
 const textarea = document.getElementById("textarea");
 const save = document.getElementById("save");
 const clearlink = document.getElementById("clearlink");
