@@ -52,6 +52,7 @@ function getWeekday(num) {
 }
 
 var eList = document.getElementById("eventList");
+
 // display events
 if (eList != null){
 	// load stored events from chrome storage
@@ -87,40 +88,27 @@ if (eList != null){
 	function: create li element to display event
 */
 function createEvent(eventObject) {
-	var myEvent = document.createElement("div");
-	myEvent.className = "entireEvent";
 	var text = eventObject.text;
-	myEvent.id = text;
-	var li = document.createElement("li");
-	li.textContent = text;
-	li.id = text;
-	li.className = "eventLi";
-	var buttonD = document.createElement("button");
-	buttonD.innerHTML = "Delete";
-	buttonD.id = "deleteEvent";
-	buttonD.className = "customButton";
-	buttonD.style = "background-color: red;";
-	li.appendChild(buttonD);
-	buttonD.addEventListener('click', function(){
+	var myEvent = createEntireEventDiv(text);
+	var eventLi = createEntireEventLi(text);
+	var spanDelete = createSpanDelete();
+	eventLi.appendChild(spanDelete);
+
+	spanDelete.addEventListener('click', function(){
 		removeEvent(eventObject);
 		var div = this.parentElement.parentElement;
 		div.style.display = "none";
 		removeEListChild(text);
-	});
-	var dropdown = document.createElement("i");
-	dropdown.id = "dropdown";
-	dropdown.className = "dropdown glyphicon glyphicon-triangle-bottom";
-	dropdown.onclick = function() {
+	});	
+
+	var dropdown = createDropdownI();
+
+	dropdown.onclick = 
+	function() {
 		if(dropdown.className === "dropdown glyphicon glyphicon-triangle-bottom") {
 			dropdown.className = "dropdown glyphicon glyphicon-triangle-top";
-			var eventTable = document.createElement("table");
-			// fill in dropdown
-			eventTable.appendChild(dropItem("time", eventObject.time));
-			eventTable.appendChild(dropItem("repeat", numToWeekDay(eventObject.repeat)));
-			eventTable.appendChild(dropItem("reminder", eventObject.remind));
-			eventTable.appendChild(dropItem("tabs", eventObject.tabs));
+			var eventTable = createEventTable(eventObject);
 			myEvent.appendChild(eventTable);
-			
 		} else {
 			dropdown.className = "dropdown glyphicon glyphicon-triangle-bottom";
 			while(myEvent.childElementCount != 1) {
@@ -128,12 +116,76 @@ function createEvent(eventObject) {
 			}
 		}
 	};
-	li.appendChild(dropdown);
-	li.addEventListener("click", function(){
+	eventLi.appendChild(dropdown);
+	eventLi.addEventListener("click", function(){
 		clickEvent(eventObject);
 	});
-	myEvent.appendChild(li);
+	myEvent.appendChild(eventLi);
 	return myEvent;
+}
+
+/*
+	input: event name
+	output: div object
+	function: creates a div object to contain informations of the event
+*/
+function createEntireEventDiv(text) {
+	var myEvent = document.createElement("div");
+	myEvent.className = "entireEvent";
+	myEvent.id = text;
+	return myEvent;
+}
+
+/*
+	input: event name
+	output: li object
+	function: creates a li object to contain event name, X and dropdown button
+*/
+function createEntireEventLi(text) {
+	var li = document.createElement("li");
+	li.textContent = text;
+	li.id = text;
+	li.className = "eventLi";
+	return li;
+}
+
+/*
+	output: span object
+	function: creates a span object to contain X button
+*/
+function createSpanDelete() {
+	var spanDelete = document.createElement("SPAN");
+	var xButton = document.createTextNode("\u00D7");
+	spanDelete.appendChild(xButton);
+	spanDelete.className = "close";
+	spanDelete.id = "deleteEvent";
+	return spanDelete;
+}
+
+/*
+	output: i object
+	function: creates an i object to contain dropdown button
+*/
+function createDropdownI() {
+	var dropdown = document.createElement("i");
+	dropdown.id = "dropdown";
+	dropdown.className = "dropdown glyphicon glyphicon-triangle-bottom";
+	return dropdown;
+}
+
+/*
+	input: event object
+	output: table object
+	function: creates a table object to contain informations of the event
+*/
+function createEventTable(eventObject) {
+	var eventTable = document.createElement("table");
+	// fill in eventTable
+	eventTable.appendChild(dropItem("time", eventObject.time));
+	eventTable.appendChild(dropItem("repeat", numToWeekDay(eventObject.repeat)));
+	eventTable.appendChild(dropItem("reminder", eventObject.remind));
+	eventTable.appendChild(dropItem("tabs", eventObject.tabs));
+	return eventTable;
 }
 
 /*
@@ -144,7 +196,6 @@ function createEvent(eventObject) {
 function numToWeekDay(repeatArray) {
 	var result = new Array();
 	for (var arrayIndex = 0; arrayIndex < repeatArray.length; arrayIndex++) {
-		console.log(repeatArray[arrayIndex] + " : " + getWeekday(repeatArray[arrayIndex]));
 		result.push(getWeekday(repeatArray[arrayIndex]));
 	}
 	return result;
@@ -155,19 +206,16 @@ function numToWeekDay(repeatArray) {
 	function: fill in the input area with informations stored in the event object
 */
 function clickEvent(eventObject) {
+	// check if the scheduler window is showing, if not, no need to fill
+	var scheduler_show = document.querySelector(".scheduler").classList;
+	if (!scheduler_show.contains("show")) {
+		return;
+	} 
+	
 	clickClearInputs();
-	var eventName = document.getElementById("event");
-	eventName.value = eventObject.text;
-	var eventDate = document.getElementById("eventDate");
-	eventDate.value = eventObject.time;
-
-	var eventTabs = document.getElementById("tabsToOpen");
-	var tabsString = JSON.stringify(eventObject.tabs);
-	var splitTabs = tabsString.replaceAll(',', '\n');  // replace all , by newlines
-	splitTabs = splitTabs.replaceAll('[', '');  // delete all [] and "" added from stringify
-	splitTabs = splitTabs.replaceAll(']', '');
-	splitTabs = splitTabs.replaceAll('"', '');
-	eventTabs.value = splitTabs;
+	fillInputBox("event", eventObject.text);
+	fillInputBox("eventDate", eventObject.time);
+	fillInputBox("tabsToOpen", splitTab(eventObject.tabs));
 
 	var checkBox = document.getElementById("repeat");
 	var chks = checkBox.getElementsByTagName("INPUT");
@@ -180,34 +228,58 @@ function clickEvent(eventObject) {
 			chks[eventObject.repeat[repeatIndex] - 1].checked = true;
 		}
 	}
+	//a
 	var reminders = document.getElementById("reminder");
 	var inputReminders = reminders.getElementsByTagName("INPUT");
 	var maxReminders = Math.max(eventObject.remind.length, inputReminders.length);
-
 	// copy over reminders from event to input boxes
 	for (var remindIndex = 0; remindIndex < maxReminders; remindIndex++) {
-		if (remindIndex < inputReminders.length && remindIndex < eventObject.remind.length) {  // there are enough input boxes to copy event's reminders
+		if (enoughReminderInputBoxes(remindIndex, inputReminders.length, eventObject.remind.length)) {  
 			inputReminders[remindIndex].value = eventObject.remind[remindIndex];
-		} else if (remindIndex >= inputReminders.length) { // not enough input boxes, so create another and copy over
+		} else if (!enoughReminderInputBoxes(remindIndex, inputReminders.length)) {
 			var div = document.createElement("div");
-			var reminderInput = document.createElement("input");
-			reminderInput.setAttribute('type', 'time');
-			reminderInput.style = "width:60%";
+			
+			var reminderInput = createReminderInput();
 			reminderInput.value = eventObject.remind[remindIndex];
 			div.append(reminderInput);  // append the reminder input to the div
 
-			var deleteReminder = document.createElement("i");
-			deleteReminder.className = "glyphicon glyphicon-minus-sign";
-			deleteReminder.id = "delReminder";
-			deleteReminder.style = "cursor:pointer; font-size:15px;";
-			deleteReminder.addEventListener("click", clickDelReminder);
-			div.appendChild(deleteReminder);  // append the - button to the div
+			div.appendChild(createDeleteReminderButton());  // append the - button to the div
 
 			reminders.appendChild(div);  // append the div containing the reminder and the - button
-		} else if (remindIndex >= eventObject.remind.length){  // more current reminders than the clicked event's reminders, so clear the extras
-			inputReminders[remindIndex].value = "";
-		}
+		} 
 	}
+}
+
+/* 
+	input: tabs
+	output: splited tabs
+	function: split tabs
+*/
+function splitTab(tabs) {
+	var tabsString = JSON.stringify(tabs);
+	var splitTabs = tabsString.replaceAll(',', '\n');  // replace all , by newlines
+	splitTabs = splitTabs.replaceAll('[', '');  // delete all [] and "" added from stringify
+	splitTabs = splitTabs.replaceAll(']', '');
+	splitTabs = splitTabs.replaceAll('"', '');
+	return splitTabs;
+}
+
+/* 
+	input: remind index, reminder box number, event reminder number
+	output: boolean
+	function: check if there is enough input boxes to auto fill event reminders
+*/
+function enoughReminderInputBoxes(remindIndex, inputRemindersLength, eventReminderLength) {
+	return remindIndex < inputRemindersLength && remindIndex < eventReminderLength;
+}
+
+/* 
+	input: element id, information to show
+	function: fill in information
+*/
+function fillInputBox(elementId, info) {
+	var element = document.getElementById(elementId);
+	element.value = info;
 }
 
 /* 
@@ -230,21 +302,21 @@ document.addEventListener('DOMContentLoaded', function () {
   var buttonAddReminder = document.getElementById("addReminder");
   var buttonAddEvent = document.getElementById("addEvent");
   var buttonEditEvent = document.getElementById("editEvent");
-	var buttonDelReminder = document.getElementById("delReminder");
-	var buttonClearInputs = document.getElementById("clearInputs");
+  var buttonDelReminder = document.getElementById("delReminder");
+  var buttonClearInputs = document.getElementById("clearInputs");
   if (buttonAddReminder != null){
     buttonAddReminder.addEventListener("click", clickAddReminder);
   }
-	if (buttonAddEvent != null){
+  if (buttonAddEvent != null){
   	buttonAddEvent.addEventListener("click", clickAddEvent);
-	}
+  }
   if (buttonEditEvent != null){
-		buttonEditEvent.addEventListener("click", clickEditEvent);
-	}
-	if (buttonDelReminder != null){
+	buttonEditEvent.addEventListener("click", clickEditEvent);
+  }
+  if (buttonDelReminder != null){
     buttonDelReminder.addEventListener("click", clickDelReminder);
   }
-	if (buttonClearInputs != null){
+  if (buttonClearInputs != null){
     buttonClearInputs.addEventListener("click", clickClearInputs);
   }
 });
@@ -254,18 +326,17 @@ document.addEventListener('DOMContentLoaded', function () {
 	(ie. event name, event time, etc.)
 */
 function clickClearInputs(){
-	var eventName = document.getElementById("event");
-	eventName.value = "";
-	var eventDate = document.getElementById("eventDate");
-	eventDate.value = "";
-	var eventTabs = document.getElementById("tabsToOpen");
-	eventTabs.value = "";
+	clearInputBoxValue("event");
+	clearInputBoxValue("eventDate");
+	clearInputBoxValue("tabsToOpen");
 
 	// clear all checked boxes for repeating dates
 	var checkBox = document.getElementById("repeat");
 	var chks = checkBox.getElementsByTagName("INPUT");
 	for (var repeatIndex = 0; repeatIndex < 7; repeatIndex++) {
-		chks[repeatIndex].checked = false;
+		if (checked(chks[repeatIndex])) {
+			uncheck(chks[repeatIndex]);
+		}
 	}
 	
 	// delete all reminders input boxes
@@ -282,26 +353,67 @@ function clickClearInputs(){
 }
 
 /* 
+	input: checkbox
+	function: check if checkbox is checked
+*/
+function checked(checkBox) {
+	return checkBox != null;
+}
+
+/* 
+	input: checkbox
+	function: uncheck checkbox
+*/
+function uncheck(checkbox) {
+	checkbox.checked = false;
+}
+
+/* 
+	input: element id
+	function: clear element value
+*/
+function clearInputBoxValue(elementId){
+	var element = document.getElementById(elementId);
+	element.value = "";
+}
+
+/* 
 	input: event 
 	function: create new input bar to display on html
 */
 function clickAddReminder(e) {
 	var div = document.createElement("div");
 
+	// var reminderInput = createReminderInput();
+	div.append(createReminderInput());
+
+	div.appendChild(createDeleteReminderButton());
+
+	document.getElementById("reminder").appendChild(div);
+}
+
+/* 
+	output: time input object
+	function: create time input element to enter new reminder
+*/
+function createReminderInput() {
 	var reminderInput = document.createElement("input");
 	reminderInput.setAttribute('type', 'time');
 	reminderInput.style = "width:60%";
-	div.append(reminderInput);
+	return reminderInput;
+}
 
+/* 
+	output: i object
+	function: create i element to contain X button to delete a reminder
+*/
+function createDeleteReminderButton() {
 	var deleteReminder = document.createElement("i");
 	deleteReminder.className = "glyphicon glyphicon-minus-sign";
 	deleteReminder.id = "delReminder";
 	deleteReminder.style = "cursor:pointer; font-size:15px;";
 	deleteReminder.addEventListener("click", clickDelReminder);
-
-	div.appendChild(deleteReminder);
-
-	document.getElementById("reminder").appendChild(div);
+	return deleteReminder;
 }
 
 /* 
@@ -324,14 +436,16 @@ function clickAddEvent(e) {
 	const textarea = document.getElementById("tabsToOpen");
 	var tabs = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
 
-	if(date != "" && text != "") {
+	if(validInput(date, text)) {
 		//extract input
 		var checkBox = document.getElementById("repeat");
 		var chks = checkBox.getElementsByTagName("INPUT");
 		var repeat = extractInput(chks);
+
 		var timeInput = document.getElementById("reminder");
 		var tmps = timeInput.getElementsByTagName("INPUT");
 		var reminders = extractInput(tmps);
+
 		var newEvent = new eventOb(text, date, repeat, reminders, tabs);
 
 		// store new event to storage
@@ -352,80 +466,42 @@ function clickAddEvent(e) {
 }
 
 /* 
-	input: input elements
-	function: extract user input from the input elements
-	output: user input
-*/
-function extractInput(input) {
-	var result = new Array();
-	for (var i = 0; i < input.length; i++) {
-		if(input[i].checked || (input[i].type == "time" && input[i].value !== "")) {
-			console.log("in extractInput, input[i].value = " +input[i].value );
-			result.push(input[i].value);
-		}
-	}
-	return result;
-}
-
-/* 
 	input: event object
 	function: create alarms for the event 
 */
 function createAlarm(eventObject) {
 	var eDate = new Date(eventObject.time);
-	console.log("eDate original: " + eDate);
 	var now = new Date();
 	var eDay = eDate.getDay(); 
 	
-	// extract reminder times and convert into date format
-	var eDates = new Array();
-	for(var i = 0; i < eventObject.remind.length; i++) {
-		
-		var tempDate = new Date(eDate);
-		var hours = eventObject.remind[i].split(":");
-		tempDate.setHours(hours[0]);
-		tempDate.setMinutes(hours[1]);
-		eDates.push(tempDate);
-		console.log("tempDate = " + tempDate);
-	}
-	console.log("eDates = " + eDates);
+	var eDates = extractReminderTimeArrayToDateArray(eDate, eventObject);
+
 	// create alerts for no repeating event
 	if(eventObject.repeat.length < 1) { 
-		for(var i = 0; i < eDates.length; i++) {
-			console.log("eDates[i] = " + eDates[i]);
-			var timeDifference = eDates[i].getTime() - now.getTime();
-			console.log("timeDifference = " + timeDifference);
-			chrome.alarms.create(eventObject.text + "__" + i, {
-				when: Number(now) + timeDifference
-			});
-			console.log("when = " + Number(now) + timeDifference);
-			console.log("alarm created" + eventObject.text + "__" + i);
+		for(var eDateIndex = 0; eDateIndex < eDates.length; eDateIndex++) {
+			createAlarmForNoRepeatingEvent(eDates, eDateIndex, eventObject, now);
 		}
 		return;
 	}
 
 	// create alerts for repeating event
-	for(var i = 0; i < eventObject.repeat.length; i++) {
-		for(var j = 0; j < eDates.length; j++) {
+	for(var repeatIndex = 0; repeatIndex < eventObject.repeat.length; repeatIndex++) {
+		for(var eDateIndex = 0; eDateIndex < eDates.length; eDateIndex++) {
 			// which weekday to repeat
 			var day;
-			if (eDay == eventObject.repeat[i]) day = 0;
-			else if (eDay > eventObject.repeat[i]) day = 7 - (eDay - eventObject.repeat[i]);
-			else day = eventObject.repeat[i] - eDay;
-			
-			var d = new Date(eDates[j]);
-			if(day > 0){
-				d.setDate(eDates[j].getDate() + day);
+			if (WeekdayCheckSame(eDay, eventObject, repeatIndex)) {
+				day = 0;
+			} else if (WeekdayCheckLarger(eDay, eventObject, repeatIndex)) {
+				day = 7 - (eDay - eventObject.repeat[repeatIndex]);
+			} else {
+				day = eventObject.repeat[repeatIndex] - eDay;
 			}
-			var timeDifference = (d.getTime() - now.getTime())/1000;
-			timeDifference /= 60;
-			chrome.alarms.create(eventObject.text + "__" + i + j, {
-				delayInMinutes: Math.abs(Math.round(timeDifference)),
-				periodInMinutes: 10080 
-			});
-			chrome.alarms.get(eventObject.text + "__" + i + j, function(alarm) {
-				console.log("alarm created: " + alarm.name);
-			});
+			
+			var dayInEDates = new Date(eDates[eDateIndex]);
+			if(day > 0){
+				dayInEDates.setDate(eDates[eDateIndex].getDate() + day);
+			}
+			createAlarmForRepeatingEvent(dayInEDates, eventObject, repeatIndex, eDateIndex, now);
 		}	
 	}
 }
@@ -435,7 +511,6 @@ function createAlarm(eventObject) {
 	function: remove alarms for the event 
 */
 function removeAlarms(eventObject) {
-	console.log("eventObject.text = " + eventObject.text);
 	if(eventObject.repeat.length < 1) {
 		for(var i = 0; i < eventObject.remind.length; i++) {
 			chrome.alarms.clear(eventObject.text + "__" + i);
@@ -457,14 +532,13 @@ function removeAlarms(eventObject) {
 */
 function clickEditEvent(e) {
 	var date = document.getElementById("eventDate").value;
-	var now = new Date();
-	var timeDifference = (new Date(date)).getTime - now.getTime();
 	var text = document.getElementById("event").value;
-	if(date != "" && text != "") {
+	if(validInput(date, text)) {
 		//extract input
 		var checkBox = document.getElementById("repeat");
 		var chks = checkBox.getElementsByTagName("INPUT");
 		var repeat = extractInput(chks);
+
 		var timeInput = document.getElementById("reminder");
 		var tmps = timeInput.getElementsByTagName("INPUT");
 		var reminders = extractInput(tmps);
@@ -484,6 +558,15 @@ function clickEditEvent(e) {
 		alert("please fill out event name and date");
 		return;
 	}
+}
+
+/*
+	input: user input
+	output: boolean
+	function: check if user input is valid
+*/
+function validInput(input1, input2) {
+	return input1 != "" && input2 != "";
 }
 
 /*
@@ -519,13 +602,11 @@ function addEvents(eventObject) {
 */
 function removeEvent(eventObject) {
 	var text = eventObject.text;
-	console.log("eventObject.text = " + text);
 	var list;
 	chrome.storage.local.get({events: []}, function(result) {
 		list = result.events;
 		for(var key in list) {
 			var json = JSON.parse(list[key]);
-			console.log(key + ": " + list[key]);
 			if(json.text.localeCompare(text) == 0){
 				list.splice(key, 1);
 				break;
@@ -568,4 +649,74 @@ function editEvent(eventObject) {
 	if (eventObject.remind) {
 		createAlarm(eventObject);
 	}
+}
+
+/* 
+	input: Date  object array, date object array index, event object, date
+	function: create alarm for not repeatig event
+*/
+function createAlarmForNoRepeatingEvent(eDates, eDateIndex, eventObject, now) {
+	var timeDifference = eDates[eDateIndex].getTime() - now.getTime();
+	chrome.alarms.create(eventObject.text + "__" + eDateIndex, {
+		when: Number(now) + timeDifference
+	});
+	chrome.alarms.get(eventObject.text + "__" + eDateIndex, function(alarm){
+		console.log("alarm created: " + alarm.name);
+	});
+}
+
+/* 
+	input: Date  object array, date object array index, event object, date
+	function: create alarm for repeatig event
+*/
+function createAlarmForRepeatingEvent(dayInEDates, eventObject, repeatIndex, eDateIndex, now) {
+	var timeDifference = (dayInEDates.getTime() - now.getTime())/1000;
+	timeDifference /= 60;
+	chrome.alarms.create(eventObject.text + "__" + repeatIndex + eDateIndex, {
+		delayInMinutes: Math.abs(Math.round(timeDifference)),
+		periodInMinutes: 10080 
+	});
+	chrome.alarms.get(eventObject.text + "__" + repeatIndex + eDateIndex, function(alarm) {
+		console.log("alarm created: " + alarm.name);
+	});
+}
+
+/* 
+	input: Date object, event object
+	output: date object array
+	function: convert reminder time to date format
+*/
+function extractReminderTimeArrayToDateArray(eDate, eventObject) {
+	var eDates = new Array();
+	for(var remindIndex = 0; remindIndex < eventObject.remind.length; remindIndex++) {
+		var tempDate = new Date(eDate);
+		var hours = eventObject.remind[remindIndex].split(":");
+		tempDate.setHours(hours[0]);
+		tempDate.setMinutes(hours[1]);
+		eDates.push(tempDate);
+	}
+	return eDates;
+}
+
+function WeekdayCheckSame(eDay, eventObject, repeatIndex) {
+	return eDay == eventObject.repeat[repeatIndex];
+}
+
+function WeekdayCheckLarger(eDay, eventObject, repeatIndex) {
+	return eDay > eventObject.repeat[repeatIndex];
+}
+
+/* 
+	input: input elements
+	function: extract user input from the input elements
+	output: user input
+*/
+function extractInput(input) {
+	var result = new Array();
+	for (var inputIndex = 0; inputIndex < input.length; inputIndex++) {
+		if(input[inputIndex].checked || (input[inputIndex].type == "time" && input[inputIndex].value !== "")) {
+			result.push(input[inputIndex].value);
+		}
+	}
+	return result;
 }

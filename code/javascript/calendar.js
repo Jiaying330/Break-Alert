@@ -4,7 +4,7 @@
 // Function: check the input date with the local storage to see if the
 // input date is in the storage
 // */
-function checkEvent(currMonth, currDay){
+function checkEvent(currYear, currMonth, currDay){
 
   return new Promise((success, failure) => {
 
@@ -14,14 +14,30 @@ function checkEvent(currMonth, currDay){
 
       for (let eventIndex in eventList) {
         let event = eventList[eventIndex].match(/\d{0,6}\-\d{0,2}\-\d{0,2}/g)[0].split("-");
+        let eventYear = Number(event[0]);
         let eventMonth = Number(event[1]);
         let eventDay = Number(event[2]);
 
-        if (eventMonth === currMonth && eventDay === currDay) {
+        
+        if (eventMonth === currMonth && eventDay === currDay && eventYear === currYear) {
           hasEvent = true;
           break;
         }
 
+        
+        var currDate = new Date()
+        currDate.setFullYear(currYear, currMonth-1, currDay); 
+        var weekday = currDate.getDay();
+        var currEvent = JSON.parse(eventList[eventIndex]);
+        var eventDate = new Date(currEvent.time);
+        
+        // check for repeating event
+        for (var repeatIndex = 0; repeatIndex < currEvent.repeat.length; repeatIndex++) {
+          if (currDate > eventDate && (weekday == currEvent.repeat[repeatIndex])) {
+            hasEvent = true;
+            break;
+          }
+        }
       }
 
       if (hasEvent === true) {
@@ -96,7 +112,7 @@ async function renderCalendar () {
   document.querySelector(".date h1").innerHTML = months[date.getMonth()];
   
   // Add current date to the month header
-  document.querySelector(".date p").innerHTML = new Date().toDateString();
+  document.querySelector(".date p").innerHTML = date.getFullYear();
   
   // define a string of innerHTML to set days
   let days = "";
@@ -105,7 +121,7 @@ async function renderCalendar () {
   for (let i = firstDayIndex; i > 0; i--) {
     let eventExist;
     try {
-      eventExist = await checkEvent (date.getMonth(), prevLastDay - i + 1);
+      eventExist = await checkEvent (date.getFullYear(), date.getMonth(), prevLastDay - i + 1);
     } catch (status) {}
 
     if (eventExist === true) {
@@ -120,12 +136,12 @@ async function renderCalendar () {
   for (let j = 1; j <= lastDay; j++) {
     let eventExist;
     try {
-      eventExist = await checkEvent(date.getMonth() + 1, j);
+      eventExist = await checkEvent(date.getFullYear(), date.getMonth() + 1, j);
     } catch (status) {}
   
     // check if the day is the current day
     // if so, add class="today"
-    if (j === new Date().getDate() && date.getMonth() === new Date().getMonth()) {
+    if (j === new Date().getDate() && date.getMonth() === new Date().getMonth() && date.getFullYear() === new Date().getFullYear()) {
 
       if (eventExist === true) {
         days += `<div class="today" hasEvent=True>${j}</div>`;
@@ -137,8 +153,7 @@ async function renderCalendar () {
         days += `<div hasEvent=True>${j}</div>`;
       } else {
         days += `<div hasEvent=False>${j}</div>`;
-      }
-        
+      }        
     }
   }
   
@@ -146,7 +161,7 @@ async function renderCalendar () {
   for (let k = 1; k <= nextDays; k++) {
     let eventExist;
     try {
-      eventExist = await checkEvent(date.getMonth() + 2, k);
+      eventExist = await checkEvent(date.getFullYear(), date.getMonth() + 2, k);
     } catch (status) {}
 
     if (eventExist === true) {
@@ -165,6 +180,27 @@ async function renderCalendar () {
   let schedule = document.querySelectorAll("div.days > div");
   for (let n = 0; n < schedule.length; n++) {
     schedule[n].addEventListener("click", () => {
+      var inputDate = new Date(date);
+      var inputDay = schedule[n].innerHTML.split('<')[0];
+      inputDate.setDate(inputDay);
+      if (schedule[n].className == "next-date") {
+        var inputMonth = date.getMonth() == 11 ? 0 : date.getMonth() + 1;
+        var inputYear = date.getMonth() == 11 ? date.getFullYear() + 1 : date.getFullYear();
+        inputDate.setMonth(inputMonth);
+        inputDate.setFullYear(inputYear);
+      } else if (schedule[n].className == "prev-date") {
+        var inputMonth = date.getMonth() == 0 ? 11 : date.getMonth() - 1;
+        var inputYear = date.getMonth() == 0 ? date.getFullYear() - 1 : date.getFullYear();
+        inputDate.setMonth(inputMonth);
+        inputDate.setFullYear(inputYear);
+      }
+      inputDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+
+      // range checking to make sure inputDate is a valid number
+      if (!isNaN(inputDate)){
+        document.getElementById("eventDate").value = inputDate.toISOString().slice(0, 16);
+      }
+      
       document.querySelector(".scheduler").classList.add("show");
     });
   }
@@ -196,6 +232,13 @@ document.querySelector(".next").addEventListener("click", () => {
 // Click to hide the scheduler window
 document.querySelector(".scheduler-return").addEventListener("click", () => {
   document.querySelector(".scheduler").classList.remove("show");
+  
+  // clear all previous inputs
+  var buttonClearInputs = document.getElementById("clearInputs");
+  if (buttonClearInputs != null){
+    buttonClearInputs.click();
+  }
+
   renderCalendar();
 });
   

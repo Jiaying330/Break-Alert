@@ -2,10 +2,25 @@
 document.addEventListener('DOMContentLoaded', function () {
 	var buttonEnable = document.getElementById("enableBreakAlert");
 	var buttonDisable = document.getElementById("disableBreakAlert");
-  if (buttonEnable != null)
-	  buttonEnable.addEventListener("click", enableBreakAlert);
+  var breakAlertInput = document.getElementById("breakDuration");
+
   if (buttonDisable != null)
 	  buttonDisable.addEventListener("click", disableBreakAlert); 
+
+  if (breakAlertInput != null && buttonEnable != null){
+	  buttonEnable.addEventListener("click", enableBreakAlert);
+
+    // Allow for user to hit "enter" to add the breakalert (instead of having to click)
+    breakAlertInput.addEventListener("keyup", function(event) {
+      // Number 13 is the "Enter" key on the keyboard
+      // keyCode element is deprecated but it still works
+      if (event.keyCode === 13) {
+        // Trigger the button element with a click
+        buttonEnable.click();
+      }
+    });
+  }
+  
 });
 
 // disable break alert (clear saved data in chrome storage)
@@ -27,11 +42,9 @@ async function enableBreakAlert(){
   try{
     // force all execution to wait for isActiveBreakAlert() to return
     isActive = await isActiveBreakAlert();
-    // alert("isActive is " + isActive);
   }
   catch (status) {
     // isActive (status) is false
-    // alert("isActive is  " + status);
   }
   
   // check for empty input boxes before creating the alarm and storing it
@@ -45,7 +58,7 @@ async function enableBreakAlert(){
   else {
     // call helper function to create/overwrite a new break alert alarm and start
     // in productive mode
-    createBreakAlarm(productivePeriod);
+    createProdBreakAlarm(productivePeriod);
 
     // add the productivePeriod and breakPeriod to chrome storage
     chrome.storage.sync.get("breakAlertData", function(result) {
@@ -59,7 +72,7 @@ async function enableBreakAlert(){
       copyBreakAlertData = userInputs;
 
       chrome.storage.sync.set({"breakAlertData": copyBreakAlertData}, function(data){
-        alert("after setting breakAlertData: " + copyBreakAlertData);
+        // alert("after setting breakAlertData: " + copyBreakAlertData);
       });  // end set 
     });  // end get
     
@@ -69,15 +82,22 @@ async function enableBreakAlert(){
 }
 
 
-// create a new alarm with a different duration
-// (switch between productive period and break periods)
+// create a new break alert alarm with a different duration
 //
 // period : productive or break period to set the new alarm at (string)
-function createBreakAlarm(period){
+function createProdBreakAlarm(period){
   chrome.alarms.get("BreakAlert", function(alarm) {
     if (typeof alarm == "undefined"){
       // create the new break alert alarm (need to convert period from string to int)
       chrome.alarms.create("BreakAlert", {delayInMinutes : parseInt(period)});
+    }
+
+    // enable website blocking for productive mode
+	  const blockedcheckbox = document.getElementById("blockedcheckbox");
+    if (blockedcheckbox != null){
+      blockedcheckbox.checked = false;
+      const enabled = true;
+      chrome.storage.local.set({ enabled });
     }
   });
 }

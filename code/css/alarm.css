@@ -1,0 +1,11 @@
+.clock_ui{
+  display: flex;
+  font-size: 27px;
+  width: 200px;
+  justify-content: space-around;
+  margin: 0 auto;
+}
+#alarm{
+  overflow: auto;
+  max-height: 305px;
+}    

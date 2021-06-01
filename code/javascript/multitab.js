@@ -16,14 +16,12 @@
 			var reader = JSON.parse(tabList[i]);
 			if(reader.name !== ""){
 				var urlList = (reader.urls).filter(j => j !== "");
-				console.log(urlList);
 				tabCopyList.push(JSON.stringify({
 				name: reader.name, 
 				urls: urlList
 				}));
 			}
 		}
-		console.log(tabCopyList);
 		chrome.storage.sync.set({"myTabs": tabCopyList}, function(){
 			console.log('Value set to ' + tabCopyList);	
 		});
@@ -50,7 +48,21 @@
  */
 document.addEventListener('DOMContentLoaded', function () {
 	var buttonTabAdder = document.getElementById("addTabButton");
-	buttonTabAdder.addEventListener("click", addNewMultitab);
+	var multiTabInput = document.getElementById("newMTabName");
+
+	if (multiTabInput != null && buttonTabAdder != null){
+		// Allow for user to hit "enter" to add the multitab (instead of having to click)
+    multiTabInput.addEventListener("keyup", function(event) {
+      // Number 13 is the "Enter" key on the keyboard
+      // keyCode element is deprecated but it still works
+      if (event.keyCode === 13) {
+        // Trigger the button element with a click
+        buttonTabAdder.click();
+      }
+    });
+
+		buttonTabAdder.addEventListener("click", addNewMultitab);
+	}
 });
 
 const myList = document.getElementById("allTabs");
@@ -82,7 +94,6 @@ function createTab(name, urls, pos){
 				var myTabsList = result.myTabs;
 				var urlList = JSON.parse(myTabsList[pos]).urls;
 				dropdown.className = "dropdown glyphicon glyphicon-triangle-top";
-				console.log(urlList);
 				for(var i = 0; i < urlList.length; i++){
 					myTab.appendChild(urlListItem(urlList[i], pos, i));
 				}
@@ -98,7 +109,6 @@ function createTab(name, urls, pos){
 						urls : [] 
 					});
 					myTab.style = "display:none;";
-					console.log(myTabsList);
 					chrome.storage.sync.set({"myTabs": myTabsList}, function(){
 						console.log('Value set to ' + myTabsList);
 					});
@@ -119,8 +129,14 @@ function createTab(name, urls, pos){
 	return myTab;
 }
 
+/**
+ * 
+ * @param {String} url
+ * @returns correctly formatted url
+ * 
+ */
 function urlTextMatch(url){
-	if(url.substring(0,8) == "https://"){
+	if(url.substring(0,8) == "https://" || url.substring(0,7) == "http://"){
 
 	}else{
 		if(url.substring(0,4) == "www."){
@@ -153,7 +169,6 @@ function inputRow(pos, myTab){
 	btn.appendChild(addIcon);
 	btn.onclick = function () {
 		var text = document.getElementById("input"+pos).value;
-		console.log(text);
 		text = urlTextMatch(text);
 		document.getElementById("input"+pos).value = "";
 		myTab.insertBefore(urlListItem(text, pos, myTab.childElementCount - 3), myTab.children[myTab.childElementCount - 2]);
@@ -208,7 +223,6 @@ function urlListItem(url, pos, linkNum){
 			var targetTab = (JSON.parse(tabList[pos]));
 			var urlList = targetTab.urls;
 			urlList.splice(linkNum, 1, "");
-			console.log(linkNum);
 			listItem.style = "display:flex; display:none;";
 			tabList[pos] = (JSON.stringify({
 				name: targetTab.name, 
@@ -222,7 +236,12 @@ function urlListItem(url, pos, linkNum){
 	return listItem;
 }
 
-{/* <input type="text" class="form-control" id="loopAlarm" placeholder="Remind me to..."> */}
+/**
+ * 
+ * @param {Number} pos 
+ * @returns A input element with correct attributes
+ * 
+ */
 function insertTabBar(pos){
 	var input = document.createElement("input");
 	input.className = "linkInput";
@@ -240,22 +259,32 @@ function addNewMultitab() {
 	let str = document.getElementById("newMTabName").value;
 	if(str != ""){
 		chrome.storage.sync.get(["myTabs"], function(result) {
-			console.log(result.myTabs);
 			var tabList = result.myTabs;
-			tabList.push(JSON.stringify({
-				name: str, 
-				urls: []
-			}));
-			chrome.storage.sync.set({"myTabs": tabList}, function(){
-				console.log('Value set to ' + tabList);
-			});
-			myList.appendChild(
-				createTab(
-					str, 
-					[],
-					tabList.length - 1
-				)
-			);
+			var isRepeat = false;
+
+			for(var i = 0; i < tabList.length; i++){
+				var reader = JSON.parse(tabList[i]);
+				if(str == reader.name){
+					isRepeat = true;
+				}
+			}
+
+			if(!isRepeat){
+				tabList.push(JSON.stringify({
+					name: str, 
+					urls: []
+				}));
+				chrome.storage.sync.set({"myTabs": tabList}, function(){
+					console.log('Value set to ' + tabList);
+				});
+				myList.appendChild(
+					createTab(
+						str, 
+						[],
+						tabList.length - 1
+					)
+				);
+			}
 		});
 	}
 	document.getElementById("newMTabName").value = "";

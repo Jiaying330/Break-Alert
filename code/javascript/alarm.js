@@ -36,21 +36,12 @@ function createAlarmListElement(alarm) {
 	var li = document.createElement("li");
 	li.textContent = text;
 	li.className = "alarmLi";
-	var buttonDelete = document.createElement("button");
-	buttonDelete.innerHTML = "Delete";
-	buttonDelete.className = "deleteAlarm";
-	li.appendChild(buttonDelete);
-	buttonDelete.addEventListener('click', function(){
-		removeAlarm(text);
-		var div = this.parentElement.parentElement;
-		div.style.display = "none";
-	});
 	var dropdown = document.createElement("i");
 	dropdown.className = "dropdown glyphicon glyphicon-triangle-bottom";
 	dropdown.onclick = function() {
+		var alarmTable = document.createElement("table");
 		if(dropdown.className === "dropdown glyphicon glyphicon-triangle-bottom") {
 			dropdown.className = "dropdown glyphicon glyphicon-triangle-top";
-			var alarmTable = document.createElement("table");
 			alarmTable.appendChild(dropItem("text", alarm.text));
 			alarmTable.appendChild(dropItem("time", alarm.time));
 			myAlarm.appendChild(alarmTable);
@@ -60,6 +51,19 @@ function createAlarmListElement(alarm) {
 				myAlarm.removeChild(myAlarm.lastChild);
 			}
 		}
+
+		var deleteButton = document.createElement("div");
+		deleteButton.className = "deleteButton";
+		deleteButton.style = "margin-left: 50px;";
+		var deleteTabIcon = document.createElement("i");
+		deleteTabIcon.className = "glyphicon glyphicon-trash";
+		deleteButton.appendChild(deleteTabIcon);
+		alarmTable.appendChild(deleteButton);
+		deleteButton.addEventListener('click', function(){
+			removeAlarm(text);
+			var div = this.parentElement.parentElement;
+			div.style.display = "none";
+		});
 	};
 	li.appendChild(dropdown);
 	li.addEventListener("click", function() {
@@ -92,10 +96,15 @@ function clickAlarm(alarm) {
 document.addEventListener('DOMContentLoaded', function () {
 	var buttonSet = document.getElementById("set");
 	var buttonClear = document.getElementById("clear");
-	var buttonEdit = document.getElementById("edit");
-	buttonSet.addEventListener("click", clickSet);
-	buttonClear.addEventListener("click", clickClear); 
-	buttonEdit.addEventListener("click", clickEdit);
+
+	if (buttonClear != null){
+		buttonClear.addEventListener("click", clickClear); 
+	}
+
+	// Allow for user to click the + button to add the alarm
+	if (buttonSet != null){
+		buttonSet.addEventListener("click", clickSet);
+	}
 });
 
 /* 
@@ -107,30 +116,45 @@ function clickSet(e) {
   console.log(time);
 	var text = document.getElementById("loopAlarm").value;
   console.log(text);
-    var repeatCheck = document.getElementById("loopCheck").checked;
-  console.log(repeatCheck);
-	if(time !== 0 && text != ""){
-    	if(repeatCheck){
-      		console.log("REPEAT");
-      		chrome.alarms.create(text,{
-        		delayInMinutes : time, 
-        		periodInMinutes : time
-      	});
-		  console.log("alarm created " + text + ": " + time );
-    	} else {
-      		chrome.alarms.create(text,{delayInMinutes : time});
-		 	console.log("alarm created " + text + ": " + time );
-    	}
+	if (time !== 0 && text != ""){
+    createChromeAlarm(text, time);
 		addAlarms(text, time);
-    	hour2 = 0;
-    	hour1 = 0;
-    	min2 = 0;
-    	min1 = 0;
+		resetAlarmValues();
+    	
 		setTimeUI();
     	document.getElementById("loopAlarm").value = "";
     	document.getElementById("loopCheck").checked = false;
 		aList.appendChild(createAlarmListElement({text, time}));
 	}
+}
+
+
+// helper function to take in a new alarm name, a time interval, and
+// check if it should be repeating or not, then create the alarm in 
+// chrome.alarms
+function createChromeAlarm(text, time){
+	var repeatCheck = document.getElementById("loopCheck").checked;
+	// we have a repeating alarm
+	if(repeatCheck){
+		chrome.alarms.create(text,{
+			delayInMinutes : time, 
+			periodInMinutes : time
+		});	
+	} // else we have a non-repeating alarm
+	else {
+		chrome.alarms.create(text,{delayInMinutes : time});
+	}
+	console.log("alarm created " + text + ": " + time );
+}
+
+/* 
+	function: reset alarm ui values 
+*/
+function resetAlarmValues() {
+	hour2 = 0;
+    hour1 = 0;
+    min2 = 0;
+    min1 = 0;
 }
 
 /* 
@@ -139,32 +163,8 @@ function clickSet(e) {
 function clickClear(){
 	document.getElementById("loopAlarm").value = "";
   document.getElementById("loopCheck").checked = false;
-	hour2 = 0;
-	hour1 = 0;
-	min2 = 0;
-	min1 = 0;
+	resetAlarmValues();
 	setTimeUI();
-}
-
-/* 
-	input: event
-	function: edit a loop alarm and store in local storage
-*/
-function clickEdit(e){
-	var text = document.getElementById("loopAlarm").value;
-	var time = hour2 * 600 + hour1 * 60 + min2 * 10 + min1;
-	chrome.alarms.get(text, function(alarm) {
-		alarm.delayInMinutes = time;
-		alarm.periodInMinutes = time;
-	});
-	editAlarm(text, time);
-	for (var i = 0; i < aList.childNodes.length; i++) {
-		if(aList.childNodes[i].id == text) {
-			aList.childNodes[i].style.display = "none";
-			aList.removeChild(aList.childNodes[i]);
-		}
-	}
-	aList.appendChild(createAlarmListElement({text, time}));
 }
 
 /* 
@@ -194,19 +194,8 @@ function removeAlarm(text) {
 			if(json.text.localeCompare(text) == 0) {
 				list.splice(key, 1);
 
-				// delete the actual alarm from chrome.alarms if it's a repeating alarm
-				// (so that it doesn't popup anymore after it's deleted from storage) 
-				//
-				// determine if alarm is repeating by checking if periodInMinutes is defined
-				chrome.alarms.get(text, function(alarm){
-					// alert("alarm name is " + text);
-					// alert("alarm to check is " + alarm.periodInMinutes);
-					var isRepeating = alarm.periodInMinutes;
-					if (typeof isRepeating != "undefined"){
-						// alert("chrome.clear is called for alarm " + text);
-						chrome.alarms.clear(text);
-					}
-				});
+				// delete the actual alarm to prevent it from triggering anymore
+				chrome.alarms.clear(text);
 
 				break;
 			}
@@ -218,28 +207,6 @@ function removeAlarm(text) {
 	});
 
 	
-}
-
-/* 
-	input: text(name) of the alarm, time value of the alarm
-	function: edit an alarm with the name text
-*/
-function editAlarm(text, time) {
-	var list;
-	chrome.storage.local.get({alarms: []}, function(result) {
-		list = result.alarms;
-		for(var key in list) {
-			var json = JSON.parse(list[key]);
-			if(json.text.localeCompare(text) == 0) {
-				list.splice(key, 1);
-				break;
-			}
-		}
-		list.push(JSON.stringify({'text': text, 'time': time}));
-		chrome.storage.local.set({"alarms": list}, function() {
-			console.log("after editing: " + list);
-		});
-	});
 }
 
 
@@ -270,12 +237,14 @@ function addHour2(){
 	}
 	setTimeUI();
 }
+
 function subHour2(){
 	if(hour2 > 0){
 		hour2 -= 1;
 	}
 	setTimeUI();
 }
+
 function addHour1(){
 	if(hour1 <= 8){
 		hour1 += 1;
@@ -287,6 +256,7 @@ function addHour1(){
 	}
 	setTimeUI();
 }
+
 function subHour1(){
 	if(hour1 > 0){
 		hour1 -= 1;
@@ -298,18 +268,21 @@ function subHour1(){
 	}
 	setTimeUI();
 }
+
 function addMin2(){
 	if(min2 <= 4){
 		min2 += 1;
 	}
 	setTimeUI();
 }
+
 function subMin2(){
 	if(min2 > 0){
 		min2 -= 1;
 	}
 	setTimeUI();
 }
+
 function addMin1(){
 	if(min1 <= 8){
 		min1 += 1;
@@ -321,6 +294,7 @@ function addMin1(){
 	}
 	setTimeUI();
 }
+
 function subMin1(){
 	if(min1 > 0){
 		min1 -= 1;

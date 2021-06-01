@@ -1,0 +1,73 @@
+#todo{
+  max-height: 300px;
+}    
+/* style todo list */
+ul {  
+  margin: 0;
+  padding: 0;
+}
+/* style todo list elements */
+ul li {
+  list-style-type: none;
+  cursor: pointer;
+  position:relative;
+  padding: 8px 4px 8px 36px;
+  background: rgba(238, 238, 238, 0.911);
+  font-size: 14px;
+  transition: 0.2s;
+}
+ul li:hover {
+  background: rgba(221, 221, 221, 0.816)
+}
+/* for marking completed tasks */
+ul li.checked {
+  background: #888;
+  color: #fff;
+  text-decoration: line-through;
+}
+/* add a check mark for completed tasks */
+ul li.checked::before {
+  content: '';
+  position: absolute;
+  border-color: rgb(39, 39, 39);
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 10px;
+  left: 16px;
+  transform: rotate(45deg);
+  height:15px;
+  width: 7px;
+}
+/* X button to remove a list item */
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 10px 14px 10px 14px;
+}
+.close:hover {
+  background-color: #ff1100;
+  color: white;
+}
+/* input box for adding item to todo list */
+input {
+  margin: 0 2px 8px 0;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 2px;
+  width: 75%;
+  padding: 6px;
+  font-size: 14px;
+}
+.taskList {
+  margin: 10px 0 0 0; 
+  max-height: 215px;
+  overflow: auto;
+}
+#todoList{
+  list-style-type: none;
+}
+#addTaskInput{
+  margin: 0px;
+}
