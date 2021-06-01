@@ -22,8 +22,8 @@ chop.add_extension(extension_path)
 
 # link to chromedriver.exe 
 # (however, don't need to explicitly use the path since it's defined in my system env variables)
-path_to_chromedriver = 'tests/chromedriver.exe'
-driver = webdriver.Chrome(path_to_chromedriver, options=chop)
+# path_to_chromedriver = 'tests/chromedriver.exe'
+driver = webdriver.Chrome(options=chop)
 
 # hardcoded id from chromedriver : helkojdkocknicnipdafippibaecpnbk (this opens the extension but the id is unique to my laptop only)
 driver.get('chrome-extension://helkojdkocknicnipdafippibaecpnbk/code/popup.html')
@@ -39,7 +39,7 @@ switch_to_todolist_button.click()
 time.sleep(1)
 
 # select the input box to type data into
-inputTask = driver.find_element_by_id("input")
+inputTask = driver.find_element_by_id("addTaskInput")
 inputTask.send_keys("task 1")
 
 time.sleep(1)
