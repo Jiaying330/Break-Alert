@@ -236,7 +236,7 @@ function clickEvent(eventObject) {
 	for (var remindIndex = 0; remindIndex < maxReminders; remindIndex++) {
 		if (enoughReminderInputBoxes(remindIndex, inputReminders.length, eventObject.remind.length)) {  
 			inputReminders[remindIndex].value = eventObject.remind[remindIndex];
-		} else if (!enoughReminderInputBoxes(remindIndex, inputReminders.length)) {
+		} else if (notEnoughReminderInputBox(remindIndex, inputReminders.length) ) {
 			var div = document.createElement("div");
 			
 			var reminderInput = createReminderInput();
@@ -271,6 +271,15 @@ function splitTab(tabs) {
 */
 function enoughReminderInputBoxes(remindIndex, inputRemindersLength, eventReminderLength) {
 	return remindIndex < inputRemindersLength && remindIndex < eventReminderLength;
+}
+
+/* 
+	input: remind index, reminder box number
+	output: boolean
+	function: check if there is enough input boxes to auto fill event reminders
+*/
+function notEnoughReminderInputBox(remindIndex, inputRemindersLength) {
+	return remindIndex >= inputRemindersLength;
 }
 
 /* 

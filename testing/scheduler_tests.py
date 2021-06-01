@@ -100,7 +100,7 @@ assert(tabsTd.text == "tabToOpen")
 time.sleep(1)
 
 # delete event
-deleteButton = driver.find_element_by_xpath('//*[@id="event 1"]/button')
+deleteButton = driver.find_element_by_xpath('//*[@id="deleteEvent"]')
 deleteButton.click()
 
 time.sleep(1)
