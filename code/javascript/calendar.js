@@ -141,7 +141,7 @@ async function renderCalendar () {
   
     // check if the day is the current day
     // if so, add class="today"
-    if (j === new Date().getDate() && date.getMonth() === new Date().getMonth()) {
+    if (j === new Date().getDate() && date.getMonth() === new Date().getMonth() && date.getFullYear() === new Date().getFullYear()) {
 
       if (eventExist === true) {
         days += `<div class="today" hasEvent=True>${j}</div>`;
